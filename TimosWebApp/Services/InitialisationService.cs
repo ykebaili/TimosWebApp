@@ -1,0 +1,62 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Data;
+using Aspectize.Core;
+using System.Security.Permissions;
+using sc2i.common;
+using sc2i.multitiers.client;
+using System.Security.Principal;
+using System.Runtime.Remoting;
+using System.Runtime.Remoting.Channels;
+using System.Runtime.Remoting.Channels.Tcp;
+using System.Runtime.Remoting.Lifetime;
+
+namespace TimosWebApp.Services
+{
+    public interface IInitialisationService
+    {
+        void InitTimos();
+    }
+
+    [Service(Name = "InitialisationService")]
+    public class InitialisationService : IInitialisationService //, IInitializable, ISingleton
+    {
+
+
+        public void InitTimos()
+        {
+            CResultAErreur result = CResultAErreur.True;
+            string strServeurUrl = "tcp://127.0.0.1:8160";
+            int nTcpChannel = 0;
+            string strBindTo = "";
+
+            try
+            {
+                AppDomain.CurrentDomain.SetPrincipalPolicy(PrincipalPolicy.WindowsPrincipal);
+
+                result = CSC2iMultitiersClient.Init(nTcpChannel, strServeurUrl, strBindTo);
+
+                LifetimeServices.LeaseTime = new TimeSpan(0, 5, 0);
+                LifetimeServices.LeaseManagerPollTime = new TimeSpan(0, 5, 0);
+                LifetimeServices.SponsorshipTimeout = new TimeSpan(0, 3, 0);
+                LifetimeServices.RenewOnCallTime = new TimeSpan(0, 8, 0);
+
+                C2iSponsor.EnableSecurite();
+
+                /*TcpChannel channel = new TcpChannel();
+                ChannelServices.RegisterChannel(channel, false);*/
+                               
+
+                if (!result)
+                    result.EmpileErreur("Erreur lors de l'initialisation");
+            }
+            catch (Exception e)
+            {
+                result.EmpileErreur(e.Message);
+            }
+            
+        }
+    }
+
+}

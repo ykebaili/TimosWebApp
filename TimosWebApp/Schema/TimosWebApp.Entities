@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<diagram xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="45d20f40-b97e-4515-b0df-1ee29249bacd" domain="TimosWebApp" xmlns="http://schemas.microsoft.com/dsltools/EntityDesigner">
+  <entities>
+    <entity Id="91a7a2c7-8230-434a-9900-5328d42c3fca" name="Todos" guid="c78ba85e-9e4b-4ad4-8937-310aaa36fba7" guidIdentifier="false" hasCustomValidators="false" hasTriggers="false">
+      <properties>
+        <entityProperty name="Label" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="StartDate" type="DateTime" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="Instructions" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="TimosId" type="Int32" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" identifier="Identifier" />
+      </properties>
+    </entity>
+    <entity Id="b30924f9-2de5-46bf-88f7-5176a476f45b" name="User" guid="4fa51f8e-7844-4d06-8449-50416122995d" hasCustomValidators="false" hasTriggers="false">
+      <properties>
+        <entityProperty name="Name" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="IsAuthentificated" type="Boolean" defaultValue="false" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="Login" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="TimosKey" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="TimosSessionId" type="Int32" defaultValue="-1" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+      </properties>
+    </entity>
+  </entities>
+</diagram>
