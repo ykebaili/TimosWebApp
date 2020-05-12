@@ -37,6 +37,9 @@ namespace TimosWebApp
 			public const string StartDate = "StartDate";
 			public const string Instructions = "Instructions";
 			public const string TimosId = "TimosId";
+			public const string ElementType = "ElementType";
+			public const string ElementId = "ElementId";
+			public const string ElementDescription = "ElementDescription";
 		}
 
 		void IDataWrapper.InitData(DataRow data, string namePrefix)
@@ -70,6 +73,27 @@ namespace TimosWebApp
 		{
 			get { return getValue<int>("TimosId"); }
 			set { setValue<int>("TimosId", value); }
+		}
+
+		[Data]
+		public string ElementType
+		{
+			get { return getValue<string>("ElementType"); }
+			set { setValue<string>("ElementType", value); }
+		}
+
+		[Data]
+		public int ElementId
+		{
+			get { return getValue<int>("ElementId"); }
+			set { setValue<int>("ElementId", value); }
+		}
+
+		[Data]
+		public string ElementDescription
+		{
+			get { return getValue<string>("ElementDescription"); }
+			set { setValue<string>("ElementDescription", value); }
 		}
 
 	}

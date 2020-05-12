@@ -9,7 +9,7 @@ Global.ClientTodosService = {
        var filtre = '';
        if(filtreLabel)
        {
-           filtre = '((Label).toLowerCase().indexOf("' + filtreLabel + '".toLowerCase()) !== -1';
+           filtre = '((Label).toLowerCase().indexOf("' + filtreLabel + '".toLowerCase())) !== -1';
        }
        Aspectize.ExecuteCommand(aas.Services.Browser.UIService.SetCustomFilter(aas.ViewName.ListeTodos.GridListeTodos, filtre));
    }

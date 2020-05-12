@@ -10,8 +10,9 @@ var cStartDate = listeTodos.GridListeTodos.AddGridColumn("startdate", aas.Column
 cStartDate.Text.BindData(listeTodos.GridListeTodos.DataSource.StartDate, "dd/MM/yyyy");
 cStartDate.HeaderText.BindData("Date début");
 
-listeTodos.champFiltreLabel.keyup.BindCommand(aas.Services.Browser.ClientTodosService.FiltreTodos(listeTodos.champFiltreLabel.value));
+listeTodos.ChampFiltreLabel.keyup.BindCommand(aas.Services.Browser.ClientTodosService.FiltreTodos(listeTodos.ChampFiltreLabel.value));
 
 var detailTodo = Aspectize.CreateView("DetailTodo", aas.Controls.DetailTodo, aas.Zones.Home.ZoneInfo, false, aas.Data.MainData.Todos);
-detailTodo.LabelToDo.BindData(detailTodo.ParentData.Label);
 detailTodo.OnActivated.BindCommand(aas.Services.Browser.History.PushState(aas.ViewName.DetailTodo, aas.Path.MainData.Todos, detailTodo.ParentData.TimosId));
+detailTodo.LabelToDo.BindData(detailTodo.ParentData.Label);
+detailTodo.DescriptionElementEdite.BindData(detailTodo.ParentData.ElementDescription);

@@ -30,7 +30,7 @@ namespace TimosWebApp
                 if (dicoProperties == null)
                     dicoProperties = new Dictionary<string, object>();
 
-                strUserKey = (string)dicoProperties[CUtilTimosWebApp.c_champUserKey];
+                strUserKey = (string)dicoProperties[CUtilTimosUser.c_champUserKey];
 
                 // Build Role List
                 List<string> roles = new List<string>();
@@ -128,10 +128,10 @@ namespace TimosWebApp
                 // Initialise l'utilisateur connecté
                 var user = em.CreateInstance<User>();
                 user.IsAuthentificated = true;
-                user.Name = (string)aspectizeUser[CUtilTimosWebApp.c_champUserName];
-                user.Login = (string)aspectizeUser[CUtilTimosWebApp.c_champUserLogin];
-                user.TimosKey = (string)aspectizeUser[CUtilTimosWebApp.c_champUserKey];
-                user.TimosSessionId = (int)aspectizeUser[CUtilTimosWebApp.c_champSessionId];
+                user.Name = (string)aspectizeUser[CUtilTimosUser.c_champUserName];
+                user.Login = (string)aspectizeUser[CUtilTimosUser.c_champUserLogin];
+                user.TimosKey = (string)aspectizeUser[CUtilTimosUser.c_champUserKey];
+                user.TimosSessionId = (int)aspectizeUser[CUtilTimosUser.c_champSessionId];
 
 
                 // Instancie les To do de l'utilisateur en cours
@@ -141,17 +141,20 @@ namespace TimosWebApp
                 if(result && result.Data != null)
                 {
                     DataSet ds = result.Data as DataSet;
-                    if(ds != null && ds.Tables.Contains(CEtapeWorkflow.c_nomTable))
+                    if(ds != null && ds.Tables.Contains(CUtilTimosTodos.c_nomTable))
                     {
-                        DataTable dt = ds.Tables[CEtapeWorkflow.c_nomTable];
+                        DataTable dt = ds.Tables[CUtilTimosTodos.c_nomTable];
 
                         foreach (DataRow row in dt.Rows)
                         {
                             var todos = em.CreateInstance<Todos>();
-                            todos.TimosId = (int)row[CEtapeWorkflow.c_champId];
-                            todos.Label = (string)row[CEtapeWorkflow.c_champLibelle];
-                            todos.StartDate = (DateTime)row[CEtapeWorkflow.c_champDateDebut];
-                            //todos.Instructions = (string)row[CEtapeWorkflow.c_champ]
+                            todos.TimosId = (int)row[CUtilTimosTodos.c_champId];
+                            todos.Label = (string)row[CUtilTimosTodos.c_champLibelle];
+                            todos.StartDate = (DateTime)row[CUtilTimosTodos.c_champDateDebut];
+                            todos.Instructions = (string)row[CUtilTimosTodos.c_champInstructions];
+                            todos.ElementType = (string)row[CUtilTimosTodos.c_champTypeElementEdite];
+                            todos.ElementId = (int)row[CUtilTimosTodos.c_champIdElementEdite];
+                            todos.ElementDescription = (string)row[CUtilTimosTodos.c_champElementDescription];
                         }
                     }
 
