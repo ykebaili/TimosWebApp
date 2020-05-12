@@ -87,32 +87,13 @@ namespace TimosWebApp
         // This Command is called when user is remembered, instead of Authenticate
         bool IPersistentAuthentication.ValidateUser(AspectizeUser user)
         {
+            int nIdsession = (int)user[CUtilTimosUser.c_champSessionId];
+
+            ITimosServiceForAspectize serviceClientAspectize = (ITimosServiceForAspectize)C2iFactory.GetNewObject(typeof(ITimosServiceForAspectize));
+            if (serviceClientAspectize.GetSession(nIdsession))
+                return true;
 
             return false;
-
-            /*/// Connect to Data Storage
-            IDataManager dm = EntityManager.FromDataBaseService(ServiceName.DataService);
-
-            // retreive user with current user Id
-            User appliUser = dm.GetEntity<User>(new Guid(user.UserId));
-
-            if (appliUser != null)
-            {
-                // Check user status
-                if (appliUser.Status != EnumUserStatus.Blocked)
-                {
-                    // Attach Key-Value (same as in Authenticate Command)
-                    user["Email"] = appliUser.Email;
-
-                    // Save Last Login
-                    appliUser.DateLastLogin = DateTime.Now;
-
-                    dm.SaveTransactional();
-
-                    return true;
-                }
-            }
-            return false;*/
         }
 
         // Get Profile (ie initial DataSet) of user, authenticated or not
@@ -159,9 +140,6 @@ namespace TimosWebApp
                     }
 
                 }
-
-                
-
  
                 em.Data.AcceptChanges();
                 return em.Data;
