@@ -21,5 +21,73 @@
         <entityProperty name="TimosSessionId" type="Int32" defaultValue="-1" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
       </properties>
     </entity>
+    <entity Id="289e1e37-c821-4ff6-9464-4c5474b1d657" name="ChampTimos" guid="810ed001-de78-48ed-8c70-6373f6c8e6b8" guidIdentifier="false" hasCustomValidators="false" hasTriggers="false">
+      <properties>
+        <entityProperty name="Label" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="DisplayOrder" type="Int32" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="TimosId" type="Int32" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" identifier="Identifier" />
+        <entityProperty name="TypeDonneChamp" type="TypeDonnee" defaultValue="2" isCustomType="true" identity="false" isEnumType="true" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="AspectizeControlType" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+      </properties>
+    </entity>
+    <entity Id="6a0c1ec3-e175-4243-bebf-72637447b709" name="ValeursChamp" guid="523da491-43e7-413e-9d30-9a484baa1def" hasCustomValidators="false" hasTriggers="false">
+      <properties>
+        <entityProperty name="Index" type="Int32" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="StoredValue" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="DisplayedValue" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+      </properties>
+    </entity>
+    <entity Id="0f2ba6b8-2ed7-4917-a1d2-6f2265942534" name="TodoValeurChamp" guid="4b2c4aff-86d7-4d19-ac07-c21e8fb0edb5" hasCustomValidators="false" hasTriggers="false">
+      <properties>
+        <entityProperty name="ValeurChamp" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="LibelleChamp" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="OrdreChamp" type="Int32" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="ChampTimosId" type="Int32" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+      </properties>
+    </entity>
   </entities>
+  <relations>
+    <relation Id="775f2974-b3c3-4516-bed2-2c69ad4bec9d" name="ValeursPossibles" guid="00000000-0000-0000-0000-000000000000" hasTriggers="false" hasCustomValidators="false">
+      <entityReferenceClasses>
+        <relationReferencesEntityReferenceClasses Id="78a45702-3036-4106-b509-ee3b06c9eedb" role="ChampTimos" cardinality="O__I">
+          <entityMoniker Id="289e1e37-c821-4ff6-9464-4c5474b1d657" />
+        </relationReferencesEntityReferenceClasses>
+        <relationReferencesEntityReferenceClasses Id="75be4149-3930-4661-8da6-36522d9212c1" role="ValeursChamp" cardinality="O__N">
+          <entityMoniker Id="6a0c1ec3-e175-4243-bebf-72637447b709" />
+        </relationReferencesEntityReferenceClasses>
+      </entityReferenceClasses>
+    </relation>
+    <relation Id="025118ef-11aa-41a3-85e6-4e7dcffec58a" name="RelationTodoDefinitionChamp" guid="00000000-0000-0000-0000-000000000000" hasTriggers="false" hasCustomValidators="false">
+      <entityReferenceClasses>
+        <relationReferencesEntityReferenceClasses Id="bba50805-cc26-43b7-828a-5a335086a3cd" role="ChampTimos" cardinality="O__N">
+          <entityMoniker Id="289e1e37-c821-4ff6-9464-4c5474b1d657" />
+        </relationReferencesEntityReferenceClasses>
+        <relationReferencesEntityReferenceClasses Id="b0e017bb-3272-4ef6-9b09-9e3f9bc63414" role="Todos" cardinality="O__N">
+          <entityMoniker Id="91a7a2c7-8230-434a-9900-5328d42c3fca" />
+        </relationReferencesEntityReferenceClasses>
+      </entityReferenceClasses>
+    </relation>
+    <relation Id="56e40634-16a3-462b-a69c-10c84d438197" name="RelationTodoValeurChamp" guid="00000000-0000-0000-0000-000000000000" hasTriggers="false" hasCustomValidators="false">
+      <entityReferenceClasses>
+        <relationReferencesEntityReferenceClasses Id="04b92bff-e40c-4cc0-b286-b92920d0729d" role="Todos" cardinality="I__I">
+          <entityMoniker Id="91a7a2c7-8230-434a-9900-5328d42c3fca" />
+        </relationReferencesEntityReferenceClasses>
+        <relationReferencesEntityReferenceClasses Id="9b3ecb57-8a92-4729-aa31-9d1bae48f752" role="TodoValeurChamp" cardinality="O__N">
+          <entityMoniker Id="0f2ba6b8-2ed7-4917-a1d2-6f2265942534" />
+        </relationReferencesEntityReferenceClasses>
+      </entityReferenceClasses>
+    </relation>
+  </relations>
+  <enumEntities>
+    <enumEntity Id="7c3dffe3-49b6-4155-8774-281342d76d0d" name="TypeDonnee">
+      <enumItems>
+        <enumItem name="TypeEntier" value="0" />
+        <enumItem name="TypeDecimal" value="1" />
+        <enumItem name="TypeString" value="2" />
+        <enumItem name="TypeDate" value="3" />
+        <enumItem name="TypeBool" value="4" />
+        <enumItem name="ObjetTimos" value="5" />
+      </enumItems>
+    </enumEntity>
+  </enumEntities>
 </diagram>

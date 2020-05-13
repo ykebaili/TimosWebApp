@@ -128,14 +128,14 @@ namespace TimosWebApp
 
                         foreach (DataRow row in dt.Rows)
                         {
-                            var todos = em.CreateInstance<Todos>();
-                            todos.TimosId = (int)row[CUtilTimosTodos.c_champId];
-                            todos.Label = (string)row[CUtilTimosTodos.c_champLibelle];
-                            todos.StartDate = (DateTime)row[CUtilTimosTodos.c_champDateDebut];
-                            todos.Instructions = (string)row[CUtilTimosTodos.c_champInstructions];
-                            todos.ElementType = (string)row[CUtilTimosTodos.c_champTypeElementEdite];
-                            todos.ElementId = (int)row[CUtilTimosTodos.c_champIdElementEdite];
-                            todos.ElementDescription = (string)row[CUtilTimosTodos.c_champElementDescription];
+                            var todo = em.CreateInstance<Todos>();
+                            todo.TimosId = (int)row[CUtilTimosTodos.c_champId];
+                            todo.Label = (string)row[CUtilTimosTodos.c_champLibelle];
+                            todo.StartDate = (DateTime)row[CUtilTimosTodos.c_champDateDebut];
+                            todo.Instructions = (string)row[CUtilTimosTodos.c_champInstructions];
+                            todo.ElementType = (string)row[CUtilTimosTodos.c_champTypeElementEdite];
+                            todo.ElementId = (int)row[CUtilTimosTodos.c_champIdElementEdite];
+                            todo.ElementDescription = (string)row[CUtilTimosTodos.c_champElementDescription];
                         }
                     }
 
