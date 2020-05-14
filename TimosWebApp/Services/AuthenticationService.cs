@@ -21,16 +21,14 @@ namespace TimosWebApp
             //string strNomGestionnaire = serviceClientAspectize.GetType().ToString();
             CResultAErreur result = serviceClientAspectize.OpenSession(userName, secret);
             
-            if (result)
+            if (result && result.Data is Dictionary<string, object>)
             {
                 string strUserKey = "";
 
                 // Build Key-Value attached to User
-                Dictionary<string, object> dicoProperties = result.Data as Dictionary<string, object>;
-                if (dicoProperties == null)
-                    dicoProperties = new Dictionary<string, object>();
+                Dictionary<string, object> dicoProperties = (Dictionary<string, object>)result.Data;
 
-                strUserKey = (string)dicoProperties[CUtilTimosUser.c_champUserKey];
+                strUserKey = (string)dicoProperties[CUserTimosWebApp.c_champUserKey];
 
                 // Build Role List
                 List<string> roles = new List<string>();
@@ -43,51 +41,12 @@ namespace TimosWebApp
 
             return AspectizeUser.GetUnAuthenticatedUser();
             // Fin authentification TIMOS 
-
-            /*
-            IDataManager dm = EntityManager.FromDataBaseService(ServiceName.DataService);
-
-            // Get All Users with the email requested
-            List<User> users = dm.GetEntities<User>(new QueryCriteria(User.Fields.Email, ComparisonOperator.Equal, userName.ToLower().Trim()));
-
-            if (users.Count > 0)
-            {
-                User user = users[0];
-
-                // Check password using Security Service Configuration
-                bool match = PasswordHasher.CheckResponse(user.PassWord, challenge, algorithm, secret);
-
-                if (match && user.Status != EnumUserStatus.Blocked)
-                {
-                    // Build Key-Value attached to User
-                    Dictionary<string, object> dicoProperties = new Dictionary<string, object>();
-
-                    dicoProperties.Add("Email", user.Email);
-
-                    // Build Role List
-                    List<string> roles = new List<string>();
-
-                    roles.Add("Registered");
-
-                    // Save Last Login
-                    user.DateLastLogin = DateTime.Now;
-
-                    dm.SaveTransactional();
-
-                    // Build and return authenticated user with Properties and Roles
-                    return AspectizeUser.GetAuthenticatedUser(user.Id.ToString("N"), roles.ToArray(), dicoProperties);
-                }
-            }
-
-            
-
-            return AspectizeUser.GetUnAuthenticatedUser();*/
         }
 
         // This Command is called when user is remembered, instead of Authenticate
         bool IPersistentAuthentication.ValidateUser(AspectizeUser user)
         {
-            int nIdsession = (int)user[CUtilTimosUser.c_champSessionId];
+            int nIdsession = (int)user[CUserTimosWebApp.c_champSessionId];
 
             ITimosServiceForAspectize serviceClientAspectize = (ITimosServiceForAspectize)C2iFactory.GetNewObject(typeof(ITimosServiceForAspectize));
             if (serviceClientAspectize.GetSession(nIdsession))
@@ -109,66 +68,41 @@ namespace TimosWebApp
                 // Initialise l'utilisateur connecté
                 var user = em.CreateInstance<User>();
                 user.IsAuthentificated = true;
-                user.Name = (string)aspectizeUser[CUtilTimosUser.c_champUserName];
-                user.Login = (string)aspectizeUser[CUtilTimosUser.c_champUserLogin];
-                user.TimosKey = (string)aspectizeUser[CUtilTimosUser.c_champUserKey];
-                user.TimosSessionId = (int)aspectizeUser[CUtilTimosUser.c_champSessionId];
+                user.Name = (string)aspectizeUser[CUserTimosWebApp.c_champUserName];
+                user.Login = (string)aspectizeUser[CUserTimosWebApp.c_champUserLogin];
+                user.TimosKey = (string)aspectizeUser[CUserTimosWebApp.c_champUserKey];
+                user.TimosSessionId = (int)aspectizeUser[CUserTimosWebApp.c_champSessionId];
 
 
                 // Instancie les To do de l'utilisateur en cours
                 ITimosServiceForAspectize serviceClientAspectize = (ITimosServiceForAspectize)C2iFactory.GetNewObject(typeof(ITimosServiceForAspectize));
                 CResultAErreur result = serviceClientAspectize.GetTodosForUser(user.TimosSessionId, user.TimosKey);
 
-                if(result && result.Data != null)
+                if (result && result.Data != null)
                 {
                     DataSet ds = result.Data as DataSet;
-                    if(ds != null && ds.Tables.Contains(CUtilTimosTodos.c_nomTable))
+                    if (ds != null && ds.Tables.Contains(CTodoTimosWebApp.c_nomTable))
                     {
-                        DataTable dt = ds.Tables[CUtilTimosTodos.c_nomTable];
+                        DataTable dt = ds.Tables[CTodoTimosWebApp.c_nomTable];
 
                         foreach (DataRow row in dt.Rows)
                         {
                             var todo = em.CreateInstance<Todos>();
-                            todo.TimosId = (int)row[CUtilTimosTodos.c_champId];
-                            todo.Label = (string)row[CUtilTimosTodos.c_champLibelle];
-                            todo.StartDate = (DateTime)row[CUtilTimosTodos.c_champDateDebut];
-                            todo.Instructions = (string)row[CUtilTimosTodos.c_champInstructions];
-                            todo.ElementType = (string)row[CUtilTimosTodos.c_champTypeElementEdite];
-                            todo.ElementId = (int)row[CUtilTimosTodos.c_champIdElementEdite];
-                            todo.ElementDescription = (string)row[CUtilTimosTodos.c_champElementDescription];
+                            todo.TimosId = (int)row[CTodoTimosWebApp.c_champId];
+                            todo.Label = (string)row[CTodoTimosWebApp.c_champLibelle];
+                            todo.StartDate = (DateTime)row[CTodoTimosWebApp.c_champDateDebut];
+                            todo.Instructions = (string)row[CTodoTimosWebApp.c_champInstructions];
+                            todo.ElementType = (string)row[CTodoTimosWebApp.c_champTypeElementEdite];
+                            todo.ElementId = (int)row[CTodoTimosWebApp.c_champIdElementEdite];
+                            todo.ElementDescription = (string)row[CTodoTimosWebApp.c_champElementDescription];
                         }
                     }
 
                 }
- 
+
                 em.Data.AcceptChanges();
                 return em.Data;
-
-                /*
-                // Connect to Data Storage
-                IDataManager dm = EntityManager.FromDataBaseService(ServiceName.DataService);
-
-                // retreive user with current user Id
-                User user = dm.GetEntity<User>(new Guid(aspectizeUser.UserId));
-
-                if (user != null)
-                {
-                    // Use IEntityManager to manage Entities in memory
-                    IEntityManager em = dm as IEntityManager;
-
-                    // Build non-persistent Entity to bind CurrentUser
-                    CurrentUser currentUser = em.CreateInstance<CurrentUser>();
-
-                    // Associate 2 Entities
-                    em.AssociateInstance<IsUser>(currentUser, user);
-
-                    // Always return non changed DataSet
-                    em.Data.AcceptChanges();
-
-                    return dm.Data;
-                }*/
             }
-
             // No profile for unanthenticated user
             return null;
         }

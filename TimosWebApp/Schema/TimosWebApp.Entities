@@ -23,11 +23,12 @@
     </entity>
     <entity Id="289e1e37-c821-4ff6-9464-4c5474b1d657" name="ChampTimos" guid="810ed001-de78-48ed-8c70-6373f6c8e6b8" guidIdentifier="false" hasCustomValidators="false" hasTriggers="false">
       <properties>
-        <entityProperty name="Label" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="Nom" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
         <entityProperty name="DisplayOrder" type="Int32" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
         <entityProperty name="TimosId" type="Int32" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" identifier="Identifier" />
         <entityProperty name="TypeDonneChamp" type="TypeDonnee" defaultValue="2" isCustomType="true" identity="false" isEnumType="true" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
         <entityProperty name="AspectizeControlType" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="LibelleConvivial" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
       </properties>
     </entity>
     <entity Id="6a0c1ec3-e175-4243-bebf-72637447b709" name="ValeursChamp" guid="523da491-43e7-413e-9d30-9a484baa1def" hasCustomValidators="false" hasTriggers="false">

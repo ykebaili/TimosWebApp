@@ -192,11 +192,12 @@ namespace TimosWebApp
 	{
 		public static partial class Fields
 		{
-			public const string Label = "Label";
+			public const string Nom = "Nom";
 			public const string DisplayOrder = "DisplayOrder";
 			public const string TimosId = "TimosId";
 			public const string TypeDonneChamp = "TypeDonneChamp";
 			public const string AspectizeControlType = "AspectizeControlType";
+			public const string LibelleConvivial = "LibelleConvivial";
 		}
 
 		void IDataWrapper.InitData(DataRow data, string namePrefix)
@@ -206,10 +207,10 @@ namespace TimosWebApp
 		}
 
 		[Data]
-		public string Label
+		public string Nom
 		{
-			get { return getValue<string>("Label"); }
-			set { setValue<string>("Label", value); }
+			get { return getValue<string>("Nom"); }
+			set { setValue<string>("Nom", value); }
 		}
 
 		[Data]
@@ -238,6 +239,13 @@ namespace TimosWebApp
 		{
 			get { return getValue<string>("AspectizeControlType"); }
 			set { setValue<string>("AspectizeControlType", value); }
+		}
+
+		[Data]
+		public string LibelleConvivial
+		{
+			get { return getValue<string>("LibelleConvivial"); }
+			set { setValue<string>("LibelleConvivial", value); }
 		}
 
 	}
