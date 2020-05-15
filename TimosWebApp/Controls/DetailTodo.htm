@@ -4,9 +4,58 @@
 
     <div aas-control="DetailTodo">
         <h1>{LabelToDo}</h1>
+        <br />
+        <div class="row bandeau-info-todo">
+            <div class="col-sm-8 col-xs-12">
+                <p><strong>Element édité : </strong><span>{DescriptionElementEdite}</span> </p>
+            </div>
+            <div class="col-sm-4 col-xs-12">
+                <p><strong>Date affectation : </strong><span>{DateDebutTodo}</span> </p>
+            </div>
+        </div>
+        <div class="row instructions-todo">
+            <div class="col-xs-12">
+                <h2>Instructions</h2>
+                <p>
+                    <span>{InstrictionsTodo}</span>
+                </p>
+            </div>
+        </div>
         <div class="row">
-            <div class="col">
-                <p>Element édité : <span>{DescriptionElementEdite}</span> </p>
+            <div class="col-xs-8">
+                <h2>Champs du todo</h2>
+                <p>
+                    En cours de développement...
+                </p>
+            </div>
+            <div class="col-xs-4">
+                <button class="btn btn-primary" name="BoutonEditionTodo" ><i class="fa fa-edit"></i> Editer</button>
+            </div>
+        </div>
+        <div class="row property-readonly">
+            <div class="col-xs-12">
+                <div aas-name="GridChampsTodo" aas-type="AspectizePropertyGrid"></div>
+            </div>
+        </div>
+    </div>
+
+    <div aas-control="name:'EditionTodo', isModal:true">
+        <div class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title text-center">Eidtion Todo</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-horizontal">
+                            <div aas-name="GridChampsTodo" aas-type="AspectizePropertyGrid"></div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button name="BtnCancel" class="btn btn-default">Annuler</button>
+                        <button name="BtnSave" class="btn btn-primary">Enregistrer</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

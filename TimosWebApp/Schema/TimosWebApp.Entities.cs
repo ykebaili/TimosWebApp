@@ -198,6 +198,7 @@ namespace TimosWebApp
 			public const string TypeDonneChamp = "TypeDonneChamp";
 			public const string AspectizeControlType = "AspectizeControlType";
 			public const string LibelleConvivial = "LibelleConvivial";
+			public const string AspectizeFieldType = "AspectizeFieldType";
 		}
 
 		void IDataWrapper.InitData(DataRow data, string namePrefix)
@@ -248,6 +249,13 @@ namespace TimosWebApp
 			set { setValue<string>("LibelleConvivial", value); }
 		}
 
+		[Data]
+		public string AspectizeFieldType
+		{
+			get { return getValue<string>("AspectizeFieldType"); }
+			set { setValue<string>("AspectizeFieldType", value); }
+		}
+
 	}
 
 	[DataDefinition]
@@ -259,6 +267,7 @@ namespace TimosWebApp
 			public const string Index = "Index";
 			public const string StoredValue = "StoredValue";
 			public const string DisplayedValue = "DisplayedValue";
+			public const string ChampTimosId = "ChampTimosId";
 		}
 
 		void IDataWrapper.InitData(DataRow data, string namePrefix)
@@ -294,6 +303,13 @@ namespace TimosWebApp
 			set { setValue<string>("DisplayedValue", value); }
 		}
 
+		[Data]
+		public int ChampTimosId
+		{
+			get { return getValue<int>("ChampTimosId"); }
+			set { setValue<int>("ChampTimosId", value); }
+		}
+
 	}
 
 	[DataDefinition]
@@ -301,7 +317,6 @@ namespace TimosWebApp
 	{
 		public static partial class Fields
 		{
-			public const string Id = "Id";
 			public const string ValeurChamp = "ValeurChamp";
 			public const string LibelleChamp = "LibelleChamp";
 			public const string OrdreChamp = "OrdreChamp";
@@ -311,13 +326,6 @@ namespace TimosWebApp
 		void IDataWrapper.InitData(DataRow data, string namePrefix)
 		{
 			base.InitData(data, null);
-		}
-
-		[Data(IsPrimaryKey=true)]
-		public Guid Id
-		{
-			get { return getValue<Guid>("Id"); }
-			set { setValue<Guid>("Id", value); }
 		}
 
 		[Data]
@@ -341,7 +349,7 @@ namespace TimosWebApp
 			set { setValue<int>("OrdreChamp", value); }
 		}
 
-		[Data]
+		[Data(IsPrimaryKey = true)]
 		public int ChampTimosId
 		{
 			get { return getValue<int>("ChampTimosId"); }
@@ -358,11 +366,11 @@ namespace TimosWebApp
 			base.InitData(data, null);
 		}
 
-		[RelationEnd(Type = typeof(ChampTimos), Role = typeof(ChampTimos), Multiplicity = Multiplicity.ZeroOrOne)]
-		public IEntity ChampTimos;
-
 		[RelationEnd(Type = typeof(ValeursChamp), Role = typeof(ValeursChamp), Multiplicity = Multiplicity.ZeroOrMany)]
 		public IEntity ValeursChamp;
+
+		[RelationEnd(Type = typeof(Todos), Role = typeof(Todos), Multiplicity = Multiplicity.ZeroOrOne)]
+		public IEntity Todos;
 
 	}
 

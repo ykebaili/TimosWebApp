@@ -1,7 +1,7 @@
 var errorView = Aspectize.CreateView('ErrorView', aas.Controls.Bootstrap.ModalMessage);
 errorView.AddAuthorizationRole(aas.Roles.Anonymous, aas.Enum.AccessControl.ReadWrite);
-errorView.Title.BindData('Warning');
-errorView.CancelCaption.BindData('Close');
+errorView.Title.BindData('Erreur');
+errorView.CancelCaption.BindData('Fermer');
 errorView.DisplayConfirm.BindData('hidden');
 errorView.Message.BindData('');
 errorView.OnActivated.BindCommand(aas.Services.Browser.UIService.GetContextValue('ErrorMessage'), errorView.Message, true);
