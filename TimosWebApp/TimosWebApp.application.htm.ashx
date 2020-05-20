@@ -16,6 +16,7 @@
 
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://kit.fontawesome.com/d6253fbd45.js" crossorigin="anonymous"></script>
 
 <link rel='stylesheet' type='text/css' href='~Bootstrap/BootstrapOverride.css' />
 <link rel='stylesheet' type='text/css' href='~/Styles.css?@FileDate' />

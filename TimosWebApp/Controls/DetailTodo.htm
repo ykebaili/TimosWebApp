@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html> 
+﻿<!DOCTYPE html>
 <html>
 <body>
 
@@ -21,6 +21,17 @@
                 </p>
             </div>
         </div>
+
+        <div class="row">
+            <div class="col-xs-12">
+                <div aas-name="ZoneOnglets" aas-type="Panel"></div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <div aas-control="ChampsTodo">
         <div class="row">
             <div class="col-xs-8">
                 <h2>Champs du todo</h2>
@@ -29,7 +40,7 @@
                 </p>
             </div>
             <div class="col-xs-4">
-                <button class="btn btn-primary" name="BoutonEditionTodo" ><i class="fa fa-edit"></i> Editer</button>
+                <button class="btn btn-primary" name="BoutonEditionTodo"><i class="fa fa-edit"></i> Editer</button>
             </div>
         </div>
         <div class="row property-readonly">
@@ -58,6 +69,14 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <div aas-control="DocumentsAttendus">
+        <div aas-name="PanelDocumentsAttendus" aas-type="AspectizeRepeaterPanel"></div>
+    </div>
+    <div aas-control="DocumentAttendu">
+        <div aas-name="UploaderName" aas-type="AspectizeFileUpload"></div>
+        <a name="LienDocument">{LibelleDocument}</a>
     </div>
 
 </body>

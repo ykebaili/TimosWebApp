@@ -30,6 +30,7 @@
         <entityProperty name="AspectizeControlType" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
         <entityProperty name="LibelleConvivial" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
         <entityProperty name="AspectizeFieldType" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="IsSelect" type="Boolean" defaultValue="false" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
       </properties>
     </entity>
     <entity Id="6a0c1ec3-e175-4243-bebf-72637447b709" name="ValeursChamp" guid="523da491-43e7-413e-9d30-9a484baa1def" hasCustomValidators="false" hasTriggers="false">
@@ -37,7 +38,7 @@
         <entityProperty name="Index" type="Int32" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
         <entityProperty name="StoredValue" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
         <entityProperty name="DisplayedValue" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
-        <entityProperty name="ChampTimosId" type="Int32" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="ChampTimosId" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
       </properties>
     </entity>
     <entity Id="0f2ba6b8-2ed7-4917-a1d2-6f2265942534" name="TodoValeurChamp" guid="4b2c4aff-86d7-4d19-ac07-c21e8fb0edb5" guidIdentifier="false" hasCustomValidators="false" hasTriggers="false">
@@ -46,6 +47,11 @@
         <entityProperty name="LibelleChamp" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
         <entityProperty name="OrdreChamp" type="Int32" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
         <entityProperty name="ChampTimosId" type="Int32" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" identifier="Identifier" />
+      </properties>
+    </entity>
+    <entity Id="add8dab3-78b4-4646-a39b-ecdbc4b217de" name="DocumentsAttendus" guid="71a60e89-2883-4ea0-b3bb-4d6636f54926" hasCustomValidators="false" hasTriggers="false">
+      <properties>
+        <entityProperty name="Libellé" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
       </properties>
     </entity>
   </entities>
@@ -77,6 +83,16 @@
         </relationReferencesEntityReferenceClasses>
         <relationReferencesEntityReferenceClasses Id="9b3ecb57-8a92-4729-aa31-9d1bae48f752" role="TodoValeurChamp" cardinality="O__N">
           <entityMoniker Id="0f2ba6b8-2ed7-4917-a1d2-6f2265942534" />
+        </relationReferencesEntityReferenceClasses>
+      </entityReferenceClasses>
+    </relation>
+    <relation Id="e19ad7b9-7076-40b4-8ed6-56958f2886bd" name="RelationTodoDocument" guid="00000000-0000-0000-0000-000000000000" hasTriggers="false" hasCustomValidators="false">
+      <entityReferenceClasses>
+        <relationReferencesEntityReferenceClasses Id="414211fd-587a-499a-b429-b6267a29d184" role="Todos" cardinality="I__I">
+          <entityMoniker Id="91a7a2c7-8230-434a-9900-5328d42c3fca" />
+        </relationReferencesEntityReferenceClasses>
+        <relationReferencesEntityReferenceClasses Id="f5d3a82b-0ec3-45c9-97bd-b611e06fab97" role="DocumentsAttendus" cardinality="O__N">
+          <entityMoniker Id="add8dab3-78b4-4646-a39b-ecdbc4b217de" />
         </relationReferencesEntityReferenceClasses>
       </entityReferenceClasses>
     </relation>

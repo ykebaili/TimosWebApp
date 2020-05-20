@@ -51,6 +51,8 @@ namespace TimosWebApp.Services
                             todo.ElementId = (int)rowTodo[CTodoTimosWebApp.c_champIdElementEdite];
                             todo.ElementDescription = (string)rowTodo[CTodoTimosWebApp.c_champElementDescription];
 
+                            Dictionary<string, string> dicoChampIdValeurPossible = new Dictionary<string, string>();
+
                             DataTable tableChampsTimos = ds.Tables[CChampTimosWebApp.c_nomTable];
                             foreach (DataRow rowChamp in tableChampsTimos.Rows)
                             {
@@ -60,48 +62,108 @@ namespace TimosWebApp.Services
                                 champTimos.TimosId = (int) rowChamp[CChampTimosWebApp.c_champId];
                                 champTimos.TypeDonneChamp = (TypeDonnee) rowChamp[CChampTimosWebApp.c_champTypeDonne];
                                 champTimos.LibelleConvivial = (string)rowChamp[CChampTimosWebApp.c_champLibelleConvivial];
-
-                                switch (champTimos.TypeDonneChamp)
+                                
+                                bool bIsSelect = (bool)rowChamp[CChampTimosWebApp.c_champIsChoixParmis];
+                                if (bIsSelect)
                                 {
-                                    case TypeDonnee.TypeEntier:
-                                        champTimos.AspectizeFieldType = "String";
-                                        champTimos.AspectizeControlType = "";
-                                        break;
-                                    case TypeDonnee.TypeDecimal:
-                                        champTimos.AspectizeFieldType = "String";
-                                        champTimos.AspectizeControlType = "";
-                                        break;
-                                    case TypeDonnee.TypeString:
-                                        champTimos.AspectizeFieldType = "String";
-                                        champTimos.AspectizeControlType = "";
-                                        break;
-                                    case TypeDonnee.TypeDate:
-                                        champTimos.AspectizeFieldType = "String";
-                                        champTimos.AspectizeControlType = "";
-                                        break;
-                                    case TypeDonnee.TypeBool:
-                                        champTimos.AspectizeFieldType = "Boolean";
-                                        champTimos.AspectizeControlType = "";
-                                        break;
-                                    case TypeDonnee.ObjetTimos:
-                                        champTimos.AspectizeFieldType = "String";
-                                        champTimos.AspectizeControlType = "";
-                                        break;
-                                    default:
-                                        break;
+                                    champTimos.IsSelect = true;
+                                    champTimos.AspectizeFieldType = champTimos.TimosId.ToString();
+                                }
+                                else
+                                {
+                                    switch (champTimos.TypeDonneChamp)
+                                    {
+                                        case TypeDonnee.TypeEntier:
+                                            champTimos.AspectizeFieldType = "String";
+                                            champTimos.AspectizeControlType = "";
+                                            break;
+                                        case TypeDonnee.TypeDecimal:
+                                            champTimos.AspectizeFieldType = "String";
+                                            champTimos.AspectizeControlType = "";
+                                            break;
+                                        case TypeDonnee.TypeString:
+                                            // Html.MultilineTextBox
+                                            champTimos.AspectizeFieldType = "String";
+                                            champTimos.AspectizeControlType = "";
+                                            break;
+                                        case TypeDonnee.TypeDate:
+                                            champTimos.AspectizeFieldType = "String";
+                                            champTimos.AspectizeControlType = "";
+                                            break;
+                                        case TypeDonnee.TypeBool:
+                                            champTimos.AspectizeFieldType = "Boolean";
+                                            champTimos.AspectizeControlType = "";
+                                            break;
+                                        case TypeDonnee.ObjetTimos:
+                                            champTimos.AspectizeFieldType = "String";
+                                            champTimos.AspectizeControlType = "";
+                                            break;
+                                        default:
+                                            break;
+                                    }
+
                                 }
 
-
-                                var valTimos = em.CreateInstance<TodoValeurChamp>();
-                                valTimos.ValeurChamp = "";
-                                valTimos.LibelleChamp = (string)rowChamp[CChampTimosWebApp.c_champLibelleConvivial];
-                                valTimos.OrdreChamp = (int)rowChamp[CChampTimosWebApp.c_champOrdreAffichage];
-                                valTimos.ChampTimosId = (int)rowChamp[CChampTimosWebApp.c_champId];
-
                                 em.AssociateInstance<RelationTodoDefinitionChamp>(todo, champTimos);
+
+                            }
+
+                            DataTable tableValeursPossibles = ds.Tables[CChampValeursPossibles.c_nomTable];
+                            foreach (DataRow rowValPossbile in tableValeursPossibles.Rows)
+                            {
+                                var valPossible = em.CreateInstance<ValeursChamp>();
+                                valPossible.ChampTimosId = rowValPossbile[CChampValeursPossibles.c_champId].ToString();
+                                valPossible.Index = (int) rowValPossbile[CChampValeursPossibles.c_champIndex];
+                                valPossible.StoredValue= (string) rowValPossbile[CChampValeursPossibles.c_champValue];
+                                valPossible.DisplayedValue = (string) rowValPossbile[CChampValeursPossibles.c_champDisplay];
+
+                                em.AssociateInstance<ValeursPossibles>(todo, valPossible);
+
+                            }
+
+                            // Récupère les valeurs de champs
+                            DataTable tableValeursChamps = ds.Tables[CTodoValeurChamp.c_nomTable];
+                            foreach (DataRow rowVal in tableValeursChamps.Rows)
+                            {
+                                var valTimos = em.CreateInstance<TodoValeurChamp>();
+                                valTimos.LibelleChamp = (string)rowVal[CTodoValeurChamp.c_champLibelle];
+                                valTimos.OrdreChamp = (int)rowVal[CTodoValeurChamp.c_champOrdreAffichage];
+                                valTimos.ChampTimosId = (int)rowVal[CTodoValeurChamp.c_champId];
+
+                                string valeurChamp = (string)rowVal[CTodoValeurChamp.c_champValeur];
+
+                                var champTimos = em.GetInstance<ChampTimos>(valTimos.ChampTimosId);
+                                if(champTimos.IsSelect)
+                                {
+                                    bool bFound = false;
+                                    var valPossibles = em.GetAllInstances<ValeursChamp>();
+                                    foreach (var valPossible in valPossibles)
+                                    {
+                                        if(valPossible.StoredValue == valeurChamp)
+                                        {
+                                            valeurChamp = valPossible.StoredValue;
+                                            bFound = true;
+                                            break;
+                                        }
+                                    }
+                                    if (!bFound)
+                                        throw new SmartException("On a un problème de valeurs possibles sur le champ id " + valTimos.ChampTimosId);
+                                }
+                                valTimos.ValeurChamp = valeurChamp;
+
                                 em.AssociateInstance<RelationTodoValeurChamp>(todo, valTimos);
 
                             }
+
+
+                            var doc1 = em.CreateInstance<DocumentsAttendus>();
+                            var doc2 = em.CreateInstance<DocumentsAttendus>();
+                            doc1.Libellé = "Document A";
+                            doc2.Libellé = "Document B";
+                            em.AssociateInstance<RelationTodoDocument>(todo, doc1);
+                            em.AssociateInstance<RelationTodoDocument>(todo, doc2);
+
+
                             em.Data.AcceptChanges();
                             return em.Data;
                         }
@@ -114,15 +176,32 @@ namespace TimosWebApp.Services
         //-----------------------------------------------------------------------------------------
         public void SaveTodo(DataSet dataSet, int nIdTodo, string elementType, int elementId)
         {
-            IEntityManager em = EntityManager.FromDataSet(dataSet);
+            if (!dataSet.HasChanges())
+                return;
 
-            var valeurChamp = em.GetAllInstances<TodoValeurChamp>();
-            foreach (var val in valeurChamp)
+            AspectizeUser aspectizeUser = ExecutingContext.CurrentUser;
+
+            if (aspectizeUser.IsAuthenticated)
             {
-                int idchamp = val.ChampTimosId;
-            }
+                if (dataSet.HasChanges())
+                {
+                    int nTimosSessionId = (int)aspectizeUser[CUserTimosWebApp.c_champSessionId];
+                    IEntityManager em = EntityManager.FromDataSet(dataSet);
 
-            throw new SmartException(1000, "Données non sauvegardées");
+                    ITimosServiceForAspectize serviceClientAspectize = (ITimosServiceForAspectize)C2iFactory.GetNewObject(typeof(ITimosServiceForAspectize));
+                    CResultAErreur result = serviceClientAspectize.SaveTodo(nTimosSessionId, dataSet, nIdTodo, elementType, elementId);
+
+                    if (!result)
+                        throw new SmartException(1000, result.MessageErreur);
+
+                    // DEBUG
+                    var valeurChamp = em.GetAllInstances<TodoValeurChamp>();
+                    foreach (var val in valeurChamp)
+                    {
+                        int idchamp = val.ChampTimosId;
+                    }
+                }
+            }
         }
     }
 
