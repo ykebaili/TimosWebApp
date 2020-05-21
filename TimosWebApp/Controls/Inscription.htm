@@ -9,18 +9,28 @@
                 <div class="hidden alert alert-danger text-center LoginErrorMessage">
                     Invalid email or password
                 </div>
-                <div class="form-group">
-                    <input name="TxtEmail" type="email" class="form-control" placeholder="Identifiant" autofocus="autofocus">
+                <div class="form-group login-logo"></div>
+                <div class="text-justify gpdr-login-message">
+                    <p>Connectez-vous avec vos identifiants Timos habituels. En cas d'oublie de votre identifiant ou mot de passe, veuillez contacter le support Ooredoo par <a href="mailto:Support.timos@ooredoo.tn">Email.</a></p>
                 </div>
                 <div class="form-group">
-                    <input name="TxtPwd" type="password" class="form-control" placeholder="Mot de passe">
+                    <div class="input-group">
+                        <span class="input-group-addon login-input"><i class="fa fa-user"></i></span>
+                        <input name="TxtEmail" type="email" class="form-control" placeholder="Identifiant" autofocus="autofocus">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <span class="input-group-addon login-input"><i class="fa fa-lock"></i></span>
+                        <input name="TxtPwd" type="password" class="form-control" placeholder="Mot de passe">
+                    </div>
                 </div>
                 <div class="checkbox">
                     <label>
                         <input name="CheckBoxRememberMe" type="checkbox"> Se souvenir de moi
                     </label>
                 </div>
-                <button name="BtnLogin" class="btn btn-primary center-block">Connexion</button>
+                <button name="BtnLogin" class="btn btn-primary btn-block"><i class="fa fa-sign-in"></i> Connexion</button>
             </div>
         </div>
     </div>

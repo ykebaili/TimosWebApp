@@ -12,8 +12,9 @@ Global.ClientTodosService = {
            filtre = '((Label).toLowerCase().indexOf("' + filtreLabel + '".toLowerCase())) !== -1';
        }
        Aspectize.ExecuteCommand(aas.Services.Browser.UIService.SetCustomFilter(aas.ViewName.ListeTodos.GridListeTodos, filtre));
+       
    },
-
+ 
    InitPropertyGrid: function () {
        $('.aasPropertyGrid').addClass('form-horizontal');
        $('.aasPropertyGrid .aasDynamicControl textarea').addClass('form-control col-xs-6');

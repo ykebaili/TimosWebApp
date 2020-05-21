@@ -3,8 +3,24 @@
 <body>
 
     <div aas-control="DetailTodo">
-        <h1>{LabelToDo}</h1>
-        <br />
+        <div class="row">
+            <div class="col-xs-12">
+                <h1><span>{LabelToDo}</span></h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-1">
+                <p class="infos-icone">
+                    <i class="fas fa-info-circle"></i> 
+                </p>
+            </div>
+            <div class="col-xs-11">
+                <p class="infos-sous-titre">
+                    <span>{InstrictionsTodo}</span>
+                </p>
+            </div>
+        </div>
+        
         <div class="row bandeau-info-todo">
             <div class="col-sm-8 col-xs-12">
                 <p><strong>Element édité : </strong><span>{DescriptionElementEdite}</span> </p>
@@ -13,14 +29,7 @@
                 <p><strong>Date affectation : </strong><span>{DateDebutTodo}</span> </p>
             </div>
         </div>
-        <div class="row instructions-todo">
-            <div class="col-xs-12">
-                <h2>Instructions</h2>
-                <p>
-                    <span>{InstrictionsTodo}</span>
-                </p>
-            </div>
-        </div>
+        
 
         <div class="row">
             <div class="col-xs-12">

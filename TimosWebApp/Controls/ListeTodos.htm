@@ -1,18 +1,34 @@
-﻿<!DOCTYPE html> 
+﻿<!DOCTYPE html>
 <html>
 <body>
 
     <div aas-control="ListeTodos">
-        <h1><img class="icon-todo-list" src="../Applications/TimosWebApp/img/todo-list-26.png" />Mes Todo à traiter</h1>
-        <br />
         <div class="row">
-            <div class="col-md-12">
-                <input type="text" name="ChampFiltreLabel" placeholder="filtrer les to do" />
+            <div class="col-xs-12">
+                <h1><i class="fas fa-tasks"></i> Mes Todos</h1>
+                <p class="infos-sous-titre">
+                    Liste des todos à traiter. Ce sont les étapes du Workflow à réaliser qui vous sont attribuées.
+                </p>
             </div>
         </div>
-        <div aas-name="GridListeTodos" aas-type="Bootstrap.BootstrapGrid"></div>
-        
-    </div>
 
+        <div class="row bandeau-filtre">
+            <div class="col-sm-6">
+                <div class="input-group">
+                    <span class="input-group-addon filter-input"><i class="fa fa-filter"></i></span>
+                    <input type="text" class="form-control" name="ChampFiltreLabel" placeholder="Filtrer la liste des todos" />
+                </div>
+            </div>
+           <div class="col-sm-6">
+               <p class="compteur-todos"><i class="fas fa-list-ol"></i> Todos : <span>{CompteurTodos}</span><span> / </span><span>{TotalTodos}</span></p>
+           </div>
+        </div>
+        <div class="row section-liste">
+            <div class="col-xs-12">
+                <div aas-name="GridListeTodos" aas-type="Bootstrap.BootstrapGrid"></div>
+
+            </div>
+        </div>
+    </div>
 </body>
 </html>

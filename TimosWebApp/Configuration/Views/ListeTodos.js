@@ -6,13 +6,14 @@ listeTodos.GridListeTodos.OnRowClick.BindCommand(aas.Services.Browser.UIService.
 listeTodos.GridListeTodos.OnRowClick.BindCommand(aas.Services.Server.TodosService.GetTodoDetails(aas.Data.MainData.Todos.TimosId), aas.Data.MainData, true, true);
 var cLabael = listeTodos.GridListeTodos.AddGridColumn("libelle", aas.ColumnType.Span);
 cLabael.Text.BindData(listeTodos.GridListeTodos.DataSource.Label);
-cLabael.HeaderText.BindData("Libellé");
+cLabael.HeaderText.BindData("Libellé du todo");
 var cStartDate = listeTodos.GridListeTodos.AddGridColumn("startdate", aas.ColumnType.Span);
 cStartDate.Text.BindData(listeTodos.GridListeTodos.DataSource.StartDate, "dd/MM/yyyy");
 cStartDate.HeaderText.BindData("Date début");
 
 listeTodos.ChampFiltreLabel.keyup.BindCommand(aas.Services.Browser.ClientTodosService.FiltreTodos(listeTodos.ChampFiltreLabel.value));
-
+listeTodos.CompteurTodos.BindData(listeTodos.GridListeTodos.RowCount);
+listeTodos.TotalTodos.BindData("6"); // Binding à faire
 
 // Gestion des onglets
 var detailTodoTab = Aspectize.CreateView("DetailTodoTabs", aas.Controls.Bootstrap.BootstrapTab, aas.Zones.DetailTodo.ZoneOnglets, true);
