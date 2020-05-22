@@ -21,6 +21,7 @@ namespace TimosWebApp
 			public const string ValeursChamp = "ValeursChamp";
 			public const string TodoValeurChamp = "TodoValeurChamp";
 			public const string DocumentsAttendus = "DocumentsAttendus";
+			public const string FichiersAssocies = "FichiersAssocies";
 		}
 
 		public static partial class Relations
@@ -29,6 +30,7 @@ namespace TimosWebApp
 			public const string RelationTodoDefinitionChamp = "RelationTodoDefinitionChamp";
 			public const string RelationTodoValeurChamp = "RelationTodoValeurChamp";
 			public const string RelationTodoDocument = "RelationTodoDocument";
+			public const string RelationFichiers = "RelationFichiers";
 		}
 	}
 
@@ -202,6 +204,8 @@ namespace TimosWebApp
 			public const string LibelleConvivial = "LibelleConvivial";
 			public const string AspectizeFieldType = "AspectizeFieldType";
 			public const string IsSelect = "IsSelect";
+			public const string FormatDate = "FormatDate";
+			public const string IsEditable = "IsEditable";
 		}
 
 		void IDataWrapper.InitData(DataRow data, string namePrefix)
@@ -264,6 +268,20 @@ namespace TimosWebApp
 		{
 			get { return getValue<bool>("IsSelect"); }
 			set { setValue<bool>("IsSelect", value); }
+		}
+
+		[Data]
+		public string FormatDate
+		{
+			get { return getValue<string>("FormatDate"); }
+			set { setValue<string>("FormatDate", value); }
+		}
+
+		[Data]
+		public bool IsEditable
+		{
+			get { return getValue<bool>("IsEditable"); }
+			set { setValue<bool>("IsEditable", value); }
 		}
 
 	}
@@ -373,8 +391,8 @@ namespace TimosWebApp
 	{
 		public static partial class Fields
 		{
-			public const string Id = "Id";
-			public const string Libellé = "Libellé";
+			public const string Libelle = "Libelle";
+			public const string TimosId = "TimosId";
 		}
 
 		void IDataWrapper.InitData(DataRow data, string namePrefix)
@@ -382,18 +400,48 @@ namespace TimosWebApp
 			base.InitData(data, null);
 		}
 
-		[Data(IsPrimaryKey=true)]
-		public Guid Id
+		[Data]
+		public string Libelle
 		{
-			get { return getValue<Guid>("Id"); }
-			set { setValue<Guid>("Id", value); }
+			get { return getValue<string>("Libelle"); }
+			set { setValue<string>("Libelle", value); }
+		}
+
+		[Data(IsPrimaryKey = true)]
+		public int TimosId
+		{
+			get { return getValue<int>("TimosId"); }
+			set { setValue<int>("TimosId", value); }
+		}
+
+	}
+
+	[DataDefinition]
+	public class FichiersAssocies : Entity, IDataWrapper
+	{
+		public static partial class Fields
+		{
+			public const string NomFichier = "NomFichier";
+			public const string TimosKey = "TimosKey";
+		}
+
+		void IDataWrapper.InitData(DataRow data, string namePrefix)
+		{
+			base.InitData(data, null);
 		}
 
 		[Data]
-		public string Libellé
+		public string NomFichier
 		{
-			get { return getValue<string>("Libellé"); }
-			set { setValue<string>("Libellé", value); }
+			get { return getValue<string>("NomFichier"); }
+			set { setValue<string>("NomFichier", value); }
+		}
+
+		[Data(IsPrimaryKey = true)]
+		public string TimosKey
+		{
+			get { return getValue<string>("TimosKey"); }
+			set { setValue<string>("TimosKey", value); }
 		}
 
 	}
@@ -459,6 +507,22 @@ namespace TimosWebApp
 
 		[RelationEnd(Type = typeof(DocumentsAttendus), Role = typeof(DocumentsAttendus), Multiplicity = Multiplicity.ZeroOrMany)]
 		public IEntity DocumentsAttendus;
+
+	}
+
+	[DataDefinition]
+	public class RelationFichiers : DataWrapper, IDataWrapper, IRelation
+	{
+		void IDataWrapper.InitData(DataRow data, string namePrefix)
+		{
+			base.InitData(data, null);
+		}
+
+		[RelationEnd(Type = typeof(DocumentsAttendus), Role = typeof(DocumentsAttendus), Multiplicity = Multiplicity.One)]
+		public IEntity DocumentsAttendus;
+
+		[RelationEnd(Type = typeof(FichiersAssocies), Role = typeof(FichiersAssocies), Multiplicity = Multiplicity.ZeroOrMany)]
+		public IEntity FichiersAssocies;
 
 	}
 

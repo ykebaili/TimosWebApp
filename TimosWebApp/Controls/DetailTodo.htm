@@ -11,7 +11,7 @@
         <div class="row">
             <div class="col-xs-1">
                 <p class="infos-icone">
-                    <i class="fas fa-info-circle"></i> 
+                    <i class="fas fa-info-circle"></i>
                 </p>
             </div>
             <div class="col-xs-11">
@@ -20,17 +20,18 @@
                 </p>
             </div>
         </div>
-        
+
         <div class="row bandeau-info-todo">
-            <div class="col-sm-8 col-xs-12">
+            <div class="col-sm-5 col-xs-12">
                 <p><strong>Element édité : </strong><span>{DescriptionElementEdite}</span> </p>
             </div>
-            <div class="col-sm-4 col-xs-12">
+            <div class="col-sm-5 col-xs-12">
                 <p><strong>Date affectation : </strong><span>{DateDebutTodo}</span> </p>
             </div>
+            <div class="col-xs-2 col-xs-12">
+                <button class="btn btn-success" name="BoutonTerminerTodo"><i class="fas fa-check"></i> Terminer</button>
+            </div>
         </div>
-        
-
         <div class="row">
             <div class="col-xs-12">
                 <div aas-name="ZoneOnglets" aas-type="Panel"></div>
@@ -42,14 +43,14 @@
 
     <div aas-control="ChampsTodo">
         <div class="row">
-            <div class="col-xs-8">
+            <div class="col-xs-6">
                 <h2>Champs du todo</h2>
                 <p>
-                    En cours de développement...
+                    Lorem ipsum...
                 </p>
             </div>
-            <div class="col-xs-4">
-                <button class="btn btn-primary" name="BoutonEditionTodo"><i class="fa fa-edit"></i> Editer</button>
+            <div class="col-xs-3">
+                <button class="btn btn-primary" name="BoutonEditionTodo"><i class="fas fa-edit"></i> Editer</button>
             </div>
         </div>
         <div class="row property-readonly">
@@ -57,6 +58,25 @@
                 <div aas-name="GridChampsTodo" aas-type="AspectizePropertyGrid"></div>
             </div>
         </div>
+    </div>
+
+    <div aas-control="DocumentsAttendus">
+        <div class="row">
+            <div class="col-xs-12">
+                <h2>Documents attendus</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div aas-name="PanelDocumentsAttendus" aas-type="AspectizeRepeaterPanel"></div>
+            </div>
+        </div>
+    </div>
+
+    <div aas-control="DocumentAttendu">
+        <div aas-name="UploaderDocument" aas-type="AspectizeFileUpload" class="hidden"></div>
+        <a name="LienDocument">{LibelleDocument}</a>
+        <div aas-name="GridFichiers" aas-type="Bootstrap.BootstrapGrid"></div>
     </div>
 
     <div aas-control="name:'EditionTodo', isModal:true">
@@ -80,13 +100,17 @@
         </div>
     </div>
 
-    <div aas-control="DocumentsAttendus">
-        <div aas-name="PanelDocumentsAttendus" aas-type="AspectizeRepeaterPanel"></div>
+    <div aas-control="MonControleDate">
+        <div aas-name='DatePicker' aas-type='BootstrapDateTimePicker.BootstrapDateTimePicker' class='input-group date'>
+            <input type='text' class="form-control BootstrapDateTimePicker" />
+            <span class="input-group-addon">
+                <span class="fa fa-calendar"></span>
+            </span>
+        </div>
     </div>
-    <div aas-control="DocumentAttendu">
-        <div aas-name="UploaderName" aas-type="AspectizeFileUpload"></div>
-        <a name="LienDocument">{LibelleDocument}</a>
-    </div>
+
+
+    
 
 </body>
 </html>

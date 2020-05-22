@@ -18,6 +18,12 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="https://kit.fontawesome.com/d6253fbd45.js" crossorigin="anonymous"></script>
 
+<!-- bootstrap datepicker -->
+<script src='~BootstrapDateTimePicker/Moment/moment.min.js'></script>
+<script src='~BootstrapDateTimePicker/Moment/moment-with-locales.min.js'></script>
+<script src='~BootstrapDateTimePicker/DatePicker/js/bootstrap-datetimepicker.min.js'></script>
+<link rel='stylesheet' type='text/css' href='~BootstrapDateTimePicker/DatePicker/css/bootstrap-datetimepicker.min.css' />
+
 <link rel='stylesheet' type='text/css' href='~Bootstrap/BootstrapOverride.css' />
 <link rel='stylesheet' type='text/css' href='~/Styles.css?@FileDate' />
 

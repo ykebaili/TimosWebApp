@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<minimalLanguageDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11.625, 8.5" name="MainDomain">
+<minimalLanguageDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11.625, 8.875" name="MainDomain">
   <diagramMoniker Id="45d20f40-b97e-4515-b0df-1ee29249bacd" />
   <nestedChildShapes>
     <entityShape Id="e9176f07-d57d-4bfa-a955-51bc03875c23" absoluteBounds="1, 2.875, 1.75, 1.7761100260416667">
@@ -20,10 +20,10 @@
         <elementListCompartment Id="24e771b9-0977-47f3-9efa-35c0ce68690e" absoluteBounds="3.3900000000000006, 0.83000000000000007, 1.4700000000000002, 1.15380859375" name="Elements" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </enumShape>
-    <entityShape Id="b1cbe475-8641-4906-9f1f-57a11075f69c" absoluteBounds="6.625, 2.25, 2.625, 1.9684114583333328">
+    <entityShape Id="b1cbe475-8641-4906-9f1f-57a11075f69c" absoluteBounds="6.625, 2.25, 2.625, 2.3530143229166658">
       <entityMoniker Id="289e1e37-c821-4ff6-9464-4c5474b1d657" />
       <nestedChildShapes>
-        <elementListCompartment Id="95f47461-2d55-4a3c-a008-3382676caab3" absoluteBounds="6.64, 2.58, 2.5949999999999998, 1.5384114583333333" name="Properties" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="95f47461-2d55-4a3c-a008-3382676caab3" absoluteBounds="6.64, 2.58, 2.5949999999999998, 1.9230143229166665" name="Properties" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </entityShape>
     <entityShape Id="bf85f2e5-76c9-49d9-b8ba-157e66b48b31" absoluteBounds="9.625, 1, 1.75, 1.1992057291666667">
@@ -68,10 +68,10 @@
         <entityShapeMoniker Id="e9176f07-d57d-4bfa-a955-51bc03875c23" />
       </nodes>
     </relationConnector2>
-    <entityShape Id="5e234802-d4fe-4bc2-8609-9d985ea89df8" absoluteBounds="6.5, 4.5, 2.375, 1.1992057291666658">
+    <entityShape Id="5e234802-d4fe-4bc2-8609-9d985ea89df8" absoluteBounds="6.625, 4.875, 2.375, 1.1992057291666658">
       <entityMoniker Id="0f2ba6b8-2ed7-4917-a1d2-6f2265942534" />
       <nestedChildShapes>
-        <elementListCompartment Id="075ba694-7a3a-43a2-b3e7-8af37190cf22" absoluteBounds="6.515, 4.83, 2.3449999999999998, 0.76920572916666663" name="Properties" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="075ba694-7a3a-43a2-b3e7-8af37190cf22" absoluteBounds="6.64, 5.205, 2.3449999999999998, 0.76920572916666663" name="Properties" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </entityShape>
     <relationShape Id="755e19ad-613d-4cda-9e24-3a34440a1396" absoluteBounds="3.625, 3.875, 2, 0.45999999999999996">
@@ -88,7 +88,7 @@
         <entityShapeMoniker Id="e9176f07-d57d-4bfa-a955-51bc03875c23" />
       </nodes>
     </relationConnector2>
-    <relationConnector2 edgePoints="[(3.84375 : 4.335); (3.84375 : 4.96875); (6.5 : 4.96875)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <relationConnector2 edgePoints="[(3.84375 : 4.335); (3.84375 : 5.09375); (6.625 : 5.09375)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <relationReferencesEntityReferenceClassesMoniker Id="9b3ecb57-8a92-4729-aa31-9d1bae48f752" />
       <relativeChildShapes />
       <nodes>
@@ -104,10 +104,10 @@
         <entityShapeMoniker Id="e9176f07-d57d-4bfa-a955-51bc03875c23" />
       </nodes>
     </relationConnector2>
-    <entityShape Id="90c6c07d-0e67-41b0-9da5-192ec00e16e3" absoluteBounds="4.125, 5.5, 1.75, 0.62230143229166668">
+    <entityShape Id="90c6c07d-0e67-41b0-9da5-192ec00e16e3" absoluteBounds="4.125, 5.375, 1.75, 0.81460286458333275">
       <entityMoniker Id="add8dab3-78b4-4646-a39b-ecdbc4b217de" />
       <nestedChildShapes>
-        <elementListCompartment Id="c41d988d-fff7-4491-91d8-1c129c878183" absoluteBounds="4.1400000000000006, 5.83, 1.7200000000000002, 0.19230143229166666" name="Properties" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="c41d988d-fff7-4491-91d8-1c129c878183" absoluteBounds="4.1400000000000006, 5.705, 1.7200000000000002, 0.38460286458333331" name="Properties" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </entityShape>
     <relationShape Id="4ad1a7d1-6667-4be4-a359-0128d2e4a94d" absoluteBounds="1.625, 5.5, 1.5, 0.45999999999999996">
@@ -116,7 +116,7 @@
         <elementListCompartment Id="ebfa6dd3-e229-4bec-b762-c4b63c065b6b" absoluteBounds="1.6400000000000001, 5.86, 1.4700000000000002, 0" name="Properties" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </relationShape>
-    <relationConnector2 edgePoints="[(2.1875 : 5.5); (2.1875 : 4.65111002604167)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <relationConnector2 edgePoints="[(2.1875 : 5.5); (2.1875 : 4.65111002604167)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <relationReferencesEntityReferenceClassesMoniker Id="414211fd-587a-499a-b429-b6267a29d184" />
       <relativeChildShapes />
       <nodes>
@@ -124,12 +124,40 @@
         <entityShapeMoniker Id="e9176f07-d57d-4bfa-a955-51bc03875c23" />
       </nodes>
     </relationConnector2>
-    <relationConnector2 edgePoints="[(3.125 : 5.73); (4.125 : 5.73)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <relationConnector2 edgePoints="[(3.125 : 5.73); (4.125 : 5.73)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <relationReferencesEntityReferenceClassesMoniker Id="f5d3a82b-0ec3-45c9-97bd-b611e06fab97" />
       <relativeChildShapes />
       <nodes>
         <relationShapeMoniker Id="4ad1a7d1-6667-4be4-a359-0128d2e4a94d" />
         <entityShapeMoniker Id="90c6c07d-0e67-41b0-9da5-192ec00e16e3" />
+      </nodes>
+    </relationConnector2>
+    <entityShape Id="46d8a8e5-0c1b-4974-815a-b0249d4b560e" absoluteBounds="4.25, 7.75, 1.75, 0.81460286458333275">
+      <entityMoniker Id="ffabfd35-da25-4a37-b06a-8fbaa6c17238" />
+      <nestedChildShapes>
+        <elementListCompartment Id="fa5989ff-ffee-4436-bacc-6ca6d99d75f4" absoluteBounds="4.265, 8.08, 1.7200000000000002, 0.38460286458333331" name="Properties" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </entityShape>
+    <relationShape Id="f8c97231-c9e3-48a5-9fd6-760f4f970bea" absoluteBounds="4.375, 6.75, 1.5, 0.45999999999999996">
+      <relationMoniker Id="4134132d-61a0-4a73-88f6-cca161e1dc39" />
+      <nestedChildShapes>
+        <elementListCompartment Id="24592135-acb2-410f-8314-5039527d1e48" absoluteBounds="4.39, 7.11, 1.4700000000000002, 0" name="Properties" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </relationShape>
+    <relationConnector2 edgePoints="[(5.125 : 6.75); (5.125 : 6.18960286458333)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <relationReferencesEntityReferenceClassesMoniker Id="76b752cf-2cc6-42de-8db8-f8b1ae64aa60" />
+      <relativeChildShapes />
+      <nodes>
+        <relationShapeMoniker Id="f8c97231-c9e3-48a5-9fd6-760f4f970bea" />
+        <entityShapeMoniker Id="90c6c07d-0e67-41b0-9da5-192ec00e16e3" />
+      </nodes>
+    </relationConnector2>
+    <relationConnector2 edgePoints="[(5.125 : 7.21); (5.125 : 7.75)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <relationReferencesEntityReferenceClassesMoniker Id="4e61e3c4-88e7-46ac-87c7-5a56e54ee210" />
+      <relativeChildShapes />
+      <nodes>
+        <relationShapeMoniker Id="f8c97231-c9e3-48a5-9fd6-760f4f970bea" />
+        <entityShapeMoniker Id="46d8a8e5-0c1b-4974-815a-b0249d4b560e" />
       </nodes>
     </relationConnector2>
   </nestedChildShapes>

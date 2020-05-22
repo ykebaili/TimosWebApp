@@ -16,6 +16,8 @@ namespace TimosWebApp.Services
 
         [Command(IsSaveCommand = true)]
         void SaveTodo(DataSet dataSet, int nIdTodo, string elementType, int elementId);
+        void EndTodo(int nIdTodo);
+        DataSet UploadDocuments(UploadedFile[] uploadedFiles, int nIdTodo, int nIdDocument);
     }
 
     [Service(Name = "TodosService")]
@@ -75,7 +77,7 @@ namespace TimosWebApp.Services
                                     {
                                         case TypeDonnee.TypeEntier:
                                             champTimos.AspectizeFieldType = "String";
-                                            champTimos.AspectizeControlType = "";
+                                            champTimos.AspectizeControlType = "Html.Number";
                                             break;
                                         case TypeDonnee.TypeDecimal:
                                             champTimos.AspectizeFieldType = "String";
@@ -84,11 +86,12 @@ namespace TimosWebApp.Services
                                         case TypeDonnee.TypeString:
                                             // Html.MultilineTextBox
                                             champTimos.AspectizeFieldType = "String";
-                                            champTimos.AspectizeControlType = "";
+                                            champTimos.AspectizeControlType = "Html.MultilineTextBox";
                                             break;
                                         case TypeDonnee.TypeDate:
-                                            champTimos.AspectizeFieldType = "String";
-                                            champTimos.AspectizeControlType = "";
+                                            champTimos.AspectizeFieldType = "Date";
+                                            champTimos.AspectizeControlType = "MonControleDate";
+                                            champTimos.FormatDate = "dd/MM/yyyy HH:mm";
                                             break;
                                         case TypeDonnee.TypeBool:
                                             champTimos.AspectizeFieldType = "Boolean";
@@ -158,8 +161,8 @@ namespace TimosWebApp.Services
 
                             var doc1 = em.CreateInstance<DocumentsAttendus>();
                             var doc2 = em.CreateInstance<DocumentsAttendus>();
-                            doc1.Libellé = "Document A";
-                            doc2.Libellé = "Document B";
+                            doc1.Libelle = "Document A";
+                            doc2.Libelle = "Document B";
                             em.AssociateInstance<RelationTodoDocument>(todo, doc1);
                             em.AssociateInstance<RelationTodoDocument>(todo, doc2);
 
@@ -202,6 +205,39 @@ namespace TimosWebApp.Services
                     }
                 }
             }
+        }
+   
+        //-----------------------------------------------------------------------------------------
+        public void EndTodo(int nIdTodo)
+        {
+
+            throw new SmartException(1004, "Le service EndTodo n'est pas implémenté");
+        }
+
+        //-----------------------------------------------------------------------------------------
+        public DataSet UploadDocuments(UploadedFile[] uploadedFiles, int nIdTodo, int nIdDocument)
+        {
+
+            IEntityManager em = EntityManager.FromDataSet(DataSetHelper.Create());
+
+            DocumentsAttendus doc = em.CreateInstance<DocumentsAttendus>();
+            doc.TimosId = nIdDocument;
+            doc.Libelle = "Catégorie de document contrat";
+
+
+            foreach (UploadedFile file in uploadedFiles)
+            {
+                var fichier = em.CreateInstance<FichiersAssocies>();
+                fichier.NomFichier = file.Name;
+                fichier.TimosKey = file.Name;
+
+                em.AssociateInstance<RelationFichiers>(doc, fichier);
+                
+            }
+
+            em.Data.AcceptChanges();
+            return em.Data;
+
         }
     }
 

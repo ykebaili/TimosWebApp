@@ -1,7 +1,7 @@
 
 var app = newApplication();
 
-app.Directories = "Bootstrap";
+app.Directories = "Bootstrap, BootstrapDateTimePicker";
 app.SecurityEnabled = true;
 app.SecurityServicesConfiguration = "SecurityService";
 app.DisplayExceptionEnabled = true;

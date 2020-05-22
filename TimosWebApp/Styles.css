@@ -137,25 +137,4 @@ img.logo{
 
 
 /* Property Grid champs dynamiques */
-.aasPropertyGrid .aasDynamicControl {
-    margin-top: 5px;
-    margin-bottom: 5px;
-}
 
-.aasPropertyGrid .aasDynamicControl > label.aasLabelZone {
-    width: 45%;
-    text-align: left;
-    padding-right: 25px;
-}
-
-.aasPropertyGrid input.aasValueZone,
-.aasPropertyGrid textarea.aasValueZone {
-    width: 50%;
-}
-
-.aasPropertyGrid input.aasBoolean.aasValueZone {
-    width: 16px;
-}
-.property-readonly .aasPropertyGrid .aasDynamicControl{
-    border-bottom: 1px solid #e4e4e4;
-}
