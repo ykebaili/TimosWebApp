@@ -6,8 +6,9 @@ vDocumentAttendu.UploaderDocument.OnFileSelected.BindCommand(aas.Services.Server
 vDocumentAttendu.LibelleDocument.BindData(vDocumentAttendu.ParentData.Libelle);
 vDocumentAttendu.LienDocument.click.BindCommand(aas.Services.Browser.ClientTodosService.UploadDocument(vDocumentAttendu.ParentData.TimosId, aas.ViewName.DocumentAttendu.UploaderDocument));
 
+
 vDocumentAttendu.GridFichiers.BindGrid(vDocumentAttendu.ParentData.RelationFichiers.FichiersAssocies);
-var cNomFichier = vDocumentAttendu.GridFichiers.AddGridColumn("NomFichier", aas.ColumnType.Span);
-cNomFichier.HeaderText.BindData("Nom du fichier");
-cNomFichier.Text.BindData(vDocumentAttendu.GridFichiers.DataSource.NomFichier);
+var colNomFichier = vDocumentAttendu.GridFichiers.AddGridColumn("NomFichier", aas.ColumnType.Span);
+colNomFichier.HeaderText.BindData("Nom du fichier");
+colNomFichier.Text.BindData(vDocumentAttendu.GridFichiers.DataSource.NomFichier);
 

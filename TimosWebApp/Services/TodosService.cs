@@ -64,8 +64,10 @@ namespace TimosWebApp.Services
                                 champTimos.TimosId = (int) rowChamp[CChampTimosWebApp.c_champId];
                                 champTimos.TypeDonneChamp = (TypeDonnee) rowChamp[CChampTimosWebApp.c_champTypeDonne];
                                 champTimos.LibelleConvivial = (string)rowChamp[CChampTimosWebApp.c_champLibelleConvivial];
-                                
                                 bool bIsSelect = (bool)rowChamp[CChampTimosWebApp.c_champIsChoixParmis];
+                                bool bMultiline = (bool)rowChamp[CChampTimosWebApp.c_champIsMultiline];
+
+
                                 if (bIsSelect)
                                 {
                                     champTimos.IsSelect = true;
@@ -84,14 +86,13 @@ namespace TimosWebApp.Services
                                             champTimos.AspectizeControlType = "";
                                             break;
                                         case TypeDonnee.TypeString:
-                                            // Html.MultilineTextBox
                                             champTimos.AspectizeFieldType = "String";
-                                            champTimos.AspectizeControlType = "Html.MultilineTextBox";
+                                            champTimos.AspectizeControlType = bMultiline ? "Html.MultilineTextBox" : "";
                                             break;
                                         case TypeDonnee.TypeDate:
                                             champTimos.AspectizeFieldType = "Date";
                                             champTimos.AspectizeControlType = "MonControleDate";
-                                            champTimos.FormatDate = "dd/MM/yyyy HH:mm";
+                                            champTimos.FormatDate = "dd/MM/yyyy";
                                             break;
                                         case TypeDonnee.TypeBool:
                                             champTimos.AspectizeFieldType = "Boolean";
@@ -135,22 +136,25 @@ namespace TimosWebApp.Services
 
                                 string valeurChamp = (string)rowVal[CTodoValeurChamp.c_champValeur];
 
-                                var champTimos = em.GetInstance<ChampTimos>(valTimos.ChampTimosId);
-                                if(champTimos.IsSelect)
+                                if (valeurChamp != "")
                                 {
-                                    bool bFound = false;
-                                    var valPossibles = em.GetAllInstances<ValeursChamp>();
-                                    foreach (var valPossible in valPossibles)
+                                    var champTimos = em.GetInstance<ChampTimos>(valTimos.ChampTimosId);
+                                    if (champTimos.IsSelect)
                                     {
-                                        if(valPossible.StoredValue == valeurChamp)
+                                        bool bFound = false;
+                                        var valPossibles = em.GetAllInstances<ValeursChamp>();
+                                        foreach (var valPossible in valPossibles)
                                         {
-                                            valeurChamp = valPossible.StoredValue;
-                                            bFound = true;
-                                            break;
+                                            if (valPossible.StoredValue == valeurChamp)
+                                            {
+                                                valeurChamp = valPossible.StoredValue;
+                                                bFound = true;
+                                                break;
+                                            }
                                         }
+                                        if (!bFound)
+                                            throw new SmartException("On a un problème de valeurs possibles sur le champ id " + valTimos.ChampTimosId);
                                     }
-                                    if (!bFound)
-                                        throw new SmartException("On a un problème de valeurs possibles sur le champ id " + valTimos.ChampTimosId);
                                 }
                                 valTimos.ValeurChamp = valeurChamp;
 

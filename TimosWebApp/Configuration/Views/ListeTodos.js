@@ -1,65 +1,69 @@
-﻿var listeTodos = Aspectize.CreateView("ListeTodos", aas.Controls.ListeTodos, aas.Zones.Home.ZoneInfo, true);
-listeTodos.OnActivated.BindCommand(aas.Services.Browser.History.PushState(aas.ViewName.ListeTodos));
-listeTodos.GridListeTodos.BindGrid(aas.Data.MainData.Todos);
-listeTodos.GridListeTodos.className.BindData('table-condensed');
-listeTodos.GridListeTodos.OnRowClick.BindCommand(aas.Services.Server.TodosService.GetTodoDetails(aas.Data.MainData.Todos.TimosId), aas.Data.MainData, true, true);
-listeTodos.GridListeTodos.OnRowClick.BindCommand(aas.Services.Browser.UIService.ShowView(aas.ViewName.DetailTodo));
-var cLabael = listeTodos.GridListeTodos.AddGridColumn("libelle", aas.ColumnType.Span);
-cLabael.Text.BindData(listeTodos.GridListeTodos.DataSource.Label);
-cLabael.HeaderText.BindData("Libellé du todo");
-var cStartDate = listeTodos.GridListeTodos.AddGridColumn("startdate", aas.ColumnType.Span);
-cStartDate.Text.BindData(listeTodos.GridListeTodos.DataSource.StartDate, "dd/MM/yyyy");
-cStartDate.HeaderText.BindData("Date début");
+﻿//  Liste des todos
+var vListeTodos = Aspectize.CreateView("ListeTodos", aas.Controls.ListeTodos, aas.Zones.Home.ZoneInfo, true);
+vListeTodos.OnActivated.BindCommand(aas.Services.Browser.History.PushState(aas.ViewName.ListeTodos));
+vListeTodos.GridListeTodos.BindGrid(aas.Data.MainData.Todos);
+vListeTodos.GridListeTodos.className.BindData('table-condensed');
+vListeTodos.GridListeTodos.OnRowClick.BindCommand(aas.Services.Server.TodosService.GetTodoDetails(aas.Data.MainData.Todos.TimosId), aas.Data.MainData, true, true);
+vListeTodos.GridListeTodos.OnRowClick.BindCommand(aas.Services.Browser.UIService.ShowView(aas.ViewName.DetailTodo));
 
-listeTodos.ChampFiltreLabel.keyup.BindCommand(aas.Services.Browser.ClientTodosService.FiltreTodos(listeTodos.ChampFiltreLabel.value));
-listeTodos.CompteurTodos.BindData(listeTodos.GridListeTodos.RowCount);
-listeTodos.TotalTodos.BindData(aas.Services.Browser.DataService.Count(aas.Data.MainData.Todos));
+// Colonnes de la liste des todos
+var colLabael = vListeTodos.GridListeTodos.AddGridColumn("libelle", aas.ColumnType.Span);
+colLabael.Text.BindData(vListeTodos.GridListeTodos.DataSource.Label);
+colLabael.HeaderText.BindData("Libellé du todo");
+var colStartDate = vListeTodos.GridListeTodos.AddGridColumn("startdate", aas.ColumnType.Span);
+colStartDate.Text.BindData(vListeTodos.GridListeTodos.DataSource.StartDate, "dd/MM/yyyy");
+colStartDate.HeaderText.BindData("Date début");
+
+// Filtre et compteur
+vListeTodos.ChampFiltreLabel.keyup.BindCommand(aas.Services.Browser.ClientTodosService.FiltreTodos(vListeTodos.ChampFiltreLabel.value));
+vListeTodos.CompteurTodos.BindData(vListeTodos.GridListeTodos.RowCount);
+vListeTodos.TotalTodos.BindData(aas.Services.Browser.DataService.Count(aas.Data.MainData.Todos));
+
+// Vue détaillée d'un todo
+var vDetailTodo = Aspectize.CreateView("DetailTodo", aas.Controls.DetailTodo, aas.Zones.Home.ZoneInfo, false, aas.Data.MainData.Todos);
+vDetailTodo.OnActivated.BindCommand(aas.Services.Browser.History.PushState(aas.ViewName.DetailTodo, aas.Path.MainData.Todos, vDetailTodo.ParentData.TimosId));
+vDetailTodo.LabelToDo.BindData(vDetailTodo.ParentData.Label);
+vDetailTodo.DescriptionElementEdite.BindData(vDetailTodo.ParentData.ElementDescription);
+vDetailTodo.DateDebutTodo.BindData(vDetailTodo.ParentData.StartDate);
+vDetailTodo.InstrictionsTodo.BindData(vDetailTodo.ParentData.Instructions);
+vDetailTodo.BoutonTerminerTodo.click.BindCommand(aas.Services.Server.TodosService.EndTodo(vDetailTodo.ParentData.TimosId));
 
 // Gestion des onglets
-var detailTodoTab = Aspectize.CreateView("DetailTodoTabs", aas.Controls.Bootstrap.BootstrapTab, aas.Zones.DetailTodo.ZoneOnglets, true);
-
-var detailTodo = Aspectize.CreateView("DetailTodo", aas.Controls.DetailTodo, aas.Zones.Home.ZoneInfo, false, aas.Data.MainData.Todos);
-detailTodo.OnActivated.BindCommand(aas.Services.Browser.History.PushState(aas.ViewName.DetailTodo, aas.Path.MainData.Todos, detailTodo.ParentData.TimosId));
-detailTodo.LabelToDo.BindData(detailTodo.ParentData.Label);
-detailTodo.DescriptionElementEdite.BindData(detailTodo.ParentData.ElementDescription);
-detailTodo.DateDebutTodo.BindData(detailTodo.ParentData.StartDate);
-detailTodo.InstrictionsTodo.BindData(detailTodo.ParentData.Instructions);
-detailTodo.BoutonTerminerTodo.click.BindCommand(aas.Services.Server.TodosService.EndTodo(detailTodo.ParentData.TimosId));
-
-var champsTodo = Aspectize.CreateView("ChampsTodo", aas.Controls.ChampsTodo, "DetailTodoTabs.0:Champs", true, aas.Data.MainData.Todos);
-champsTodo.BoutonEditionTodo.click.BindCommand(aas.Services.Browser.BootStrapClientService.ShowModal(aas.ViewName.EditionTodo, true, false, true));
-
+var vDetailTodoTab = Aspectize.CreateView("DetailTodoTabs", aas.Controls.Bootstrap.BootstrapTab, aas.Zones.DetailTodo.ZoneOnglets, true);
+var vChampsTodo = Aspectize.CreateView("ChampsTodo", aas.Controls.ChampsTodo, "DetailTodoTabs.0:Champs", true, aas.Data.MainData.Todos);
+vChampsTodo.BoutonEditionTodo.click.BindCommand(aas.Services.Browser.BootStrapClientService.ShowModal(aas.ViewName.EditionTodo, true, false, true));
 
 // Configuration de la PropertyGrid en lecture seule
-champsTodo.GridChampsTodo.BindList(detailTodo.ParentData.RelationTodoValeurChamp.TodoValeurChamp, "ValeurChamp", "LibelleChamp", "OrdreChamp");
-champsTodo.GridChampsTodo.TypeTableName.BindData(detailTodo.ParentPath.RelationTodoDefinitionChamp.ChampTimos);
-champsTodo.GridChampsTodo.TypeTableNameColumn.BindData("LibelleConvivial");
-champsTodo.GridChampsTodo.TypeTableTypeColumn.BindData("AspectizeFieldType");
-champsTodo.GridChampsTodo.TypeTableControlTypeColumn.BindData("AspectizeControlType");
-champsTodo.GridChampsTodo.TypeTableFormatColumn.BindData(aas.Path.MainData.ChampTimos.FormatDate);
-champsTodo.GridChampsTodo.EnumValuesTableName.BindData(detailTodo.ParentPath.ValeursPossibles.ValeursChamp);
-champsTodo.GridChampsTodo.EnumValuesTableOptionTextColumn.BindData("DisplayedValue");
-champsTodo.GridChampsTodo.EnumValuesTableOptionValueColumn.BindData("StoredValue");
-champsTodo.GridChampsTodo.EnumValuesTableTypeColumn.BindData("ChampTimosId");
-champsTodo.OnActivated.BindCommand(aas.Services.Browser.ClientTodosService.InitPropertyGrid(aas.ViewName.ChampsTodo.GridChampsTodo, false));
+vChampsTodo.GridChampsTodo.BindList(vDetailTodo.ParentData.RelationTodoValeurChamp.TodoValeurChamp, "ValeurChamp", "LibelleChamp", "OrdreChamp");
+vChampsTodo.GridChampsTodo.TypeTableName.BindData(vDetailTodo.ParentPath.RelationTodoDefinitionChamp.ChampTimos);
+vChampsTodo.GridChampsTodo.TypeTableNameColumn.BindData("LibelleConvivial");
+vChampsTodo.GridChampsTodo.TypeTableTypeColumn.BindData("AspectizeFieldType");
+vChampsTodo.GridChampsTodo.TypeTableControlTypeColumn.BindData("AspectizeControlType");
+vChampsTodo.GridChampsTodo.TypeTableFormatColumn.BindData(aas.Path.MainData.ChampTimos.FormatDate);
+vChampsTodo.GridChampsTodo.EnumValuesTableName.BindData(vDetailTodo.ParentPath.ValeursPossibles.ValeursChamp);
+vChampsTodo.GridChampsTodo.EnumValuesTableOptionTextColumn.BindData("DisplayedValue");
+vChampsTodo.GridChampsTodo.EnumValuesTableOptionValueColumn.BindData("StoredValue");
+vChampsTodo.GridChampsTodo.EnumValuesTableTypeColumn.BindData("ChampTimosId");
+vChampsTodo.OnActivated.BindCommand(aas.Services.Browser.ClientTodosService.InitPropertyGrid(aas.ViewName.ChampsTodo.GridChampsTodo, false));
 
 // Configuration du controle d'édition d'un todo en modal
-var editionTodo = Aspectize.CreateView("EditionTodo", aas.Controls.EditionTodo, "", false, aas.Data.MainData.Todos);
-editionTodo.OnActivated.BindCommand(aas.Services.Browser.DataRecorder.Start(aas.Data.MainData));
-editionTodo.BtnCancel.click.BindCommand(aas.Services.Browser.BootStrapClientService.CloseModal(aas.ViewName.EditionTodo));
-editionTodo.BtnCancel.click.BindCommand(aas.Services.Browser.DataRecorder.CancelRowChanges(aas.Data.MainData));
-editionTodo.BtnSave.click.BindCommand(aas.Services.Server.TodosService.SaveTodo(aas.Data.MainData, editionTodo.ParentData.TimosId, editionTodo.ParentData.ElementType, editionTodo.ParentData.ElementId), "", false, true);
-editionTodo.BtnSave.click.BindCommand(aas.Services.Browser.BootStrapClientService.CloseModal(aas.ViewName.EditionTodo));
+var vEditionTodo = Aspectize.CreateView("EditionTodo", aas.Controls.EditionTodo, "", false, aas.Data.MainData.Todos);
+vEditionTodo.OnActivated.BindCommand(aas.Services.Browser.DataRecorder.Start(aas.Data.MainData));
+vEditionTodo.BtnCancel.click.BindCommand(aas.Services.Browser.BootStrapClientService.CloseModal(aas.ViewName.EditionTodo));
+vEditionTodo.BtnCancel.click.BindCommand(aas.Services.Browser.DataRecorder.CancelRowChanges(aas.Data.MainData));
+vEditionTodo.BtnSave.click.BindCommand(aas.Services.Server.TodosService.SaveTodo(aas.Data.MainData, vEditionTodo.ParentData.TimosId, vEditionTodo.ParentData.ElementType, vEditionTodo.ParentData.ElementId), "", false, true);
+vEditionTodo.BtnSave.click.BindCommand(aas.Services.Browser.BootStrapClientService.CloseModal(aas.ViewName.EditionTodo));
+
 // Configuration de la PropertyGrid en mode édition
-editionTodo.GridChampsTodo.BindList(detailTodo.ParentData.RelationTodoValeurChamp.TodoValeurChamp, "ValeurChamp", "LibelleChamp", "OrdreChamp");
-editionTodo.GridChampsTodo.TypeTableName.BindData(detailTodo.ParentPath.RelationTodoDefinitionChamp.ChampTimos);
-editionTodo.GridChampsTodo.TypeTableNameColumn.BindData("LibelleConvivial");
-editionTodo.GridChampsTodo.TypeTableTypeColumn.BindData("AspectizeFieldType");
-editionTodo.GridChampsTodo.TypeTableControlTypeColumn.BindData("AspectizeControlType");
-editionTodo.GridChampsTodo.TypeTableFormatColumn.BindData(aas.Path.MainData.ChampTimos.FormatDate);
-editionTodo.GridChampsTodo.EnumValuesTableName.BindData(detailTodo.ParentPath.ValeursPossibles.ValeursChamp);
-editionTodo.GridChampsTodo.EnumValuesTableOptionTextColumn.BindData("DisplayedValue");
-editionTodo.GridChampsTodo.EnumValuesTableOptionValueColumn.BindData("StoredValue");
-editionTodo.GridChampsTodo.EnumValuesTableTypeColumn.BindData("ChampTimosId");
-editionTodo.GridChampsTodo.EditMode.BindData(true);
-editionTodo.OnActivated.BindCommand(aas.Services.Browser.ClientTodosService.InitPropertyGrid(aas.ViewName.EditionTodo.GridChampsTodo, true));
+vEditionTodo.GridChampsTodo.BindList(vDetailTodo.ParentData.RelationTodoValeurChamp.TodoValeurChamp, "ValeurChamp", "LibelleChamp", "OrdreChamp");
+vEditionTodo.GridChampsTodo.TypeTableName.BindData(vDetailTodo.ParentPath.RelationTodoDefinitionChamp.ChampTimos);
+vEditionTodo.GridChampsTodo.TypeTableNameColumn.BindData("LibelleConvivial");
+vEditionTodo.GridChampsTodo.TypeTableTypeColumn.BindData("AspectizeFieldType");
+vEditionTodo.GridChampsTodo.TypeTableControlTypeColumn.BindData("AspectizeControlType");
+vEditionTodo.GridChampsTodo.TypeTableFormatColumn.BindData(aas.Path.MainData.ChampTimos.FormatDate);
+vEditionTodo.GridChampsTodo.EnumValuesTableName.BindData(vDetailTodo.ParentPath.ValeursPossibles.ValeursChamp);
+vEditionTodo.GridChampsTodo.EnumValuesTableOptionTextColumn.BindData("DisplayedValue");
+vEditionTodo.GridChampsTodo.EnumValuesTableOptionValueColumn.BindData("StoredValue");
+vEditionTodo.GridChampsTodo.EnumValuesTableTypeColumn.BindData("ChampTimosId");
+vEditionTodo.GridChampsTodo.EditMode.BindData(true);
+vEditionTodo.OnActivated.BindCommand(aas.Services.Browser.ClientTodosService.InitPropertyGrid(aas.ViewName.EditionTodo.GridChampsTodo, true));

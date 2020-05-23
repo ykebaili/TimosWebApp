@@ -22,6 +22,7 @@ namespace TimosWebApp
 			public const string TodoValeurChamp = "TodoValeurChamp";
 			public const string DocumentsAttendus = "DocumentsAttendus";
 			public const string FichiersAssocies = "FichiersAssocies";
+			public const string GroupeChamps = "GroupeChamps";
 		}
 
 		public static partial class Relations
@@ -205,7 +206,8 @@ namespace TimosWebApp
 			public const string AspectizeFieldType = "AspectizeFieldType";
 			public const string IsSelect = "IsSelect";
 			public const string FormatDate = "FormatDate";
-			public const string IsEditable = "IsEditable";
+			public const string Editable = "Editable";
+			public const string Multiline = "Multiline";
 		}
 
 		void IDataWrapper.InitData(DataRow data, string namePrefix)
@@ -278,10 +280,17 @@ namespace TimosWebApp
 		}
 
 		[Data]
-		public bool IsEditable
+		public bool Editable
 		{
-			get { return getValue<bool>("IsEditable"); }
-			set { setValue<bool>("IsEditable", value); }
+			get { return getValue<bool>("Editable"); }
+			set { setValue<bool>("Editable", value); }
+		}
+
+		[Data]
+		public bool Multiline
+		{
+			get { return getValue<bool>("Multiline"); }
+			set { setValue<bool>("Multiline", value); }
 		}
 
 	}
@@ -442,6 +451,44 @@ namespace TimosWebApp
 		{
 			get { return getValue<string>("TimosKey"); }
 			set { setValue<string>("TimosKey", value); }
+		}
+
+	}
+
+	[DataDefinition]
+	public class GroupeChamps : Entity, IDataWrapper
+	{
+		public static partial class Fields
+		{
+			public const string Id = "Id";
+			public const string Titre = "Titre";
+			public const string TimosId = "TimosId";
+		}
+
+		void IDataWrapper.InitData(DataRow data, string namePrefix)
+		{
+			base.InitData(data, null);
+		}
+
+		[Data(IsPrimaryKey=true)]
+		public Guid Id
+		{
+			get { return getValue<Guid>("Id"); }
+			set { setValue<Guid>("Id", value); }
+		}
+
+		[Data]
+		public string Titre
+		{
+			get { return getValue<string>("Titre"); }
+			set { setValue<string>("Titre", value); }
+		}
+
+		[Data]
+		public string TimosId
+		{
+			get { return getValue<string>("TimosId"); }
+			set { setValue<string>("TimosId", value); }
 		}
 
 	}
