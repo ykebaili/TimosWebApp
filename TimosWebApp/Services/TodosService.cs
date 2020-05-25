@@ -43,7 +43,7 @@ namespace TimosWebApp.Services
                         DataTable tableTodos = ds.Tables[CTodoTimosWebApp.c_nomTable];
                         if (tableTodos.Rows.Count > 0)
                         {
-                            DataRow rowTodo = tableTodos.Rows[0]; // la premlière row contient les données du todo demandé
+                            DataRow rowTodo = tableTodos.Rows[0]; // la première row contient les données du todo demandé
                             var todo = em.CreateInstance<Todos>();
                             todo.TimosId = (int)rowTodo[CTodoTimosWebApp.c_champId];
                             todo.Label = (string)rowTodo[CTodoTimosWebApp.c_champLibelle];
@@ -163,6 +163,8 @@ namespace TimosWebApp.Services
                             }
 
 
+                            // Gestion des documents attendus sur todo
+
                             var doc1 = em.CreateInstance<DocumentsAttendus>();
                             var doc2 = em.CreateInstance<DocumentsAttendus>();
                             doc1.Libelle = "Document A";
@@ -201,12 +203,12 @@ namespace TimosWebApp.Services
                     if (!result)
                         throw new SmartException(1000, result.MessageErreur);
 
-                    // DEBUG
+                    /* DEBUG
                     var valeurChamp = em.GetAllInstances<TodoValeurChamp>();
                     foreach (var val in valeurChamp)
                     {
                         int idchamp = val.ChampTimosId;
-                    }
+                    }*/
                 }
             }
         }
@@ -231,10 +233,10 @@ namespace TimosWebApp.Services
 
             foreach (UploadedFile file in uploadedFiles)
             {
-                var fichier = em.CreateInstance<FichiersAssocies>();
+                var fichier = em.CreateInstance<FichiersAttaches>();
                 fichier.NomFichier = file.Name;
                 fichier.TimosKey = file.Name;
-
+                
                 em.AssociateInstance<RelationFichiers>(doc, fichier);
                 
             }

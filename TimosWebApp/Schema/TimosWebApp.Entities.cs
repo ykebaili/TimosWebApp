@@ -21,7 +21,7 @@ namespace TimosWebApp
 			public const string ValeursChamp = "ValeursChamp";
 			public const string TodoValeurChamp = "TodoValeurChamp";
 			public const string DocumentsAttendus = "DocumentsAttendus";
-			public const string FichiersAssocies = "FichiersAssocies";
+			public const string FichiersAttaches = "FichiersAttaches";
 			public const string GroupeChamps = "GroupeChamps";
 		}
 
@@ -402,6 +402,9 @@ namespace TimosWebApp
 		{
 			public const string Libelle = "Libelle";
 			public const string TimosId = "TimosId";
+			public const string CategorieDocument = "CategorieDocument";
+			public const string NombreMin = "NombreMin";
+			public const string DateLastUpload = "DateLastUpload";
 		}
 
 		void IDataWrapper.InitData(DataRow data, string namePrefix)
@@ -423,15 +426,39 @@ namespace TimosWebApp
 			set { setValue<int>("TimosId", value); }
 		}
 
+		[Data]
+		public string CategorieDocument
+		{
+			get { return getValue<string>("CategorieDocument"); }
+			set { setValue<string>("CategorieDocument", value); }
+		}
+
+		[Data]
+		public int NombreMin
+		{
+			get { return getValue<int>("NombreMin"); }
+			set { setValue<int>("NombreMin", value); }
+		}
+
+		[Data]
+		public DateTime DateLastUpload
+		{
+			get { return getValue<DateTime>("DateLastUpload"); }
+			set { setValue<DateTime>("DateLastUpload", value); }
+		}
+
 	}
 
 	[DataDefinition]
-	public class FichiersAssocies : Entity, IDataWrapper
+	public class FichiersAttaches : Entity, IDataWrapper
 	{
 		public static partial class Fields
 		{
 			public const string NomFichier = "NomFichier";
 			public const string TimosKey = "TimosKey";
+			public const string DateUpload = "DateUpload";
+			public const string DateDocument = "DateDocument";
+			public const string Commentaire = "Commentaire";
 		}
 
 		void IDataWrapper.InitData(DataRow data, string namePrefix)
@@ -451,6 +478,27 @@ namespace TimosWebApp
 		{
 			get { return getValue<string>("TimosKey"); }
 			set { setValue<string>("TimosKey", value); }
+		}
+
+		[Data]
+		public DateTime DateUpload
+		{
+			get { return getValue<DateTime>("DateUpload"); }
+			set { setValue<DateTime>("DateUpload", value); }
+		}
+
+		[Data]
+		public DateTime DateDocument
+		{
+			get { return getValue<DateTime>("DateDocument"); }
+			set { setValue<DateTime>("DateDocument", value); }
+		}
+
+		[Data]
+		public string Commentaire
+		{
+			get { return getValue<string>("Commentaire"); }
+			set { setValue<string>("Commentaire", value); }
 		}
 
 	}
@@ -568,8 +616,8 @@ namespace TimosWebApp
 		[RelationEnd(Type = typeof(DocumentsAttendus), Role = typeof(DocumentsAttendus), Multiplicity = Multiplicity.One)]
 		public IEntity DocumentsAttendus;
 
-		[RelationEnd(Type = typeof(FichiersAssocies), Role = typeof(FichiersAssocies), Multiplicity = Multiplicity.ZeroOrMany)]
-		public IEntity FichiersAssocies;
+		[RelationEnd(Type = typeof(FichiersAttaches), Role = typeof(FichiersAttaches), Multiplicity = Multiplicity.ZeroOrMany)]
+		public IEntity FichiersAttaches;
 
 	}
 

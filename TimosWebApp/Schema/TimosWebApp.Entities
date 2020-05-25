@@ -56,12 +56,18 @@
       <properties>
         <entityProperty name="Libelle" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
         <entityProperty name="TimosId" type="Int32" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" identifier="Identifier" />
+        <entityProperty name="CategorieDocument" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="NombreMin" type="Int32" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="DateLastUpload" type="DateTime" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
       </properties>
     </entity>
-    <entity Id="ffabfd35-da25-4a37-b06a-8fbaa6c17238" name="FichiersAssocies" guid="47242263-86ab-467d-ac33-422ccc28f0eb" guidIdentifier="false" hasCustomValidators="false" hasTriggers="false">
+    <entity Id="ffabfd35-da25-4a37-b06a-8fbaa6c17238" name="FichiersAttaches" guid="47242263-86ab-467d-ac33-422ccc28f0eb" guidIdentifier="false" hasCustomValidators="false" hasTriggers="false">
       <properties>
         <entityProperty name="NomFichier" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
         <entityProperty name="TimosKey" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" identifier="Identifier" />
+        <entityProperty name="DateUpload" type="DateTime" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="DateDocument" type="DateTime" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="Commentaire" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
       </properties>
     </entity>
     <entity Id="35b2f47a-897c-4654-818e-7265fac6760e" name="GroupeChamps" guid="e58ba3ea-abe1-497b-a9cb-6e1cd77bd697" hasCustomValidators="false" hasTriggers="false">
@@ -117,7 +123,7 @@
         <relationReferencesEntityReferenceClasses Id="76b752cf-2cc6-42de-8db8-f8b1ae64aa60" role="DocumentsAttendus" cardinality="I__I">
           <entityMoniker Id="add8dab3-78b4-4646-a39b-ecdbc4b217de" />
         </relationReferencesEntityReferenceClasses>
-        <relationReferencesEntityReferenceClasses Id="4e61e3c4-88e7-46ac-87c7-5a56e54ee210" role="FichiersAssocies" cardinality="O__N">
+        <relationReferencesEntityReferenceClasses Id="4e61e3c4-88e7-46ac-87c7-5a56e54ee210" role="FichiersAttaches" cardinality="O__N">
           <entityMoniker Id="ffabfd35-da25-4a37-b06a-8fbaa6c17238" />
         </relationReferencesEntityReferenceClasses>
       </entityReferenceClasses>
