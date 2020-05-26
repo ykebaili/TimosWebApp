@@ -73,10 +73,26 @@
         </div>
     </div>
 
+    <!------------------------------------------------------- Un document attendu ----------------------------------------------->
     <div aas-control="DocumentAttendu">
         <div aas-name="UploaderDocument" aas-type="AspectizeFileUpload" class="hidden"></div>
-        <a name="LienDocument">{LibelleDocument}</a>
-        <div aas-name="GridFichiers" aas-type="Bootstrap.BootstrapGrid"></div>
+        <div class="row">
+            <div class="col-xs-6">
+                <h3>{CategorieDocument}</h3>
+            </div>
+            <div class="col-xs-2">
+                <span>{NombreMin}</span>
+            </div>
+            <div class="col-xs-2">
+                <span>{DateLastUpload}</span>
+            </div>
+            <div class="col-xs-2">
+                <button name="BoutonUploadFichier" class="btn btn-info"><i class="fas fa-paperclip"></i> Joindre un fichier</button>
+            </div>
+        </div> 
+        <div class="row">
+            <div aas-name="GridFichiers" aas-type="Bootstrap.BootstrapGrid"></div>
+        </div>
     </div>
 
     <div aas-control="name:'EditionTodo', isModal:true">

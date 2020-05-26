@@ -17,7 +17,7 @@ namespace TimosWebApp.Services
         [Command(IsSaveCommand = true)]
         void SaveTodo(DataSet dataSet, int nIdTodo, string elementType, int elementId);
         void EndTodo(int nIdTodo);
-        DataSet UploadDocuments(UploadedFile[] uploadedFiles, int nIdTodo, int nIdDocument);
+        DataSet UploadDocuments(UploadedFile[] uploadedFiles, int nIdTodo, int nIdDocument, string strCategorie);
     }
 
     [Service(Name = "TodosService")]
@@ -164,14 +164,22 @@ namespace TimosWebApp.Services
 
 
                             // Gestion des documents attendus sur todo
+                            DataTable tableDocuementsAttendus = ds.Tables[CDocumentAttendu.c_nomTable];
+                            foreach (DataRow rowDoc in tableDocuementsAttendus.Rows)
+                            {
+                                var doc = em.CreateInstance<DocumentsAttendus>();
 
-                            var doc1 = em.CreateInstance<DocumentsAttendus>();
-                            var doc2 = em.CreateInstance<DocumentsAttendus>();
-                            doc1.Libelle = "Document A";
-                            doc2.Libelle = "Document B";
-                            em.AssociateInstance<RelationTodoDocument>(todo, doc1);
-                            em.AssociateInstance<RelationTodoDocument>(todo, doc2);
+                                doc.TimosId = (int)rowDoc[CDocumentAttendu.c_champId];
+                                doc.Libelle = (string)rowDoc[CDocumentAttendu.c_champLibelle];
+                                doc.CategorieDocument = (string)rowDoc[CDocumentAttendu.c_champCategorieDocument];
+                                doc.NombreMin = (int)rowDoc[CDocumentAttendu.c_champNombreMin];
+                                if (rowDoc[CDocumentAttendu.c_champDateLastUpload] == DBNull.Value)
+                                    doc.DateLastUpload = null;
+                                else
+                                    doc.DateLastUpload = (DateTime)rowDoc[CDocumentAttendu.c_champDateLastUpload];
 
+                                em.AssociateInstance<RelationTodoDocument>(todo, doc);
+                            }
 
                             em.Data.AcceptChanges();
                             return em.Data;
@@ -221,26 +229,30 @@ namespace TimosWebApp.Services
         }
 
         //-----------------------------------------------------------------------------------------
-        public DataSet UploadDocuments(UploadedFile[] uploadedFiles, int nIdTodo, int nIdDocument)
+        public DataSet UploadDocuments(UploadedFile[] uploadedFiles, int nIdTodo, int nIdDocument, string strCategorie)
         {
 
             IEntityManager em = EntityManager.FromDataSet(DataSetHelper.Create());
 
             DocumentsAttendus doc = em.CreateInstance<DocumentsAttendus>();
             doc.TimosId = nIdDocument;
-            doc.Libelle = "Catégorie de document contrat";
+            doc.CategorieDocument = strCategorie;
+            doc.DateLastUpload = DateTime.Now;
 
-
-            foreach (UploadedFile file in uploadedFiles)
+            if (doc != null)
             {
-                var fichier = em.CreateInstance<FichiersAttaches>();
-                fichier.NomFichier = file.Name;
-                fichier.TimosKey = file.Name;
-                
-                em.AssociateInstance<RelationFichiers>(doc, fichier);
-                
-            }
+                foreach (UploadedFile file in uploadedFiles)
+                {
+                    var fichier = em.CreateInstance<FichiersAttaches>();
+                    fichier.NomFichier = file.Name;
+                    fichier.TimosKey = file.Name;
+                    fichier.DateUpload = DateTime.Now;
 
+
+
+                    em.AssociateInstance<RelationFichiers>(doc, fichier);
+                }
+            }
             em.Data.AcceptChanges();
             return em.Data;
 

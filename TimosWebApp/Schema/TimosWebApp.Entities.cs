@@ -440,11 +440,11 @@ namespace TimosWebApp
 			set { setValue<int>("NombreMin", value); }
 		}
 
-		[Data]
-		public DateTime DateLastUpload
+		[Data(IsNullable = true)]
+		public DateTime? DateLastUpload
 		{
-			get { return getValue<DateTime>("DateLastUpload"); }
-			set { setValue<DateTime>("DateLastUpload", value); }
+			get { return getValue<DateTime?>("DateLastUpload"); }
+			set { setValue<DateTime?>("DateLastUpload", value); }
 		}
 
 	}
@@ -487,11 +487,11 @@ namespace TimosWebApp
 			set { setValue<DateTime>("DateUpload", value); }
 		}
 
-		[Data]
-		public DateTime DateDocument
+		[Data(IsNullable = true)]
+		public DateTime? DateDocument
 		{
-			get { return getValue<DateTime>("DateDocument"); }
-			set { setValue<DateTime>("DateDocument", value); }
+			get { return getValue<DateTime?>("DateDocument"); }
+			set { setValue<DateTime?>("DateDocument", value); }
 		}
 
 		[Data]

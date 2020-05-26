@@ -136,5 +136,34 @@ img.logo{
 }
 
 
-/* Property Grid champs dynamiques */
+[aas-type="Bootstrap.BootstrapGrid"] > table > tbody > tr > td div.true, .aasDynamicControl div.aasValueZone.true  {
+    position: relative;
+}
+
+[aas-type="Bootstrap.BootstrapGrid"] > table > tbody > tr > td div.true:before, .aasDynamicControl div.aasValueZone.true:before {
+    font-family: 'Font Awesome 5 Free';
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    margin-right: 2px;
+    font-weight: 900;
+    content: "\f00c";
+}
+
+.aasTabDocumentsAttendusTodo > a:before{
+    font-family: 'Font Awesome 5 Free';
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    margin-right: 2px;
+    font-weight: 900;
+    content: "\f00c";
+}
+
+.aasTabDocumentsAttendusTodo{
+    display:none !important;
+}
+.display-documents .aasTabDocumentsAttendusTodo {
+    display:block !important;
+}
 

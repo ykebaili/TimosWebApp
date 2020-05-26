@@ -13,12 +13,8 @@ Global.ClientTodosService = {
         Aspectize.ExecuteCommand(aas.Services.Browser.UIService.SetCustomFilter(aas.ViewName.ListeTodos.GridListeTodos, filtre));
 
     },
-    
 
     InitPropertyGrid: function (gridId, edit) {
-
-        if ($('#' + gridId + '.aasPropertyGrid').hasClass('form-horizontal'))
-            return;
 
         var colLabel = 'col-xs-4';
         var colValue = 'col-xs-8';
@@ -32,12 +28,15 @@ Global.ClientTodosService = {
             $('#' + gridId + '.aasPropertyGrid > .aasDynamicControl input[type=\'text\']:not(.BootstrapDateTimePicker)').addClass('form-control').wrap("<div class='" + colValue + "'></div>");
             $('#' + gridId + '.aasPropertyGrid > .aasDynamicControl input[type=\'number\']').addClass('form-control').wrap("<div class='" + colValue + "'></div>");
             $('#' + gridId + '.aasPropertyGrid > .aasDynamicControl input[type="checkbox"]').wrap("<div class='" + colValue + "'><div class='checkbox'><label></label></div></div>");
+
             $('#' + gridId + '.aasPropertyGrid > .aasDynamicControl .aasDate.aasValueZone').addClass(colValue);
         } else {
             $('#' + gridId + '.aasPropertyGrid').addClass('form-horizontal');
             $('#' + gridId + '.aasPropertyGrid > div.aasDynamicControl').addClass('form-group');
             $('#' + gridId + '.aasPropertyGrid > .aasDynamicControl .aasLabelZone').addClass('control-label ' + colLabel);
-            $('#' + gridId + '.aasPropertyGrid > .aasDynamicControl .aasValueZone').addClass('').wrap("<div class='" + colValue + " form-control-static'></div>");
+            if (!$('#' + gridId + '.aasPropertyGrid > .aasDynamicControl .aasValueZone').parent().hasClass('form-control-static')) {
+                $('#' + gridId + '.aasPropertyGrid > .aasDynamicControl .aasValueZone').addClass('').wrap("<div class='" + colValue + " form-control-static'></div>");
+            }
         }
 
     },

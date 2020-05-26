@@ -30,6 +30,7 @@ vDetailTodo.BoutonTerminerTodo.click.BindCommand(aas.Services.Server.TodosServic
 
 // Gestion des onglets
 var vDetailTodoTab = Aspectize.CreateView("DetailTodoTabs", aas.Controls.Bootstrap.BootstrapTab, aas.Zones.DetailTodo.ZoneOnglets, true);
+vDetailTodoTab.className.BindData(aas.Expression(IIF(aas.Data.MainData.Todos.RelationTodoDocument.DocumentsAttendus.TimosId, 'display-documents', '')));
 var vChampsTodo = Aspectize.CreateView("ChampsTodo", aas.Controls.ChampsTodo, "DetailTodoTabs.0:Champs", true, aas.Data.MainData.Todos);
 vChampsTodo.BoutonEditionTodo.click.BindCommand(aas.Services.Browser.BootStrapClientService.ShowModal(aas.ViewName.EditionTodo, true, false, true));
 
@@ -45,6 +46,7 @@ vChampsTodo.GridChampsTodo.EnumValuesTableOptionTextColumn.BindData("DisplayedVa
 vChampsTodo.GridChampsTodo.EnumValuesTableOptionValueColumn.BindData("StoredValue");
 vChampsTodo.GridChampsTodo.EnumValuesTableTypeColumn.BindData("ChampTimosId");
 vChampsTodo.OnActivated.BindCommand(aas.Services.Browser.ClientTodosService.InitPropertyGrid(aas.ViewName.ChampsTodo.GridChampsTodo, false));
+
 
 // Configuration du controle d'édition d'un todo en modal
 var vEditionTodo = Aspectize.CreateView("EditionTodo", aas.Controls.EditionTodo, "", false, aas.Data.MainData.Todos);
