@@ -179,6 +179,24 @@ namespace TimosWebApp.Services
                                     doc.DateLastUpload = (DateTime)rowDoc[CDocumentAttendu.c_champDateLastUpload];
 
                                 em.AssociateInstance<RelationTodoDocument>(todo, doc);
+
+                                // Traitement des fichiers joints
+                                DataTable tableFichiers = ds.Tables[CFichierAttache.c_nomTable];
+                                foreach (DataRow rowFichier in tableFichiers.Rows)
+                                {
+                                    int nIdDoc = (int)rowFichier[CFichierAttache.c_champIdDocumentAttendu];
+                                    if (nIdDoc == doc.TimosId)
+                                    {
+                                        var fichier = em.CreateInstance<FichiersAttaches>();
+                                        fichier.NomFichier = (string)rowFichier[CFichierAttache.c_champNomFichier];
+                                        fichier.Commentaire = (string)rowFichier[CFichierAttache.c_champCommentaire];
+                                        fichier.DateUpload = (DateTime)rowFichier[CFichierAttache.c_champDateUpload];
+                                        fichier.DateDocument = (DateTime)rowFichier[CFichierAttache.c_champDateDocument];
+                                        fichier.DocumentId = nIdDoc;
+
+                                        em.AssociateInstance<RelationFichiers>(doc, fichier);
+                                    }
+                                }
                             }
 
                             em.Data.AcceptChanges();
@@ -231,10 +249,15 @@ namespace TimosWebApp.Services
         //-----------------------------------------------------------------------------------------
         public DataSet UploadDocuments(UploadedFile[] uploadedFiles, int nIdTodo, int nIdDocument, string strCategorie)
         {
+            AspectizeUser aspectizeUser = ExecutingContext.CurrentUser;
+
+            int nTimosSessionId = (int)aspectizeUser[CUserTimosWebApp.c_champSessionId];
+            ITimosServiceForAspectize serviceClientAspectize = (ITimosServiceForAspectize)C2iFactory.GetNewObject(typeof(ITimosServiceForAspectize));
 
             IEntityManager em = EntityManager.FromDataSet(DataSetHelper.Create());
 
             DocumentsAttendus doc = em.CreateInstance<DocumentsAttendus>();
+            
             doc.TimosId = nIdDocument;
             doc.CategorieDocument = strCategorie;
             doc.DateLastUpload = DateTime.Now;
@@ -247,13 +270,13 @@ namespace TimosWebApp.Services
                     fichier.NomFichier = file.Name;
                     fichier.TimosKey = file.Name;
                     fichier.DateUpload = DateTime.Now;
-
-
-
                     em.AssociateInstance<RelationFichiers>(doc, fichier);
+
+                    serviceClientAspectize.AddFile(nTimosSessionId, em.Data, file.Stream);
                 }
             }
             em.Data.AcceptChanges();
+
             return em.Data;
 
         }

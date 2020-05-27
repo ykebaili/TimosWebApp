@@ -459,6 +459,7 @@ namespace TimosWebApp
 			public const string DateUpload = "DateUpload";
 			public const string DateDocument = "DateDocument";
 			public const string Commentaire = "Commentaire";
+			public const string DocumentId = "DocumentId";
 		}
 
 		void IDataWrapper.InitData(DataRow data, string namePrefix)
@@ -499,6 +500,13 @@ namespace TimosWebApp
 		{
 			get { return getValue<string>("Commentaire"); }
 			set { setValue<string>("Commentaire", value); }
+		}
+
+		[Data]
+		public int DocumentId
+		{
+			get { return getValue<int>("DocumentId"); }
+			set { setValue<int>("DocumentId", value); }
 		}
 
 	}

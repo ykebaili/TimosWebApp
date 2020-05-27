@@ -68,6 +68,7 @@
         <entityProperty name="DateUpload" type="DateTime" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
         <entityProperty name="DateDocument" type="DateTime" nullable="true" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
         <entityProperty name="Commentaire" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="DocumentId" type="Int32" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
       </properties>
     </entity>
     <entity Id="35b2f47a-897c-4654-818e-7265fac6760e" name="GroupeChamps" guid="e58ba3ea-abe1-497b-a9cb-6e1cd77bd697" hasCustomValidators="false" hasTriggers="false">
