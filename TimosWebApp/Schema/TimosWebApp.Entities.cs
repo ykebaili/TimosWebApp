@@ -402,7 +402,7 @@ namespace TimosWebApp
 		{
 			public const string Libelle = "Libelle";
 			public const string TimosId = "TimosId";
-			public const string CategorieDocument = "CategorieDocument";
+			public const string IdCategorie = "IdCategorie";
 			public const string NombreMin = "NombreMin";
 			public const string DateLastUpload = "DateLastUpload";
 		}
@@ -427,10 +427,10 @@ namespace TimosWebApp
 		}
 
 		[Data]
-		public string CategorieDocument
+		public int IdCategorie
 		{
-			get { return getValue<string>("CategorieDocument"); }
-			set { setValue<string>("CategorieDocument", value); }
+			get { return getValue<int>("IdCategorie"); }
+			set { setValue<int>("IdCategorie", value); }
 		}
 
 		[Data]
@@ -460,6 +460,7 @@ namespace TimosWebApp
 			public const string DateDocument = "DateDocument";
 			public const string Commentaire = "Commentaire";
 			public const string DocumentId = "DocumentId";
+			public const string CheminTemporaire = "CheminTemporaire";
 		}
 
 		void IDataWrapper.InitData(DataRow data, string namePrefix)
@@ -507,6 +508,13 @@ namespace TimosWebApp
 		{
 			get { return getValue<int>("DocumentId"); }
 			set { setValue<int>("DocumentId", value); }
+		}
+
+		[Data]
+		public string CheminTemporaire
+		{
+			get { return getValue<string>("CheminTemporaire"); }
+			set { setValue<string>("CheminTemporaire", value); }
 		}
 
 	}

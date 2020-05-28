@@ -35,7 +35,7 @@ Global.ClientTodosService = {
             $('#' + gridId + '.aasPropertyGrid > div.aasDynamicControl').addClass('form-group');
             $('#' + gridId + '.aasPropertyGrid > .aasDynamicControl .aasLabelZone').addClass('control-label ' + colLabel);
             if (!$('#' + gridId + '.aasPropertyGrid > .aasDynamicControl .aasValueZone').parent().hasClass('form-control-static')) {
-                $('#' + gridId + '.aasPropertyGrid > .aasDynamicControl .aasValueZone').addClass('').wrap("<div class='" + colValue + " form-control-static'></div>");
+                $('#' + gridId + '.aasPropertyGrid > .aasDynamicControl .aasValueZone').wrap("<div class='" + colValue + " form-control-static'></div>");
             }
         }
 

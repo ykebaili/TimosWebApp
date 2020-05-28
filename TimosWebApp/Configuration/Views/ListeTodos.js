@@ -5,6 +5,7 @@ vListeTodos.GridListeTodos.BindGrid(aas.Data.MainData.Todos);
 vListeTodos.GridListeTodos.className.BindData('table-condensed');
 vListeTodos.GridListeTodos.OnRowClick.BindCommand(aas.Services.Server.TodosService.GetTodoDetails(aas.Data.MainData.Todos.TimosId), aas.Data.MainData, true, true);
 vListeTodos.GridListeTodos.OnRowClick.BindCommand(aas.Services.Browser.UIService.ShowView(aas.ViewName.DetailTodo));
+vListeTodos.GridListeTodos.PageSize.BindData(20);
 
 // Colonnes de la liste des todos
 var colLabael = vListeTodos.GridListeTodos.AddGridColumn("libelle", aas.ColumnType.Span);

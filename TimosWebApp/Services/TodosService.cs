@@ -7,6 +7,7 @@ using System.Security.Permissions;
 using timos.data.Aspectize;
 using sc2i.common;
 using sc2i.multitiers.client;
+using System.IO;
 
 namespace TimosWebApp.Services
 {
@@ -17,7 +18,7 @@ namespace TimosWebApp.Services
         [Command(IsSaveCommand = true)]
         void SaveTodo(DataSet dataSet, int nIdTodo, string elementType, int elementId);
         void EndTodo(int nIdTodo);
-        DataSet UploadDocuments(UploadedFile[] uploadedFiles, int nIdTodo, int nIdDocument, string strCategorie);
+        DataSet UploadDocuments(UploadedFile[] uploadedFiles, int nIdTodo, int nIdDocument, int nIdCategorie);
     }
 
     [Service(Name = "TodosService")]
@@ -171,7 +172,7 @@ namespace TimosWebApp.Services
 
                                 doc.TimosId = (int)rowDoc[CDocumentAttendu.c_champId];
                                 doc.Libelle = (string)rowDoc[CDocumentAttendu.c_champLibelle];
-                                doc.CategorieDocument = (string)rowDoc[CDocumentAttendu.c_champCategorieDocument];
+                                doc.IdCategorie = (int)rowDoc[CDocumentAttendu.c_champIdCategorie];
                                 doc.NombreMin = (int)rowDoc[CDocumentAttendu.c_champNombreMin];
                                 if (rowDoc[CDocumentAttendu.c_champDateLastUpload] == DBNull.Value)
                                     doc.DateLastUpload = null;
@@ -247,8 +248,10 @@ namespace TimosWebApp.Services
         }
 
         //-----------------------------------------------------------------------------------------
-        public DataSet UploadDocuments(UploadedFile[] uploadedFiles, int nIdTodo, int nIdDocument, string strCategorie)
+        public DataSet UploadDocuments(UploadedFile[] uploadedFiles, int nIdTodo, int nIdDocument, int nIdCategorie)
         {
+            string strCheminTemp = "%temp%";
+
             AspectizeUser aspectizeUser = ExecutingContext.CurrentUser;
 
             int nTimosSessionId = (int)aspectizeUser[CUserTimosWebApp.c_champSessionId];
@@ -259,11 +262,14 @@ namespace TimosWebApp.Services
             DocumentsAttendus doc = em.CreateInstance<DocumentsAttendus>();
             
             doc.TimosId = nIdDocument;
-            doc.CategorieDocument = strCategorie;
+            doc.IdCategorie = nIdCategorie;
             doc.DateLastUpload = DateTime.Now;
+
+            /** DEBUG ** var fs = ExecutingContext.GetService<IFileService>("FichierLocalTemporaire"); */
 
             if (doc != null)
             {
+
                 foreach (UploadedFile file in uploadedFiles)
                 {
                     var fichier = em.CreateInstance<FichiersAttaches>();
@@ -272,13 +278,27 @@ namespace TimosWebApp.Services
                     fichier.DateUpload = DateTime.Now;
                     em.AssociateInstance<RelationFichiers>(doc, fichier);
 
-                    serviceClientAspectize.AddFile(nTimosSessionId, em.Data, file.Stream);
+                    BinaryReader reader = new BinaryReader(file.Stream);
+                    byte[] octets = reader.ReadBytes((int)file.Stream.Length);
+
+                    CResultAErreur resultFile = serviceClientAspectize.AddFile(nTimosSessionId, file.Name, octets);
+                    if (!resultFile)
+                    {
+                        throw new SmartException(1050, resultFile.MessageErreur);
+                    }
+                    string cheminTimos = (string)resultFile.Data;
+                    fichier.CheminTemporaire = cheminTimos;
                 }
             }
+
             em.Data.AcceptChanges();
+            CResultAErreur result = serviceClientAspectize.SaveDocument(nTimosSessionId, em.Data, nIdDocument, nIdCategorie);
+            if(!result)
+            {
+                throw new SmartException(1051, result.MessageErreur);
+            }
 
             return em.Data;
-
         }
     }
 

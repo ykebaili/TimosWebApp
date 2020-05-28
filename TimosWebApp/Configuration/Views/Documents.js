@@ -2,9 +2,8 @@
 
 var vDocumentAttendu = Aspectize.CreateRepeatedView("DocumentAttendu", aas.Controls.DocumentAttendu, aas.Zones.DocumentsAttendusTodo.PanelDocumentsAttendus, aas.Data.MainData.Todos.RelationTodoDocument.DocumentsAttendus); // possible de trier et filtrer
 vDocumentAttendu.UploaderDocument.MultipleFiles.BindData(true);
-vDocumentAttendu.UploaderDocument.OnFileSelected.BindCommand(aas.Services.Server.TodosService.UploadDocuments(vDocumentAttendu.UploaderDocument.SelectedFile, aas.Data.MainData.Todos.TimosId, vDocumentAttendu.ParentData.TimosId, vDocumentAttendu.ParentData.CategorieDocument), aas.Data.MainData, true, true);
-vDocumentAttendu.CategorieDocument.BindData(vDocumentAttendu.ParentData.CategorieDocument);
-//vDocumentAttendu.LibelleDocument.BindData(vDocumentAttendu.ParentData.Libelle);
+vDocumentAttendu.UploaderDocument.OnFileSelected.BindCommand(aas.Services.Server.TodosService.UploadDocuments(vDocumentAttendu.UploaderDocument.SelectedFile, aas.Data.MainData.Todos.TimosId, vDocumentAttendu.ParentData.TimosId, vDocumentAttendu.ParentData.IdCategorie), aas.Data.MainData, true, true);
+vDocumentAttendu.LibelleDocument.BindData(vDocumentAttendu.ParentData.Libelle);
 vDocumentAttendu.NombreMin.BindData(vDocumentAttendu.ParentData.NombreMin);
 vDocumentAttendu.DateLastUpload.BindData(vDocumentAttendu.ParentData.DateLastUpload);
 vDocumentAttendu.BoutonUploadFichier.click.BindCommand(aas.Services.Browser.ClientTodosService.UploadDocument(vDocumentAttendu.ParentData.TimosId, aas.ViewName.DocumentAttendu.UploaderDocument));
