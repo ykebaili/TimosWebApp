@@ -112,7 +112,7 @@
     <Content Include="TimosWebApp.application.htm.ashx" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Scripts\_references.js" />
+    <Content Include="Schema\Scripts\_references.js" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Schema\TimosWebApp.Entities">

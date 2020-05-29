@@ -68,7 +68,6 @@ namespace TimosWebApp.Services
                                 bool bIsSelect = (bool)rowChamp[CChampTimosWebApp.c_champIsChoixParmis];
                                 bool bMultiline = (bool)rowChamp[CChampTimosWebApp.c_champIsMultiline];
 
-
                                 if (bIsSelect)
                                 {
                                     champTimos.IsSelect = true;
@@ -274,7 +273,7 @@ namespace TimosWebApp.Services
                 {
                     var fichier = em.CreateInstance<FichiersAttaches>();
                     fichier.NomFichier = file.Name;
-                    fichier.TimosKey = file.Name;
+                    fichier.TimosKey = Guid.NewGuid().ToString();
                     fichier.DateUpload = DateTime.Now;
                     em.AssociateInstance<RelationFichiers>(doc, fichier);
 

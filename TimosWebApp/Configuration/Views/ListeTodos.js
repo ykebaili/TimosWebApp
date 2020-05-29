@@ -35,7 +35,7 @@ vDetailTodoTab.className.BindData(aas.Expression(IIF(aas.Data.MainData.Todos.Rel
 var vChampsTodo = Aspectize.CreateView("ChampsTodo", aas.Controls.ChampsTodo, "DetailTodoTabs.0:Champs", true, aas.Data.MainData.Todos);
 vChampsTodo.BoutonEditionTodo.click.BindCommand(aas.Services.Browser.BootStrapClientService.ShowModal(aas.ViewName.EditionTodo, true, false, true));
 
-// Configuration de la PropertyGrid en lecture seule
+//******************************** Configuration de la PropertyGrid en lecture seule *******************************************
 vChampsTodo.GridChampsTodo.BindList(vDetailTodo.ParentData.RelationTodoValeurChamp.TodoValeurChamp, "ValeurChamp", "LibelleChamp", "OrdreChamp");
 vChampsTodo.GridChampsTodo.TypeTableName.BindData(vDetailTodo.ParentPath.RelationTodoDefinitionChamp.ChampTimos);
 vChampsTodo.GridChampsTodo.TypeTableNameColumn.BindData("LibelleConvivial");
