@@ -87,6 +87,7 @@
     <Content Include="Configuration\Application.js" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Configuration\Views\ChampsTodo.js" />
     <Content Include="Configuration\Views\Documents.js" />
     <Content Include="Configuration\Views\ListeTodos.js" />
     <Content Include="Configuration\Views\View.js" />

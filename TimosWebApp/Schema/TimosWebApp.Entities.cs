@@ -28,10 +28,11 @@ namespace TimosWebApp
 		public static partial class Relations
 		{
 			public const string ValeursPossibles = "ValeursPossibles";
-			public const string RelationTodoDefinitionChamp = "RelationTodoDefinitionChamp";
+			public const string RelationTodoGroupeChamps = "RelationTodoGroupeChamps";
 			public const string RelationTodoValeurChamp = "RelationTodoValeurChamp";
 			public const string RelationTodoDocument = "RelationTodoDocument";
 			public const string RelationFichiers = "RelationFichiers";
+			public const string RelationGroupeChampsChampsTimos = "RelationGroupeChampsChampsTimos";
 		}
 	}
 
@@ -524,21 +525,14 @@ namespace TimosWebApp
 	{
 		public static partial class Fields
 		{
-			public const string Id = "Id";
 			public const string Titre = "Titre";
+			public const string OrdreAffichage = "OrdreAffichage";
 			public const string TimosId = "TimosId";
 		}
 
 		void IDataWrapper.InitData(DataRow data, string namePrefix)
 		{
 			base.InitData(data, null);
-		}
-
-		[Data(IsPrimaryKey=true)]
-		public Guid Id
-		{
-			get { return getValue<Guid>("Id"); }
-			set { setValue<Guid>("Id", value); }
 		}
 
 		[Data]
@@ -549,10 +543,17 @@ namespace TimosWebApp
 		}
 
 		[Data]
-		public string TimosId
+		public int OrdreAffichage
 		{
-			get { return getValue<string>("TimosId"); }
-			set { setValue<string>("TimosId", value); }
+			get { return getValue<int>("OrdreAffichage"); }
+			set { setValue<int>("OrdreAffichage", value); }
+		}
+
+		[Data(IsPrimaryKey = true)]
+		public int TimosId
+		{
+			get { return getValue<int>("TimosId"); }
+			set { setValue<int>("TimosId", value); }
 		}
 
 	}
@@ -568,24 +569,24 @@ namespace TimosWebApp
 		[RelationEnd(Type = typeof(ValeursChamp), Role = typeof(ValeursChamp), Multiplicity = Multiplicity.ZeroOrMany)]
 		public IEntity ValeursChamp;
 
-		[RelationEnd(Type = typeof(Todos), Role = typeof(Todos), Multiplicity = Multiplicity.ZeroOrOne)]
-		public IEntity Todos;
+		[RelationEnd(Type = typeof(GroupeChamps), Role = typeof(GroupeChamps), Multiplicity = Multiplicity.ZeroOrOne)]
+		public IEntity GroupeChamps;
 
 	}
 
 	[DataDefinition]
-	public class RelationTodoDefinitionChamp : DataWrapper, IDataWrapper, IRelation
+	public class RelationTodoGroupeChamps : DataWrapper, IDataWrapper, IRelation
 	{
 		void IDataWrapper.InitData(DataRow data, string namePrefix)
 		{
 			base.InitData(data, null);
 		}
 
-		[RelationEnd(Type = typeof(ChampTimos), Role = typeof(ChampTimos), Multiplicity = Multiplicity.ZeroOrMany)]
-		public IEntity ChampTimos;
-
-		[RelationEnd(Type = typeof(Todos), Role = typeof(Todos), Multiplicity = Multiplicity.ZeroOrMany)]
+		[RelationEnd(Type = typeof(Todos), Role = typeof(Todos), Multiplicity = Multiplicity.ZeroOrOne)]
 		public IEntity Todos;
+
+		[RelationEnd(Type = typeof(GroupeChamps), Role = typeof(GroupeChamps), Multiplicity = Multiplicity.ZeroOrMany)]
+		public IEntity GroupeChamps;
 
 	}
 
@@ -597,11 +598,11 @@ namespace TimosWebApp
 			base.InitData(data, null);
 		}
 
-		[RelationEnd(Type = typeof(Todos), Role = typeof(Todos), Multiplicity = Multiplicity.One)]
-		public IEntity Todos;
-
 		[RelationEnd(Type = typeof(TodoValeurChamp), Role = typeof(TodoValeurChamp), Multiplicity = Multiplicity.ZeroOrMany)]
 		public IEntity TodoValeurChamp;
+
+		[RelationEnd(Type = typeof(GroupeChamps), Role = typeof(GroupeChamps), Multiplicity = Multiplicity.ZeroOrOne)]
+		public IEntity GroupeChamps;
 
 	}
 
@@ -634,6 +635,22 @@ namespace TimosWebApp
 
 		[RelationEnd(Type = typeof(FichiersAttaches), Role = typeof(FichiersAttaches), Multiplicity = Multiplicity.ZeroOrMany)]
 		public IEntity FichiersAttaches;
+
+	}
+
+	[DataDefinition]
+	public class RelationGroupeChampsChampsTimos : DataWrapper, IDataWrapper, IRelation
+	{
+		void IDataWrapper.InitData(DataRow data, string namePrefix)
+		{
+			base.InitData(data, null);
+		}
+
+		[RelationEnd(Type = typeof(GroupeChamps), Role = typeof(GroupeChamps), Multiplicity = Multiplicity.One)]
+		public IEntity GroupeChamps;
+
+		[RelationEnd(Type = typeof(ChampTimos), Role = typeof(ChampTimos), Multiplicity = Multiplicity.ZeroOrMany)]
+		public IEntity ChampTimos;
 
 	}
 

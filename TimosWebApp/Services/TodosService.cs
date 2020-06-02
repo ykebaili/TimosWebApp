@@ -44,7 +44,8 @@ namespace TimosWebApp.Services
                         DataTable tableTodos = ds.Tables[CTodoTimosWebApp.c_nomTable];
                         if (tableTodos.Rows.Count > 0)
                         {
-                            DataRow rowTodo = tableTodos.Rows[0]; // la première row contient les données du todo demandé
+                            // la première row contient les données du todo demandé
+                            DataRow rowTodo = tableTodos.Rows[0]; 
                             var todo = em.CreateInstance<Todos>();
                             todo.TimosId = (int)rowTodo[CTodoTimosWebApp.c_champId];
                             todo.Label = (string)rowTodo[CTodoTimosWebApp.c_champLibelle];
@@ -54,19 +55,31 @@ namespace TimosWebApp.Services
                             todo.ElementId = (int)rowTodo[CTodoTimosWebApp.c_champIdElementEdite];
                             todo.ElementDescription = (string)rowTodo[CTodoTimosWebApp.c_champElementDescription];
 
-                            Dictionary<string, string> dicoChampIdValeurPossible = new Dictionary<string, string>();
+                            // Création des groupes de champs
+                            DataTable tableGroupes = ds.Tables[CGroupeChamps.c_nomTable];
+                            foreach (DataRow rowGroupe in tableGroupes.Rows)
+                            {
+                                var groupeChamps = em.CreateInstance<GroupeChamps>();
+                                groupeChamps.TimosId = (int)rowGroupe[CGroupeChamps.c_champId];
+                                groupeChamps.Titre = (string)rowGroupe[CGroupeChamps.c_champTitre];
+                                groupeChamps.OrdreAffichage = (int)rowGroupe[CGroupeChamps.c_champOrdreAffichage];
 
+                                em.AssociateInstance<RelationTodoGroupeChamps>(todo, groupeChamps);
+                            }
+
+                            // Définition des champs
                             DataTable tableChampsTimos = ds.Tables[CChampTimosWebApp.c_nomTable];
                             foreach (DataRow rowChamp in tableChampsTimos.Rows)
                             {
                                 var champTimos = em.CreateInstance<ChampTimos>();
                                 champTimos.Nom = (string)rowChamp[CChampTimosWebApp.c_champNom];
-                                champTimos.DisplayOrder = (int) rowChamp[CChampTimosWebApp.c_champOrdreAffichage];
-                                champTimos.TimosId = (int) rowChamp[CChampTimosWebApp.c_champId];
-                                champTimos.TypeDonneChamp = (TypeDonnee) rowChamp[CChampTimosWebApp.c_champTypeDonne];
+                                champTimos.DisplayOrder = (int)rowChamp[CChampTimosWebApp.c_champOrdreAffichage];
+                                champTimos.TimosId = (int)rowChamp[CChampTimosWebApp.c_champId];
+                                champTimos.TypeDonneChamp = (TypeDonnee)rowChamp[CChampTimosWebApp.c_champTypeDonne];
                                 champTimos.LibelleConvivial = (string)rowChamp[CChampTimosWebApp.c_champLibelleConvivial];
                                 bool bIsSelect = (bool)rowChamp[CChampTimosWebApp.c_champIsChoixParmis];
                                 bool bMultiline = (bool)rowChamp[CChampTimosWebApp.c_champIsMultiline];
+                                int nIdGroupeAssocie = (int)rowChamp[CChampTimosWebApp.c_champIdGroupeChamps];
 
                                 if (bIsSelect)
                                 {
@@ -108,10 +121,11 @@ namespace TimosWebApp.Services
 
                                 }
 
-                                em.AssociateInstance<RelationTodoDefinitionChamp>(todo, champTimos);
-
+                                GroupeChamps groupeAssocie = em.GetInstance<GroupeChamps>(nIdGroupeAssocie);
+                                em.AssociateInstance<RelationGroupeChampsChampsTimos>(groupeAssocie, champTimos);
                             }
 
+                            // Gestion des valeurs possibles de champs
                             DataTable tableValeursPossibles = ds.Tables[CChampValeursPossibles.c_nomTable];
                             foreach (DataRow rowValPossbile in tableValeursPossibles.Rows)
                             {
@@ -121,8 +135,12 @@ namespace TimosWebApp.Services
                                 valPossible.StoredValue= (string) rowValPossbile[CChampValeursPossibles.c_champValue];
                                 valPossible.DisplayedValue = (string) rowValPossbile[CChampValeursPossibles.c_champDisplay];
 
-                                em.AssociateInstance<ValeursPossibles>(todo, valPossible);
-
+                                ChampTimos champ = em.GetInstance<ChampTimos>(valPossible.ChampTimosId);
+                                if (champ != null)
+                                {
+                                    GroupeChamps groupe = champ.GetAssociatedInstance<GroupeChamps, RelationGroupeChampsChampsTimos>();
+                                    em.AssociateInstance<ValeursPossibles>(groupe, valPossible);
+                                }
                             }
 
                             // Récupère les valeurs de champs
@@ -158,7 +176,12 @@ namespace TimosWebApp.Services
                                 }
                                 valTimos.ValeurChamp = valeurChamp;
 
-                                em.AssociateInstance<RelationTodoValeurChamp>(todo, valTimos);
+                                ChampTimos champ = em.GetInstance<ChampTimos>(valTimos.ChampTimosId);
+                                if (champ != null)
+                                {
+                                    GroupeChamps groupe = champ.GetAssociatedInstance<GroupeChamps, RelationGroupeChampsChampsTimos>();
+                                    em.AssociateInstance<RelationTodoValeurChamp>(groupe, valTimos);
+                                }
 
                             }
 
