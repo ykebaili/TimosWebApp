@@ -3,25 +3,23 @@
 <body>
 
     <div aas-control="DetailTodo">
-        <div class="row">
+        <div class="row section-titre">
             <div class="col-xs-12">
-                <h1><span>{LabelToDo}</span></h1>
+                <h1>Todo : <span>{LabelToDo}</span></h1>
             </div>
         </div>
-        <div class="row">
-            <div class="col-xs-1">
+        <div class="row section-instructions">  
+            <div class="col-xs-12">
                 <p class="infos-icone">
-                    <i class="fas fa-info-circle"></i>
+                    <i class="fas fa-info-circle"></i> Instructions
                 </p>
-            </div>
-            <div class="col-xs-11">
                 <p class="infos-sous-titre">
                     <span>{InstrictionsTodo}</span>
                 </p>
             </div>
         </div>
 
-        <div class="row bandeau-info-todo">
+        <div class="row section-filtre">
             <div class="col-sm-5 col-xs-12">
                 <p><strong>Element édité : </strong><span>{DescriptionElementEdite}</span> </p>
             </div>
@@ -32,8 +30,8 @@
                 <button class="btn btn-success" name="BoutonTerminerTodo"><i class="fas fa-check"></i> Terminer</button>
             </div>
         </div>
-        <div class="row">
-            <div class="col-xs-12">
+        <div class="row section-liste">
+            <div class="col-xs-12 col-no-padding">
                 <div aas-name="ZoneOnglets" aas-type="Panel"></div>
             </div>
         </div>
@@ -57,15 +55,15 @@
 
     <!------------------------------------------------------- Un groupe de champs ----------------------------------------------->
     <div aas-control="GroupeChamps">
-        <div class="row">
-            <div class="col-xs-6">
-                <h3>{TitreGroupe}</h3>
+        <div class="row section-titre-groupe {SectionTitreGroupe}">
+            <div class="col-xs-10">
+                <h3 class="titre-groupe"><a class="collapse-groupe" name="CollapseGroupe"><i class="fas {FaCaretClass}"></i> {TitreGroupe}</a></h3>
             </div>
-            <div class="col-xs-6">
-                <button class="btn btn-primary" name="BoutonEditionTodo"><i class="fas fa-edit"></i> Editer</button>
+            <div class="col-xs-2">
+                <button class="btn btn-link" name="BoutonEditionTodo"><i class="fas fa-edit"></i> Editer</button>
             </div>
         </div>
-        <div class="row property-readonly">
+        <div class="row section-contenu-groupe {DisplayExpand}">
             <div class="col-xs-12">
                 <div aas-name="GridChampsTodo" aas-type="AspectizePropertyGrid"></div>
             </div>

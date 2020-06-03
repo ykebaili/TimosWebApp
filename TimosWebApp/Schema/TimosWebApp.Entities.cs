@@ -61,6 +61,23 @@ namespace TimosWebApp
 		ObjetTimos		 = 		5
 	}
 
+	[DataDefinition(MustPersist = false)]
+	public enum EtatTodo
+	{
+		[Description("EnAttente")]
+		EnAttente,
+		[Description("ADemarrer")]
+		ADemarrer		 = 		1,
+		[Description("Demarre")]
+		Demarre		 = 		2,
+		[Description("Termine")]
+		Termine		 = 		3,
+		[Description("Erreur")]
+		Erreur		 = 		4,
+		[Description("Annule")]
+		Annule		 = 		5
+	}
+
 	[DataDefinition]
 	public class Todos : Entity, IDataWrapper
 	{
@@ -73,11 +90,15 @@ namespace TimosWebApp
 			public const string ElementType = "ElementType";
 			public const string ElementId = "ElementId";
 			public const string ElementDescription = "ElementDescription";
+			public const string EtatTodo = "EtatTodo";
+			public const string EndDate = "EndDate";
+			public const string DureeStandard = "DureeStandard";
 		}
 
 		void IDataWrapper.InitData(DataRow data, string namePrefix)
 		{
 			base.InitData(data, null);
+
 		}
 
 		[Data]
@@ -127,6 +148,27 @@ namespace TimosWebApp
 		{
 			get { return getValue<string>("ElementDescription"); }
 			set { setValue<string>("ElementDescription", value); }
+		}
+
+		[Data(DefaultValue = 0)]
+		public EtatTodo EtatTodo
+		{
+			get { return getValue<EtatTodo>("EtatTodo"); }
+			set { setValue<EtatTodo>("EtatTodo", value); }
+		}
+
+		[Data]
+		public DateTime EndDate
+		{
+			get { return getValue<DateTime>("EndDate"); }
+			set { setValue<DateTime>("EndDate", value); }
+		}
+
+		[Data]
+		public int DureeStandard
+		{
+			get { return getValue<int>("DureeStandard"); }
+			set { setValue<int>("DureeStandard", value); }
 		}
 
 	}
@@ -528,6 +570,7 @@ namespace TimosWebApp
 			public const string Titre = "Titre";
 			public const string OrdreAffichage = "OrdreAffichage";
 			public const string TimosId = "TimosId";
+			public const string Expand = "Expand";
 		}
 
 		void IDataWrapper.InitData(DataRow data, string namePrefix)
@@ -554,6 +597,13 @@ namespace TimosWebApp
 		{
 			get { return getValue<int>("TimosId"); }
 			set { setValue<int>("TimosId", value); }
+		}
+
+		[Data(DefaultValue = false)]
+		public bool Expand
+		{
+			get { return getValue<bool>("Expand"); }
+			set { setValue<bool>("Expand", value); }
 		}
 
 	}

@@ -5,6 +5,10 @@ var vChampsTodo = Aspectize.CreateView("ChampsTodo", aas.Controls.ChampsTodo, "D
 var vGroupeChamps = Aspectize.CreateRepeatedView("GroupeChamps", aas.Controls.GroupeChamps, aas.Zones.ChampsTodo.PanelGroupesChamps, aas.Data.MainData.Todos.RelationTodoGroupeChamps.GroupeChamps);
 vGroupeChamps.TitreGroupe.BindData(vGroupeChamps.ParentData.Titre);
 vGroupeChamps.BoutonEditionTodo.click.BindCommand(aas.Services.Browser.BootStrapClientService.ShowModal(aas.ViewName.EditionTodo, true, false, true));
+vGroupeChamps.CollapseGroupe.click.BindCommand(aas.Services.Browser.ClientTodosService.ExpandGroup(vGroupeChamps.ParentData.TimosId));
+vGroupeChamps.DisplayExpand.BindData(aas.Expression(IIF(vGroupeChamps.ParentData.Expand, '', 'hidden')));
+vGroupeChamps.FaCaretClass.BindData(aas.Expression(IIF(vGroupeChamps.ParentData.Expand, 'fa-caret-down', 'fa-caret-right')));
+vGroupeChamps.SectionTitreGroupe.BindData(aas.Expression(IIF(vGroupeChamps.ParentData.Expand, 'section-titre-expanded', 'section-titre-collapsed')));
 
 //******************************** Configuration de la PropertyGrid en lecture seule *******************************************
 vGroupeChamps.GridChampsTodo.BindList(vGroupeChamps.ParentData.RelationTodoValeurChamp.TodoValeurChamp, "ValeurChamp", "LibelleChamp", "OrdreChamp");
@@ -18,6 +22,7 @@ vGroupeChamps.GridChampsTodo.EnumValuesTableOptionTextColumn.BindData("Displayed
 vGroupeChamps.GridChampsTodo.EnumValuesTableOptionValueColumn.BindData("StoredValue");
 vGroupeChamps.GridChampsTodo.EnumValuesTableTypeColumn.BindData("ChampTimosId");
 vGroupeChamps.OnActivated.BindCommand(aas.Services.Browser.ClientTodosService.InitPropertyGrid(aas.ViewName.GroupeChamps.GridChampsTodo, false));
+
 
 // Configuration du controle d'édition d'un todo en modal
 var vEditionTodo = Aspectize.CreateView("EditionTodo", aas.Controls.EditionTodo, "", false, aas.Data.MainData.Todos.RelationTodoGroupeChamps.GroupeChamps);

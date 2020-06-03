@@ -8,12 +8,15 @@ vListeTodos.GridListeTodos.OnRowClick.BindCommand(aas.Services.Browser.UIService
 vListeTodos.GridListeTodos.PageSize.BindData(20);
 
 // Colonnes de la liste des todos
+var colStartDate = vListeTodos.GridListeTodos.AddGridColumn("startdate", aas.ColumnType.Span);
+colStartDate.Text.BindData(vListeTodos.GridListeTodos.DataSource.StartDate, "dd MMM yyyy");
+colStartDate.HeaderText.BindData("Démarré le");
 var colLabael = vListeTodos.GridListeTodos.AddGridColumn("libelle", aas.ColumnType.Span);
 colLabael.Text.BindData(vListeTodos.GridListeTodos.DataSource.Label);
 colLabael.HeaderText.BindData("Libellé du todo");
-var colStartDate = vListeTodos.GridListeTodos.AddGridColumn("startdate", aas.ColumnType.Span);
-colStartDate.Text.BindData(vListeTodos.GridListeTodos.DataSource.StartDate, "dd/MM/yyyy");
-colStartDate.HeaderText.BindData("Date début");
+/*var colAction = vListeTodos.GridListeTodos.AddGridColumn("action", aas.ColumnType.Span);
+colAction.Text.BindData('>');
+colAction.HeaderText.BindData('');*/
 
 // Filtre et compteur
 vListeTodos.ChampFiltreLabel.keyup.BindCommand(aas.Services.Browser.ClientTodosService.FiltreTodos(vListeTodos.ChampFiltreLabel.value));
@@ -27,7 +30,10 @@ vDetailTodo.LabelToDo.BindData(vDetailTodo.ParentData.Label);
 vDetailTodo.DescriptionElementEdite.BindData(vDetailTodo.ParentData.ElementDescription);
 vDetailTodo.DateDebutTodo.BindData(vDetailTodo.ParentData.StartDate);
 vDetailTodo.InstrictionsTodo.BindData(vDetailTodo.ParentData.Instructions);
-vDetailTodo.BoutonTerminerTodo.click.BindCommand(aas.Services.Server.TodosService.EndTodo(vDetailTodo.ParentData.TimosId));
+//vDetailTodo.BoutonTerminerTodo.click.BindCommand(aas.Services.Server.TodosService.EndTodo(vDetailTodo.ParentData.TimosId), "", true, true);
+//vDetailTodo.BoutonTerminerTodo.click.BindCommand(aas.Services.Browser.ClientTodosService.ToastAlert("todo terminé"));
+vDetailTodo.BoutonTerminerTodo.click.BindCommand(aas.Services.Browser.ClientTodosService.EndTodo(vDetailTodo.ParentData.TimosId));
+//vDetailTodo.BoutonTerminerTodo.hidden
 
 // Gestion des onglets
 var vDetailTodoTab = Aspectize.CreateView("DetailTodoTabs", aas.Controls.Bootstrap.BootstrapTab, aas.Zones.DetailTodo.ZoneOnglets, true);

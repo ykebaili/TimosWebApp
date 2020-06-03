@@ -3,7 +3,7 @@
   "short_name": "TimosWebApp",
   "start_url": "/TimosWebApp/app.ashx",
   "display": "standalone",
-  "background_color": "#fff",
+  "background_color": "#f2f4f7",
   "theme_color": "#222",
   "description": "A progressive web app, built with Aspectize",
   "icons": [

@@ -10,6 +10,9 @@
         <entityProperty name="ElementType" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
         <entityProperty name="ElementId" type="Int32" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
         <entityProperty name="ElementDescription" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="EtatTodo" type="EtatTodo" defaultValue="0" isCustomType="true" identity="false" isEnumType="true" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="EndDate" type="DateTime" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="DureeStandard" type="Int32" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
       </properties>
     </entity>
     <entity Id="b30924f9-2de5-46bf-88f7-5176a476f45b" name="User" guid="4fa51f8e-7844-4d06-8449-50416122995d" hasCustomValidators="false" hasTriggers="false">
@@ -77,6 +80,7 @@
         <entityProperty name="Titre" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
         <entityProperty name="OrdreAffichage" type="Int32" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
         <entityProperty name="TimosId" type="Int32" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" identifier="Identifier" />
+        <entityProperty name="Expand" type="Boolean" defaultValue="false" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
       </properties>
     </entity>
   </entities>
@@ -151,6 +155,16 @@
         <enumItem name="TypeDate" value="3" />
         <enumItem name="TypeBool" value="4" />
         <enumItem name="ObjetTimos" value="5" />
+      </enumItems>
+    </enumEntity>
+    <enumEntity Id="b217728d-d324-41d9-983d-1e3a2ce41a2c" name="EtatTodo">
+      <enumItems>
+        <enumItem name="EnAttente" value="0" />
+        <enumItem name="ADemarrer" value="1" />
+        <enumItem name="Demarre" value="2" />
+        <enumItem name="Termine" value="3" />
+        <enumItem name="Erreur" value="4" />
+        <enumItem name="Annule" value="5" />
       </enumItems>
     </enumEntity>
   </enumEntities>

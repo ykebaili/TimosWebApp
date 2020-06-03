@@ -45,7 +45,7 @@ namespace TimosWebApp.Services
                         if (tableTodos.Rows.Count > 0)
                         {
                             // la première row contient les données du todo demandé
-                            DataRow rowTodo = tableTodos.Rows[0]; 
+                            DataRow rowTodo = tableTodos.Rows[0];
                             var todo = em.CreateInstance<Todos>();
                             todo.TimosId = (int)rowTodo[CTodoTimosWebApp.c_champId];
                             todo.Label = (string)rowTodo[CTodoTimosWebApp.c_champLibelle];
@@ -131,9 +131,9 @@ namespace TimosWebApp.Services
                             {
                                 var valPossible = em.CreateInstance<ValeursChamp>();
                                 valPossible.ChampTimosId = rowValPossbile[CChampValeursPossibles.c_champId].ToString();
-                                valPossible.Index = (int) rowValPossbile[CChampValeursPossibles.c_champIndex];
-                                valPossible.StoredValue= (string) rowValPossbile[CChampValeursPossibles.c_champValue];
-                                valPossible.DisplayedValue = (string) rowValPossbile[CChampValeursPossibles.c_champDisplay];
+                                valPossible.Index = (int)rowValPossbile[CChampValeursPossibles.c_champIndex];
+                                valPossible.StoredValue = (string)rowValPossbile[CChampValeursPossibles.c_champValue];
+                                valPossible.DisplayedValue = (string)rowValPossbile[CChampValeursPossibles.c_champDisplay];
 
                                 ChampTimos champ = em.GetInstance<ChampTimos>(valPossible.ChampTimosId);
                                 if (champ != null)
@@ -250,7 +250,7 @@ namespace TimosWebApp.Services
                     CResultAErreur result = serviceClientAspectize.SaveTodo(nTimosSessionId, dataSet, nIdTodo, elementType, elementId);
 
                     if (!result)
-                        throw new SmartException(1000, result.MessageErreur);
+                        throw new SmartException(1010, result.MessageErreur);
 
                     /* DEBUG
                     var valeurChamp = em.GetAllInstances<TodoValeurChamp>();
@@ -261,19 +261,27 @@ namespace TimosWebApp.Services
                 }
             }
         }
-   
+
         //-----------------------------------------------------------------------------------------
         public void EndTodo(int nIdTodo)
         {
+            AspectizeUser aspectizeUser = ExecutingContext.CurrentUser;
 
-            throw new SmartException(1004, "Le service EndTodo n'est pas implémenté");
+            if (aspectizeUser.IsAuthenticated)
+            {
+                int nTimosSessionId = (int)aspectizeUser[CUserTimosWebApp.c_champSessionId];
+
+                ITimosServiceForAspectize serviceClientAspectize = (ITimosServiceForAspectize)C2iFactory.GetNewObject(typeof(ITimosServiceForAspectize));
+                CResultAErreur result = serviceClientAspectize.EndTodo(nTimosSessionId, nIdTodo);
+
+                if (!result)
+                    throw new SmartException(1020, result.MessageErreur);
+            }
         }
 
         //-----------------------------------------------------------------------------------------
         public DataSet UploadDocuments(UploadedFile[] uploadedFiles, int nIdTodo, int nIdDocument, int nIdCategorie)
         {
-            string strCheminTemp = "%temp%";
-
             AspectizeUser aspectizeUser = ExecutingContext.CurrentUser;
 
             int nTimosSessionId = (int)aspectizeUser[CUserTimosWebApp.c_champSessionId];
@@ -306,7 +314,7 @@ namespace TimosWebApp.Services
                     CResultAErreur resultFile = serviceClientAspectize.AddFile(nTimosSessionId, file.Name, octets);
                     if (!resultFile)
                     {
-                        throw new SmartException(1050, resultFile.MessageErreur);
+                        throw new SmartException(1030, resultFile.MessageErreur);
                     }
                     string cheminTimos = (string)resultFile.Data;
                     fichier.CheminTemporaire = cheminTimos;
@@ -317,7 +325,7 @@ namespace TimosWebApp.Services
             CResultAErreur result = serviceClientAspectize.SaveDocument(nTimosSessionId, em.Data, nIdDocument, nIdCategorie);
             if(!result)
             {
-                throw new SmartException(1051, result.MessageErreur);
+                throw new SmartException(1031, result.MessageErreur);
             }
 
             return em.Data;

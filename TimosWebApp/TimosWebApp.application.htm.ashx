@@ -28,6 +28,10 @@
 <link rel='stylesheet' type='text/css' href='~/Styles.css?@FileDate' />
 
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<link rel='stylesheet' type='text/css' href='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css'/>
+
+
 <title>TimosWebApp Application</title>
 </head>
 <body>
