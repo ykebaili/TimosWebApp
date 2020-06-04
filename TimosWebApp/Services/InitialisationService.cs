@@ -19,15 +19,17 @@ namespace TimosWebApp.Services
         void InitTimos();
     }
 
-    [Service(Name = "InitialisationService")]
-    public class InitialisationService : IInitialisationService //, IInitializable, ISingleton
+    [Service(Name = "InitialisationService", ConfigurationRequired = true)]
+    public class InitialisationService : IInitialisationService, ISingleton //, IInitializable, 
     {
 
+        [Parameter(Optional = false)]
+        public string TimosServerURL = "";
 
         public void InitTimos()
         {
             CResultAErreur result = CResultAErreur.True;
-            string strServeurUrl = "tcp://127.0.0.1:8160";
+            string strServeurUrl = TimosServerURL;
             int nTcpChannel = 0;
             string strBindTo = "";
 

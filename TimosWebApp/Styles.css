@@ -204,12 +204,13 @@ img.logo{
     content: "\f0c6"; /* fa-paperclip */
 }
 
+/* Masquer l'onglet Documents si pas de documents présents
 .aasTabDocumentsAttendusTodo{
     display:none !important;
 }
 .display-documents .aasTabDocumentsAttendusTodo {
     display:block !important;
-}
+}*/
 
 /* Groupes de champs */
 .titre-groupe{

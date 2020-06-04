@@ -1,12 +1,4 @@
 
-var DataService = Aspectize.ConfigureNewService("DataService", aas.ConfigurableServices.DataBaseService);
-
-DataService.DataBaseType = aas.ConfigurableServices.DataBaseService.DBMS.XML;
-DataService.ConnectionString = "~\Data\Data.xml";
-DataService.Trace = false;
-DataService.BuildNewTableOnSave = false;
-DataService.EnsureAuthenticationOnWrite = true;
-
 var securityService = Aspectize.ConfigureNewService("SecurityService", aas.ConfigurableServices.SecurityServices);
 
 securityService.protocol = aas.ConfigurableServices.SecurityServices.AuthenticationProtocol.PasswordExchange;
@@ -18,16 +10,15 @@ securityService.LoginViewName = "Login";
 
 var MailService = Aspectize.ConfigureNewService("MailService", aas.ConfigurableServices.AspectizeSMTPService);
 
-MailService.Host = "";
-MailService.Port = 25;
+MailService.Host = "smtp.free.fr";
+MailService.Port = 495;
 MailService.Ssl = true;
 MailService.Login = "";
 MailService.Password = "";
 MailService.Expediteur = "";
 MailService.ExpediteurDisplay = "";
 
-var FileService = Aspectize.ConfigureNewService("FichierLocalTemporaire", aas.ConfigurableServices.FileService);
-FileService.ConnectionString = "~\fichiers";
-FileService.StorageType = aas.ConfigurableServices.FileService.Storage.FileSystem;
-FileService.RootDirectory = "test";
+
+var MyInitialisationService = Aspectize.ConfigureNewService("TimosInitialisationService", aas.ConfigurableServices.InitialisationService);
+MyInitialisationService.TimosServerURL = "tcp://127.0.0.1:8160";
 
