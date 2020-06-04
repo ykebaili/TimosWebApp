@@ -19,6 +19,6 @@ MailService.Expediteur = "";
 MailService.ExpediteurDisplay = "";
 
 
-var MyInitialisationService = Aspectize.ConfigureNewService("TimosInitialisationService", aas.ConfigurableServices.InitialisationService);
-MyInitialisationService.TimosServerURL = "tcp://127.0.0.1:8160";
+var TimosInitialisationService = Aspectize.ConfigureNewService("TimosInitialisationService", aas.ConfigurableServices.InitialisationService);
+TimosInitialisationService.TimosServerURL = "tcp://127.0.0.1:8160";
 

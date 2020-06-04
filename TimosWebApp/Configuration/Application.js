@@ -9,7 +9,7 @@ app.DisplayExceptionServiceName = "DisplayCustomExceptionService";
 
 app.AddAuthorizationRole(aas.Roles.Anonymous, aas.Enum.AccessControl.Forbidden);
 app.AddAuthorizationRole(aas.Roles.Registered, aas.Enum.AccessControl.ReadWrite);
-app.OnApplicationStartCommand = 'MyInitialisationService.InitTimos';
+app.OnApplicationStartCommand = 'TimosInitialisationService.InitTimos';
 
 var ctxData = newContextData();
 
