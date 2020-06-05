@@ -28,12 +28,14 @@ var vDetailTodo = Aspectize.CreateView("DetailTodo", aas.Controls.DetailTodo, aa
 vDetailTodo.OnActivated.BindCommand(aas.Services.Browser.History.PushState(aas.ViewName.DetailTodo, aas.Path.MainData.Todos, vDetailTodo.ParentData.TimosId));
 vDetailTodo.LabelToDo.BindData(vDetailTodo.ParentData.Label);
 vDetailTodo.DescriptionElementEdite.BindData(vDetailTodo.ParentData.ElementDescription);
-vDetailTodo.DateDebutTodo.BindData(vDetailTodo.ParentData.StartDate);
 vDetailTodo.InstrictionsTodo.BindData(vDetailTodo.ParentData.Instructions);
+vDetailTodo.DateDebutTodo.BindData(vDetailTodo.ParentData.StartDate, 'dd/MM/yyyy');
+vDetailTodo.DateFinTodo.BindData(aas.Expression(IIF(vDetailTodo.ParentData.EndDate, vDetailTodo.ParentData.EndDate, 'En cours...')), 'dd/MM/yyyy');
+vDetailTodo.DisplayBtnTerminer.BindData(aas.Expression(IIF(vDetailTodo.ParentData.EtatTodo == 2, '', 'hidden')));
+
 //vDetailTodo.BoutonTerminerTodo.click.BindCommand(aas.Services.Server.TodosService.EndTodo(vDetailTodo.ParentData.TimosId), "", true, true);
 //vDetailTodo.BoutonTerminerTodo.click.BindCommand(aas.Services.Browser.ClientTodosService.ToastAlert("todo terminé"));
-vDetailTodo.BoutonTerminerTodo.click.BindCommand(aas.Services.Browser.ClientTodosService.EndTodo(vDetailTodo.ParentData.TimosId));
-//vDetailTodo.BoutonTerminerTodo.hidden
+vDetailTodo.BoutonTerminerTodo.click.BindCommand(aas.Services.Browser.ClientTodosService.EndTodo(vDetailTodo.ParentData.TimosId, vDetailTodo.ParentData.Label));
 
 // Gestion des onglets
 var vDetailTodoTab = Aspectize.CreateView("DetailTodoTabs", aas.Controls.Bootstrap.BootstrapTab, aas.Zones.DetailTodo.ZoneOnglets, true);

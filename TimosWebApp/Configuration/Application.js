@@ -1,7 +1,8 @@
 
 var app = newApplication();
 
-app.Directories = "Bootstrap, BootstrapDateTimePicker";
+app.Directories = "Bootstrap, BootstrapDateTimePicker, DbLogException";
+app.LogServiceName = "DbLogExceptionService";
 app.SecurityEnabled = true;
 app.SecurityServicesConfiguration = "SecurityService";
 app.DisplayExceptionEnabled = true;

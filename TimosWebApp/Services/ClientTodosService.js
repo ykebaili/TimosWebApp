@@ -56,7 +56,8 @@ Global.ClientTodosService = {
 
     },
 
-    EndTodo: function (nIdTodo) {
+    //-------------------------------------------------- Terminer un todo -------------------------------------------
+    EndTodo: function (nIdTodo, labelTodo) {
       
         var cmd = Aspectize.PrepareCommand();
         
@@ -65,25 +66,25 @@ Global.ClientTodosService = {
         cmd.Attributes.aasMergeData = true;
         cmd.Attributes.aasDataName = this.MainData;
         cmd.OnComplete = function (result) {
-            Aspectize.ExecuteCommand(aas.Services.Browser.ClientTodosService.ToastAlert("Todo terminé"));
+            Aspectize.ExecuteCommand(aas.Services.Browser.ClientTodosService.ToastAlert("L'étape " + labelTodo + " a été validée avec succès.", "Todo terminé"));
         }
         cmd.Call(aas.Services.Server.TodosService.EndTodo(nIdTodo));
     },
 
-
-    ToastAlert: function (message) {
+    //------------------------------------------------------ TOASTR --------------------------------------------
+    ToastAlert: function (titre, message) {
 
         toastr.options = {
             "closeButton": false,
             "debug": false,
             "newestOnTop": false,
-            "progressBar": false,
-            "positionClass": "toast-top-right",
+            "progressBar": true,
+            "positionClass": "toast-top-full-width",
             "preventDuplicates": false,
             "onclick": null,
-            "showDuration": "300",
+            "showDuration": "3000",
             "hideDuration": "1000",
-            "timeOut": "5000",
+            "timeOut": "7000",
             "extendedTimeOut": "1000",
             "showEasing": "swing",
             "hideEasing": "linear",
@@ -91,7 +92,7 @@ Global.ClientTodosService = {
             "hideMethod": "fadeOut"
         }
 
-        toastr["success"](message);
+        toastr["success"](message, titre);
                 
     },
 

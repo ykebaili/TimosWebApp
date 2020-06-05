@@ -157,11 +157,11 @@ namespace TimosWebApp
 			set { setValue<EtatTodo>("EtatTodo", value); }
 		}
 
-		[Data]
-		public DateTime EndDate
+		[Data(IsNullable = true)]
+		public DateTime? EndDate
 		{
-			get { return getValue<DateTime>("EndDate"); }
-			set { setValue<DateTime>("EndDate", value); }
+			get { return getValue<DateTime?>("EndDate"); }
+			set { setValue<DateTime?>("EndDate", value); }
 		}
 
 		[Data]

@@ -11,7 +11,7 @@
         <entityProperty name="ElementId" type="Int32" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
         <entityProperty name="ElementDescription" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
         <entityProperty name="EtatTodo" type="EtatTodo" defaultValue="0" isCustomType="true" identity="false" isEnumType="true" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
-        <entityProperty name="EndDate" type="DateTime" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="EndDate" type="DateTime" nullable="true" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
         <entityProperty name="DureeStandard" type="Int32" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
       </properties>
     </entity>

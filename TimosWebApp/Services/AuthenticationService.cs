@@ -10,15 +10,19 @@ using sc2i.process.workflow;
 
 namespace TimosWebApp
 {
+    public interface IAuthentificationTimos
+    {
+        void LogoutUser();
+    }
+
     [Service(Name = "AuthenticationService")]
-    public class AuthenticationService : IAuthentication, IUserProfile, IPersistentAuthentication //, IInitializable, ISingleton
+    public class AuthenticationService : IAuthentication, IUserProfile, IPersistentAuthentication, IAuthentificationTimos //, IInitializable, ISingleton
     {
         // Authenticate user, using Security Service Configuration 
         AspectizeUser IAuthentication.Authenticate(string userName, string secret, AuthenticationProtocol protocol, HashHelper.Algorithm algorithm, string challenge)
         {
             // Authentification TIMOS
             ITimosServiceForAspectize serviceClientAspectize = (ITimosServiceForAspectize)C2iFactory.GetNewObject(typeof(ITimosServiceForAspectize));
-            //string strNomGestionnaire = serviceClientAspectize.GetType().ToString();
             CResultAErreur result = serviceClientAspectize.OpenSession(userName, secret);
             
             if (result && result.Data is Dictionary<string, object>)
@@ -105,6 +109,14 @@ namespace TimosWebApp
             }
             // No profile for unanthenticated user
             return null;
+        }
+
+        public void LogoutUser()
+        {
+            AspectizeUser aspectizeUser = ExecutingContext.CurrentUser;
+            int nIdsession = (int)aspectizeUser[CUserTimosWebApp.c_champSessionId];
+            ITimosServiceForAspectize serviceClientAspectize = (ITimosServiceForAspectize)C2iFactory.GetNewObject(typeof(ITimosServiceForAspectize));
+            serviceClientAspectize.CloseSession(nIdsession);
         }
 
     }

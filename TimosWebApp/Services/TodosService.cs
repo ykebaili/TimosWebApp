@@ -17,7 +17,7 @@ namespace TimosWebApp.Services
 
         [Command(IsSaveCommand = true)]
         void SaveTodo(DataSet dataSet, int nIdTodo, string elementType, int elementId);
-        void EndTodo(int nIdTodo);
+        DataSet EndTodo(int nIdTodo);
         DataSet UploadDocuments(UploadedFile[] uploadedFiles, int nIdTodo, int nIdDocument, int nIdCategorie);
     }
 
@@ -54,6 +54,14 @@ namespace TimosWebApp.Services
                             todo.ElementType = (string)rowTodo[CTodoTimosWebApp.c_champTypeElementEdite];
                             todo.ElementId = (int)rowTodo[CTodoTimosWebApp.c_champIdElementEdite];
                             todo.ElementDescription = (string)rowTodo[CTodoTimosWebApp.c_champElementDescription];
+                            todo.DureeStandard = (int)rowTodo[CTodoTimosWebApp.c_champDureeStandard];
+                            int nEtat = (int)rowTodo[CTodoTimosWebApp.c_champEtatTodo];
+                            todo.EtatTodo = (EtatTodo)nEtat;
+                            if (rowTodo[CTodoTimosWebApp.c_champDateFin] == DBNull.Value)
+                                todo.EndDate = null;
+                            else
+                                todo.EndDate = (DateTime)rowTodo[CTodoTimosWebApp.c_champDateFin];
+
 
                             // Création des groupes de champs
                             DataTable tableGroupes = ds.Tables[CGroupeChamps.c_nomTable];
@@ -263,9 +271,10 @@ namespace TimosWebApp.Services
         }
 
         //-----------------------------------------------------------------------------------------
-        public void EndTodo(int nIdTodo)
+        public DataSet EndTodo(int nIdTodo)
         {
             AspectizeUser aspectizeUser = ExecutingContext.CurrentUser;
+            IEntityManager em = EntityManager.FromDataSet(DataSetHelper.Create());
 
             if (aspectizeUser.IsAuthenticated)
             {
@@ -276,7 +285,36 @@ namespace TimosWebApp.Services
 
                 if (!result)
                     throw new SmartException(1020, result.MessageErreur);
+
+                DataSet ds = result.Data as DataSet;
+                if (ds != null && ds.Tables.Contains(CTodoTimosWebApp.c_nomTable))
+                {
+                    DataTable tableTodos = ds.Tables[CTodoTimosWebApp.c_nomTable];
+                    if (tableTodos.Rows.Count > 0)
+                    {
+                        // la première row contient les données du todo demandé
+                        DataRow rowTodo = tableTodos.Rows[0];
+                        var todo = em.CreateInstance<Todos>();
+                        todo.TimosId = (int)rowTodo[CTodoTimosWebApp.c_champId];
+                        todo.Label = (string)rowTodo[CTodoTimosWebApp.c_champLibelle];
+                        todo.StartDate = (DateTime)rowTodo[CTodoTimosWebApp.c_champDateDebut];
+                        todo.Instructions = (string)rowTodo[CTodoTimosWebApp.c_champInstructions];
+                        todo.ElementType = (string)rowTodo[CTodoTimosWebApp.c_champTypeElementEdite];
+                        todo.ElementId = (int)rowTodo[CTodoTimosWebApp.c_champIdElementEdite];
+                        todo.ElementDescription = (string)rowTodo[CTodoTimosWebApp.c_champElementDescription];
+                        todo.DureeStandard = (int)rowTodo[CTodoTimosWebApp.c_champDureeStandard];
+                        int nEtat = (int)rowTodo[CTodoTimosWebApp.c_champEtatTodo];
+                        todo.EtatTodo = (EtatTodo)nEtat;
+                        if (rowTodo[CTodoTimosWebApp.c_champDateFin] == DBNull.Value)
+                            todo.EndDate = null;
+                        else
+                            todo.EndDate = (DateTime)rowTodo[CTodoTimosWebApp.c_champDateFin];
+
+                    }
+                }
             }
+            em.Data.AcceptChanges();
+            return em.Data;
         }
 
         //-----------------------------------------------------------------------------------------

@@ -9,7 +9,7 @@
             </div>
         </div>
         <div class="row section-instructions">  
-            <div class="col-xs-12">
+            <div class="col-sm-10 col-xs-12">
                 <p class="infos-icone">
                     <i class="fas fa-info-circle"></i> Instructions
                 </p>
@@ -17,17 +17,20 @@
                     <span>{InstrictionsTodo}</span>
                 </p>
             </div>
+            <div class="col-sm-2 col-xs-12">
+                <button class="btn btn-success {DisplayBtnTerminer}" name="BoutonTerminerTodo"><i class="fas fa-check"></i> Terminer</button>
+            </div>
         </div>
 
         <div class="row section-filtre">
-            <div class="col-sm-5 col-xs-12">
+            <div class="col-sm-4 col-xs-12">
                 <p><strong>Element édité : </strong><span>{DescriptionElementEdite}</span> </p>
             </div>
-            <div class="col-sm-5 col-xs-12">
-                <p><strong>Date affectation : </strong><span>{DateDebutTodo}</span> </p>
+            <div class="col-sm-4 col-xs-12">
+                <p><strong>Démarré le : </strong><span>{DateDebutTodo}</span> </p>
             </div>
-            <div class="col-xs-2 col-xs-12">
-                <button class="btn btn-success" name="BoutonTerminerTodo"><i class="fas fa-check"></i> Terminer</button>
+            <div class="col-sm-4 col-xs-12">
+                <p><strong>Terminé le : </strong><span>{DateFinTodo}</span> </p>
             </div>
         </div>
         <div class="row section-liste">

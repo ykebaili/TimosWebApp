@@ -90,7 +90,7 @@
     <Content Include="Configuration\Views\ChampsTodo.js" />
     <Content Include="Configuration\Views\Documents.js" />
     <Content Include="Configuration\Views\ListeTodos.js" />
-    <Content Include="Configuration\Views\View.js" />
+    <Content Include="Configuration\Views\Home.js" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Configuration\Views\ErrorView.js" />
