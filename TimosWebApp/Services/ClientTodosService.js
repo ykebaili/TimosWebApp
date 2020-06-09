@@ -6,6 +6,7 @@ Global.ClientTodosService = {
     aasPublished: true,
     MainData : 'MainData',
 
+    //-------------------------------------------------------------------------------------------------------
     FiltreTodos: function (filtreLabel) {
         var filtre = '';
         if (filtreLabel) {
@@ -15,6 +16,7 @@ Global.ClientTodosService = {
 
     },
 
+    //-------------------------------------------------------------------------------------------------------
     InitPropertyGrid: function (gridId, edit) {
 
         var colLabel = 'col-xs-12 col-md-4';
@@ -42,6 +44,7 @@ Global.ClientTodosService = {
 
     },
 
+    //-------------------------------------------------------------------------------------------------------
     UploadDocument: function (id, uploader) {
 
         //DocumentAttendu:0-UploaderDocument
@@ -66,7 +69,7 @@ Global.ClientTodosService = {
         cmd.Attributes.aasMergeData = true;
         cmd.Attributes.aasDataName = this.MainData;
         cmd.OnComplete = function (result) {
-            Aspectize.ExecuteCommand(aas.Services.Browser.ClientTodosService.ToastAlert("L'étape " + labelTodo + " a été validée avec succès.", "Todo terminé"));
+            Aspectize.ExecuteCommand(aas.Services.Browser.ClientTodosService.ToastAlert("Todo terminé", "L'étape " + labelTodo + " a été validée avec succès."));
         }
         cmd.Call(aas.Services.Server.TodosService.EndTodo(nIdTodo));
     },
@@ -75,16 +78,16 @@ Global.ClientTodosService = {
     ToastAlert: function (titre, message) {
 
         toastr.options = {
-            "closeButton": false,
+            "closeButton": true,
             "debug": false,
             "newestOnTop": false,
-            "progressBar": true,
-            "positionClass": "toast-top-full-width",
+            "progressBar": false,
+            "positionClass": "toast-top-center",
             "preventDuplicates": false,
             "onclick": null,
             "showDuration": "3000",
             "hideDuration": "1000",
-            "timeOut": "7000",
+            "timeOut": "9000",
             "extendedTimeOut": "1000",
             "showEasing": "swing",
             "hideEasing": "linear",
@@ -96,6 +99,7 @@ Global.ClientTodosService = {
                 
     },
 
+    //-------------------------------------------------------------------------------------------------------
     ExpandGroup: function (nIdGroupe) {
         
         var em = Aspectize.EntityManagerFromContextDataName(this.MainData);

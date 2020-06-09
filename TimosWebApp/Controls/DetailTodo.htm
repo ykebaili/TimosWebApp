@@ -59,17 +59,18 @@
     <!------------------------------------------------------- Un groupe de champs ----------------------------------------------->
     <div aas-control="GroupeChamps">
         <div class="row section-titre-groupe {SectionTitreGroupe}">
-            <div class="col-xs-10">
+            <div class="col-xs-12">
                 <h3 class="titre-groupe"><a class="collapse-groupe" name="CollapseGroupe"><i class="fas {FaCaretClass}"></i> {TitreGroupe}</a></h3>
-            </div>
-            <div class="col-xs-2">
-                <button class="btn btn-link" name="BoutonEditionTodo"><i class="fas fa-edit"></i> Editer</button>
             </div>
         </div>
         <div class="row section-contenu-groupe {DisplayExpand}">
-            <div class="col-xs-12">
+            <div class="col-xs-9 col-sm-10">
                 <div aas-name="GridChampsTodo" aas-type="AspectizePropertyGrid"></div>
             </div>
+            <div class="col-xs-3 col-sm-2">
+                <button class="btn btn-primary" name="BoutonEditionTodo"><i class="fas fa-edit"></i> Editer</button>
+            </div>
+
         </div>
     </div>
 
@@ -115,16 +116,17 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title text-center">Eidtion Todo</h4>
+                        <h4 class="modal-title text-center">Edition du Todo</h4>
                     </div>
                     <div class="modal-body">
+                        <h3>{LabelToDo}</h3>
                         <div class="form-horizontal">
                             <div aas-name="GridChampsTodo" aas-type="AspectizePropertyGrid"></div>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button name="BtnCancel" class="btn btn-default">Annuler</button>
-                        <button name="BtnSave" class="btn btn-primary">Enregistrer</button>
+                        <button name="BtnSave" class="btn btn-success">Enregistrer</button>
                     </div>
                 </div>
             </div>
@@ -141,7 +143,28 @@
         </div>
     </div>
 
-
+    <!------------------------------------------------------- Modale confirmation temriner todo ----------------------------------------------->
+    <div aas-control="name:'ConfirmationEndTodo', isModal:true">
+        <div class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title text-center"><i class="fas fa-check"></i> Terminer le Todo</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="alert alert-warning">
+                            <p>Êtes-vous sûr(e) de vouloir valider définitivement ce todo ?</p>
+                            <p><strong>{LabelToDo}</strong></p>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button name="BtnNon" class="btn btn-default">Non</button>
+                        <button name="BtnOui" class="btn btn-success">Oui</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
 </body>

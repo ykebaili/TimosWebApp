@@ -17,3 +17,11 @@ colNomFichier.HeaderText.BindData("Nom du fichier");
 colNomFichier.Text.BindData(vDocumentAttendu.GridFichiers.DataSource.NomFichier);
 vDocumentAttendu.GridFichiers.HideHeadersIfNoData.BindData(true);
 
+/*var colActionSupprimer = vDocumentAttendu.GridFichiers.AddGridColumn("ActionSupprimer", aas.ColumnType.Button);
+colActionSupprimer.HeaderText.BindData("");
+colActionSupprimer.Text.BindData("Supprimer");*/
+
+var colActionSupprimer = vDocumentAttendu.GridFichiers.AddGridColumn("ActionSupprimer", aas.ColumnType.Link);
+colActionSupprimer.HeaderText.BindData("");
+colActionSupprimer.Text.BindData("Supprimer");
+

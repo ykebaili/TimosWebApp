@@ -106,6 +106,7 @@ namespace TimosWebApp
 
                 em.Data.AcceptChanges();
                 return em.Data;
+                
             }
             // No profile for unanthenticated user
             return null;

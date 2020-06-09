@@ -26,6 +26,7 @@ vGroupeChamps.OnActivated.BindCommand(aas.Services.Browser.ClientTodosService.In
 
 // Configuration du controle d'édition d'un todo en modal
 var vEditionTodo = Aspectize.CreateView("EditionTodo", aas.Controls.EditionTodo, "", false, aas.Data.MainData.Todos.RelationTodoGroupeChamps.GroupeChamps);
+vEditionTodo.LabelToDo.BindData(vEditionTodo.ParentData.RelationTodoGroupeChamps.Todos.Label);
 vEditionTodo.OnActivated.BindCommand(aas.Services.Browser.DataRecorder.Start(aas.Data.MainData));
 vEditionTodo.BtnCancel.click.BindCommand(aas.Services.Browser.BootStrapClientService.CloseModal(aas.ViewName.EditionTodo));
 vEditionTodo.BtnCancel.click.BindCommand(aas.Services.Browser.DataRecorder.CancelRowChanges(aas.Data.MainData));

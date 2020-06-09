@@ -236,6 +236,10 @@ namespace TimosWebApp.Services
                     }
                 }
             }
+            else
+            {
+                throw new SmartException(1100, "Votre session a expiré, veuillez vous reconnecter");
+            }
             return null;
         }
 
@@ -268,6 +272,11 @@ namespace TimosWebApp.Services
                     }*/
                 }
             }
+            else
+            {
+                throw new SmartException(1100, "Votre session a expiré, veuillez vous reconnecter");
+            }
+
         }
 
         //-----------------------------------------------------------------------------------------
@@ -313,6 +322,11 @@ namespace TimosWebApp.Services
                     }
                 }
             }
+            else
+            {
+                throw new SmartException(1100, "Votre session a expiré, veuillez vous reconnecter");
+            }
+
             em.Data.AcceptChanges();
             return em.Data;
         }
