@@ -504,6 +504,7 @@ namespace TimosWebApp
 			public const string Commentaire = "Commentaire";
 			public const string DocumentId = "DocumentId";
 			public const string CheminTemporaire = "CheminTemporaire";
+			public const string Extension = "Extension";
 		}
 
 		void IDataWrapper.InitData(DataRow data, string namePrefix)
@@ -558,6 +559,13 @@ namespace TimosWebApp
 		{
 			get { return getValue<string>("CheminTemporaire"); }
 			set { setValue<string>("CheminTemporaire", value); }
+		}
+
+		[Data]
+		public string Extension
+		{
+			get { return getValue<string>("Extension"); }
+			set { setValue<string>("Extension", value); }
 		}
 
 	}

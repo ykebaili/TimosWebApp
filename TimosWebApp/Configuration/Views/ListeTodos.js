@@ -29,8 +29,8 @@ vDetailTodo.OnActivated.BindCommand(aas.Services.Browser.History.PushState(aas.V
 vDetailTodo.LabelToDo.BindData(vDetailTodo.ParentData.Label);
 vDetailTodo.DescriptionElementEdite.BindData(vDetailTodo.ParentData.ElementDescription);
 vDetailTodo.InstrictionsTodo.BindData(vDetailTodo.ParentData.Instructions);
-vDetailTodo.DateDebutTodo.BindData(vDetailTodo.ParentData.StartDate, 'dd/MM/yyyy');
-vDetailTodo.DateFinTodo.BindData(aas.Expression(IIF(vDetailTodo.ParentData.EndDate, vDetailTodo.ParentData.EndDate, 'En cours...')), 'dd/MM/yyyy');
+vDetailTodo.DateDebutTodo.BindData(vDetailTodo.ParentData.StartDate, 'dd MMM yyyy');
+vDetailTodo.DateFinTodo.BindData(aas.Expression(IIF(vDetailTodo.ParentData.EndDate, vDetailTodo.ParentData.EndDate, 'En cours...')), 'dd MMM yyyy');
 vDetailTodo.DisplayBtnTerminer.BindData(aas.Expression(IIF(vDetailTodo.ParentData.EtatTodo == 2, '', 'hidden')));
 
 //vDetailTodo.BoutonTerminerTodo.click.BindCommand(aas.Services.Server.TodosService.EndTodo(vDetailTodo.ParentData.TimosId), "", true, true);
@@ -42,7 +42,7 @@ var vConfirmationEndTodo = Aspectize.CreateView("ConfirmationEndTodo", aas.Contr
 vConfirmationEndTodo.LabelToDo.BindData(vConfirmationEndTodo.ParentData.Label);
 vConfirmationEndTodo.BtnNon.click.BindCommand(aas.Services.Browser.BootStrapClientService.CloseModal(aas.ViewName.ConfirmationEndTodo));
 vConfirmationEndTodo.BtnOui.click.BindCommand(aas.Services.Browser.ClientTodosService.EndTodo(vDetailTodo.ParentData.TimosId, vDetailTodo.ParentData.Label));
-vConfirmationEndTodo.BtnOui.click.BindCommand(aas.Services.Browser.BootStrapClientService.CloseModal(aas.ViewName.ConfirmationEndTodo));
+//vConfirmationEndTodo.BtnOui.click.BindCommand(aas.Services.Browser.BootStrapClientService.CloseModal(aas.ViewName.ConfirmationEndTodo));
 
 // Gestion des onglets
 var vDetailTodoTab = Aspectize.CreateView("DetailTodoTabs", aas.Controls.Bootstrap.BootstrapTab, aas.Zones.DetailTodo.ZoneOnglets, true);

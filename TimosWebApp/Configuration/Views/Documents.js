@@ -17,11 +17,19 @@ colNomFichier.HeaderText.BindData("Nom du fichier");
 colNomFichier.Text.BindData(vDocumentAttendu.GridFichiers.DataSource.NomFichier);
 vDocumentAttendu.GridFichiers.HideHeadersIfNoData.BindData(true);
 
-/*var colActionSupprimer = vDocumentAttendu.GridFichiers.AddGridColumn("ActionSupprimer", aas.ColumnType.Button);
-colActionSupprimer.HeaderText.BindData("");
-colActionSupprimer.Text.BindData("Supprimer");*/
+// Visualiser (télécharger) un fihcier
+var colActionVisualiser = vDocumentAttendu.GridFichiers.AddGridColumn("ActionVisualiser", aas.ColumnType.TimosButton);
+colActionVisualiser.BtnClasse.BindData("btn-info");
+colActionVisualiser.IconButton.BindData("fas fa-eye");
+colActionVisualiser.HeaderText.BindData("");
+colActionVisualiser.Text.BindData("Visualiser");
+colActionVisualiser.Href.BindData(aas.Expression('TodosService.DownloadDocument.' + vDocumentAttendu.GridFichiers.DataSource.Extension + '.cmd.ashx?strKeyFile=' + vDocumentAttendu.GridFichiers.DataSource.TimosKey + '&strFileName=' + vDocumentAttendu.GridFichiers.DataSource.NomFichier));
 
-var colActionSupprimer = vDocumentAttendu.GridFichiers.AddGridColumn("ActionSupprimer", aas.ColumnType.Link);
+// Supprimer un fichier
+var colActionSupprimer = vDocumentAttendu.GridFichiers.AddGridColumn("ActionSupprimer", aas.ColumnType.TimosButton);
+colActionSupprimer.IconButton.BindData("fas fa-trash");
+colActionSupprimer.BtnClasse.BindData("btn-danger");
 colActionSupprimer.HeaderText.BindData("");
 colActionSupprimer.Text.BindData("Supprimer");
+colActionSupprimer.Click.BindCommand(aas.Services.Browser.ClientTodosService.DeleteDocument(vDocumentAttendu.ParentData.RelationFichiers.FichiersAttaches.TimosKey, vDocumentAttendu.ParentData.RelationFichiers.FichiersAttaches.NomFichier));
 

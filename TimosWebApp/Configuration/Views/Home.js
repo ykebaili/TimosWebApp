@@ -15,4 +15,4 @@ var login = Aspectize.CreateView("Login", aas.Controls.Login);
 login.AddAuthorizationRole(aas.Roles.Anonymous, aas.Enum.AccessControl.ReadWrite);
 login.BtnLogin.click.BindCommand(aas.Services.Browser.SecurityServices.Authenticate(login.TxtEmail.value, login.TxtPwd.value, login.CheckBoxRememberMe.checked));
 //login.BtnLogin.click.BindCommand(aas.Services.Browser.ClientInscriptionService.AfterLogin(aas.ViewName.Login.TxtPwd));
-
+login.OnLoad.BindCommand(aas.Services.Browser.Keyboard.BindEnterKeyToButtonClick(aas.ViewName.Login.TxtPwd, aas.ViewName.Login.BtnLogin));

@@ -19,6 +19,9 @@ namespace TimosWebApp.Services
         void SaveTodo(DataSet dataSet, int nIdTodo, string elementType, int elementId);
         DataSet EndTodo(int nIdTodo);
         DataSet UploadDocuments(UploadedFile[] uploadedFiles, int nIdTodo, int nIdDocument, int nIdCategorie);
+        void DeleteDocument(string strKeyFile);
+        byte[] DownloadDocument(string strKeyFile, string strFileName);
+
     }
 
     [Service(Name = "TodosService")]
@@ -34,7 +37,13 @@ namespace TimosWebApp.Services
                 IEntityManager em = EntityManager.FromDataSet(DataSetHelper.Create());
 
                 ITimosServiceForAspectize serviceClientAspectize = (ITimosServiceForAspectize)C2iFactory.GetNewObject(typeof(ITimosServiceForAspectize));
-                CResultAErreur result = serviceClientAspectize.GetTodoDetails(nTimosSessionId, nIdTodo);
+                CResultAErreur result = serviceClientAspectize.GetSession(nTimosSessionId);
+                if(!result)
+                {
+                    throw new SmartException(1100, "Votre session a expiré, veuillez vous reconnecter");
+                }
+
+                result = serviceClientAspectize.GetTodoDetails(nTimosSessionId, nIdTodo);
 
                 if (result && result.Data != null)
                 {
@@ -219,11 +228,19 @@ namespace TimosWebApp.Services
                                     if (nIdDoc == doc.TimosId)
                                     {
                                         var fichier = em.CreateInstance<FichiersAttaches>();
+                                        fichier.TimosKey = (string)rowFichier[CFichierAttache.c_champKey];
                                         fichier.NomFichier = (string)rowFichier[CFichierAttache.c_champNomFichier];
                                         fichier.Commentaire = (string)rowFichier[CFichierAttache.c_champCommentaire];
                                         fichier.DateUpload = (DateTime)rowFichier[CFichierAttache.c_champDateUpload];
                                         fichier.DateDocument = (DateTime)rowFichier[CFichierAttache.c_champDateDocument];
                                         fichier.DocumentId = nIdDoc;
+                                        int nIndex = fichier.NomFichier.LastIndexOf(".");
+                                        string strExtension = "";
+                                        if (nIndex > 0)
+                                            strExtension = fichier.NomFichier.Substring(nIndex + 1);
+                                        else
+                                            strExtension = "bin";
+                                        fichier.Extension = strExtension.ToLower(); ;
 
                                         em.AssociateInstance<RelationFichiers>(doc, fichier);
                                     }
@@ -259,7 +276,12 @@ namespace TimosWebApp.Services
                     IEntityManager em = EntityManager.FromDataSet(dataSet);
 
                     ITimosServiceForAspectize serviceClientAspectize = (ITimosServiceForAspectize)C2iFactory.GetNewObject(typeof(ITimosServiceForAspectize));
-                    CResultAErreur result = serviceClientAspectize.SaveTodo(nTimosSessionId, dataSet, nIdTodo, elementType, elementId);
+                    CResultAErreur result = serviceClientAspectize.GetSession(nTimosSessionId);
+                    if (!result)
+                    {
+                        throw new SmartException(1100, "Votre session a expiré, veuillez vous reconnecter");
+                    }
+                    result = serviceClientAspectize.SaveTodo(nTimosSessionId, dataSet, nIdTodo, elementType, elementId);
 
                     if (!result)
                         throw new SmartException(1010, result.MessageErreur);
@@ -290,7 +312,12 @@ namespace TimosWebApp.Services
                 int nTimosSessionId = (int)aspectizeUser[CUserTimosWebApp.c_champSessionId];
 
                 ITimosServiceForAspectize serviceClientAspectize = (ITimosServiceForAspectize)C2iFactory.GetNewObject(typeof(ITimosServiceForAspectize));
-                CResultAErreur result = serviceClientAspectize.EndTodo(nTimosSessionId, nIdTodo);
+                CResultAErreur result = serviceClientAspectize.GetSession(nTimosSessionId);
+                if (!result)
+                {
+                    throw new SmartException(1100, "Votre session a expiré, veuillez vous reconnecter");
+                }
+                result = serviceClientAspectize.EndTodo(nTimosSessionId, nIdTodo);
 
                 if (!result)
                     throw new SmartException(1020, result.MessageErreur);
@@ -335,53 +362,138 @@ namespace TimosWebApp.Services
         public DataSet UploadDocuments(UploadedFile[] uploadedFiles, int nIdTodo, int nIdDocument, int nIdCategorie)
         {
             AspectizeUser aspectizeUser = ExecutingContext.CurrentUser;
-
-            int nTimosSessionId = (int)aspectizeUser[CUserTimosWebApp.c_champSessionId];
-            ITimosServiceForAspectize serviceClientAspectize = (ITimosServiceForAspectize)C2iFactory.GetNewObject(typeof(ITimosServiceForAspectize));
-
             IEntityManager em = EntityManager.FromDataSet(DataSetHelper.Create());
 
-            DocumentsAttendus doc = em.CreateInstance<DocumentsAttendus>();
-            
-            doc.TimosId = nIdDocument;
-            doc.IdCategorie = nIdCategorie;
-            doc.DateLastUpload = DateTime.Now;
-
-            /** DEBUG ** var fs = ExecutingContext.GetService<IFileService>("FichierLocalTemporaire"); */
-
-            if (doc != null)
+            if (aspectizeUser.IsAuthenticated)
             {
-
-                foreach (UploadedFile file in uploadedFiles)
+                int nTimosSessionId = (int)aspectizeUser[CUserTimosWebApp.c_champSessionId];
+                ITimosServiceForAspectize serviceClientAspectize = (ITimosServiceForAspectize)C2iFactory.GetNewObject(typeof(ITimosServiceForAspectize));
+                CResultAErreur result = serviceClientAspectize.GetSession(nTimosSessionId);
+                if (!result)
                 {
-                    var fichier = em.CreateInstance<FichiersAttaches>();
-                    fichier.NomFichier = file.Name;
-                    fichier.TimosKey = Guid.NewGuid().ToString();
-                    fichier.DateUpload = DateTime.Now;
-                    em.AssociateInstance<RelationFichiers>(doc, fichier);
-
-                    BinaryReader reader = new BinaryReader(file.Stream);
-                    byte[] octets = reader.ReadBytes((int)file.Stream.Length);
-
-                    CResultAErreur resultFile = serviceClientAspectize.AddFile(nTimosSessionId, file.Name, octets);
-                    if (!resultFile)
-                    {
-                        throw new SmartException(1030, resultFile.MessageErreur);
-                    }
-                    string cheminTimos = (string)resultFile.Data;
-                    fichier.CheminTemporaire = cheminTimos;
+                    throw new SmartException(1100, "Votre session a expiré, veuillez vous reconnecter");
                 }
-            }
+                DocumentsAttendus doc = em.CreateInstance<DocumentsAttendus>();
 
-            em.Data.AcceptChanges();
-            CResultAErreur result = serviceClientAspectize.SaveDocument(nTimosSessionId, em.Data, nIdDocument, nIdCategorie);
-            if(!result)
+                doc.TimosId = nIdDocument;
+                doc.IdCategorie = nIdCategorie;
+                doc.DateLastUpload = DateTime.Now;
+
+                /** DEBUG ** var fs = ExecutingContext.GetService<IFileService>("FichierLocalTemporaire"); */
+
+                if (doc != null)
+                {
+
+                    foreach (UploadedFile file in uploadedFiles)
+                    {
+                        var fichier = em.CreateInstance<FichiersAttaches>();
+                        fichier.NomFichier = file.Name;
+                        fichier.TimosKey = Guid.NewGuid().ToString();
+                        fichier.DateUpload = DateTime.Now;
+                        int nIndex = fichier.NomFichier.LastIndexOf(".");
+                        string strExtension = "";
+                        if (nIndex > 0)
+                            strExtension = fichier.NomFichier.Substring(nIndex + 1);
+                        else
+                            strExtension = "bin";
+                        fichier.Extension = strExtension.ToLower();
+
+                        em.AssociateInstance<RelationFichiers>(doc, fichier);
+
+                        BinaryReader reader = new BinaryReader(file.Stream);
+                        byte[] octets = reader.ReadBytes((int)file.Stream.Length);
+
+                        CResultAErreur resultFile = serviceClientAspectize.AddFile(nTimosSessionId, file.Name, octets);
+                        if (!resultFile)
+                        {
+                            throw new SmartException(1030, resultFile.MessageErreur);
+                        }
+                        string cheminTimos = (string)resultFile.Data;
+                        fichier.CheminTemporaire = cheminTimos;
+                    }
+                }
+
+                em.Data.AcceptChanges();
+                result = serviceClientAspectize.SaveDocument(nTimosSessionId, em.Data, nIdDocument, nIdCategorie);
+                if (!result)
+                {
+                    throw new SmartException(1031, result.MessageErreur);
+                }
+
+            }
+            else
             {
-                throw new SmartException(1031, result.MessageErreur);
+                throw new SmartException(1100, "Votre session a expiré, veuillez vous reconnecter");
             }
-
             return em.Data;
         }
+
+        //-----------------------------------------------------------------------------------------
+        public void DeleteDocument(string strKeyFile)
+        {
+            AspectizeUser aspectizeUser = ExecutingContext.CurrentUser;
+            IEntityManager em = EntityManager.FromDataSet(DataSetHelper.Create());
+
+            if (aspectizeUser.IsAuthenticated)
+            {
+                int nTimosSessionId = (int)aspectizeUser[CUserTimosWebApp.c_champSessionId];
+                ITimosServiceForAspectize serviceClientAspectize = (ITimosServiceForAspectize)C2iFactory.GetNewObject(typeof(ITimosServiceForAspectize));
+                CResultAErreur result = serviceClientAspectize.GetSession(nTimosSessionId);
+                if (!result)
+                {
+                    throw new SmartException(1100, "Votre session a expiré, veuillez vous reconnecter");
+                }
+                result = serviceClientAspectize.DeleteFile(nTimosSessionId, strKeyFile);
+                if(!result)
+                {
+                    throw new SmartException(1060, result.MessageErreur);
+                }
+
+            }
+            else
+            {
+                throw new SmartException(1100, "Votre session a expiré, veuillez vous reconnecter");
+            }
+        }
+
+        //-----------------------------------------------------------------------------------------
+        public byte[] DownloadDocument(string strKeyFile, string strFileName)
+        {
+            AspectizeUser aspectizeUser = ExecutingContext.CurrentUser;
+            IEntityManager em = EntityManager.FromDataSet(DataSetHelper.Create());
+
+            if (aspectizeUser.IsAuthenticated) // Attention problème potentiel sur iOS avec les cookies
+            {
+                int nTimosSessionId = (int)aspectizeUser[CUserTimosWebApp.c_champSessionId];
+                ITimosServiceForAspectize serviceClientAspectize = (ITimosServiceForAspectize)C2iFactory.GetNewObject(typeof(ITimosServiceForAspectize));
+                CResultAErreur result = serviceClientAspectize.GetSession(nTimosSessionId);
+                if (!result)
+                {
+                    throw new SmartException(1100, "Votre session a expiré, veuillez vous reconnecter");
+                }
+                result = serviceClientAspectize.DownloadFile(nTimosSessionId, strKeyFile);
+                if (!result)
+                {
+                    throw new SmartException(1060, result.MessageErreur);
+                }
+                else
+                {
+                    byte[] octets = result.Data as byte[];
+                    if(octets != null)
+                    {
+                        ExecutingContext.SetHttpDownloadFileName(strFileName);
+                        return octets;
+                    }
+                }
+            }
+            else
+            {
+                throw new SmartException(1100, "Votre session a expiré, veuillez vous reconnecter");
+            }
+
+            return null;
+        }
+
     }
 
 }

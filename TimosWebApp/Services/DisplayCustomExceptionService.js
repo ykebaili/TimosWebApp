@@ -37,8 +37,13 @@ Global.DisplayCustomExceptionService = {
             uiService.SetContextValue('ErrorMessage', message);
 
             setTimeout(function () {
-                Aspectize.ExecuteCommand(aas.Services.Browser.BootStrapClientService.ShowModal(aas.ViewName.ErrorView, false, false));
-
+                if (x.Level === 1020) {
+                    Aspectize.ExecuteCommand(aas.Services.Browser.BootStrapClientService.CloseModal(aas.ViewName.ConfirmationEndTodo));
+                    Aspectize.ExecuteCommand(aas.Services.Browser.ClientTodosService.ToastAlert("Erreur de saisie", message, "warning"));
+                }
+                else {
+                    Aspectize.ExecuteCommand(aas.Services.Browser.BootStrapClientService.ShowModal(aas.ViewName.ErrorView, false, false));
+                }
                 if (x.EndDisplay) {
                     x.EndDisplay();
                 }

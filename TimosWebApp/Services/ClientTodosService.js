@@ -69,14 +69,47 @@ Global.ClientTodosService = {
         cmd.Attributes.aasMergeData = true;
         cmd.Attributes.aasDataName = this.MainData;
         cmd.OnComplete = function (result) {
+            Aspectize.ExecuteCommand(aas.Services.Browser.BootStrapClientService.CloseModal(aas.ViewName.ConfirmationEndTodo));
             Aspectize.ExecuteCommand(aas.Services.Browser.ClientTodosService.ToastAlert("Todo terminé", "L'étape " + labelTodo + " a été validée avec succès."));
         }
         cmd.Call(aas.Services.Server.TodosService.EndTodo(nIdTodo));
     },
 
-    //------------------------------------------------------ TOASTR --------------------------------------------
-    ToastAlert: function (titre, message) {
+    //-------------------------------------------------- Supprimer un fihcier attaché -------------------------------------------
+    DeleteDocument: function (strKeyFile, strNomFichier) {
+    
+        var dataName = this.MainData;
+        var cmd = Aspectize.PrepareCommand();
+        cmd.Attributes.aasShowWaiting = true;
+        cmd.Attributes.aasAsynchronousCall = true;
+        cmd.OnComplete = function (result) {
+            var em = Aspectize.EntityManagerFromContextDataName(dataName);
+            em.ClearInstance('FichiersAttaches', { 'TimosKey': strKeyFile });
+            Aspectize.ExecuteCommand(aas.Services.Browser.ClientTodosService.ToastAlert("Fichier supprimé", "Le fichier " + strNomFichier + " a été supprimé avec succès."));
+        }
+        cmd.Call(aas.Services.Server.TodosService.DeleteDocument(strKeyFile));
 
+    },
+
+    //-------------------------------------------------- Visualier un fihcier attaché -------------------------------------------
+    DownloadDocument: function (strKeyFile, strNomFichier) {
+
+        var dataName = this.MainData;
+        var cmd = Aspectize.PrepareCommand();
+        cmd.Attributes.aasShowWaiting = true;
+        cmd.Attributes.aasAsynchronousCall = true;
+        cmd.OnComplete = function (result) {
+
+        }
+        cmd.Call(aas.Services.Server.TodosService.DownloadDocument(strKeyFile));
+
+    },
+
+
+    //------------------------------------------------------ TOASTR --------------------------------------------
+    ToastAlert: function (titre, message, state) {
+
+        state = state || "success";
         toastr.options = {
             "closeButton": true,
             "debug": false,
@@ -95,7 +128,7 @@ Global.ClientTodosService = {
             "hideMethod": "fadeOut"
         }
 
-        toastr["success"](message, titre);
+        toastr[state](message, titre);
                 
     },
 
