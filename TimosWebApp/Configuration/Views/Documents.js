@@ -5,7 +5,6 @@ var vDocumentsAttendus = Aspectize.CreateView("DocumentsAttendusTodo", aas.Contr
 var vDocumentAttendu = Aspectize.CreateRepeatedView("DocumentAttendu", aas.Controls.DocumentAttendu, aas.Zones.DocumentsAttendusTodo.PanelDocumentsAttendus, aas.Data.MainData.Todos.RelationTodoDocument.DocumentsAttendus); // possible de trier et filtrer
 vDocumentAttendu.LibelleDocument.BindData(vDocumentAttendu.ParentData.Libelle);
 vDocumentAttendu.NombreMin.BindData(vDocumentAttendu.ParentData.NombreMin);
-vDocumentAttendu.DateLastUpload.BindData(vDocumentAttendu.ParentData.DateLastUpload);
 // Gestion de l'upload de fichiers
 vDocumentAttendu.BoutonUploadFichier.click.BindCommand(aas.Services.Browser.ClientTodosService.UploadDocument(vDocumentAttendu.ParentData.TimosId, aas.ViewName.DocumentAttendu.UploaderDocument));
 vDocumentAttendu.UploaderDocument.MultipleFiles.BindData(true);
@@ -23,7 +22,7 @@ colActionVisualiser.BtnClasse.BindData("btn-info");
 colActionVisualiser.IconButton.BindData("fas fa-eye");
 colActionVisualiser.HeaderText.BindData("");
 colActionVisualiser.Text.BindData("Visualiser");
-colActionVisualiser.Href.BindData(aas.Expression('TodosService.DownloadDocument.' + vDocumentAttendu.GridFichiers.DataSource.Extension + '.cmd.ashx?strKeyFile=' + vDocumentAttendu.GridFichiers.DataSource.TimosKey + '&strFileName=' + vDocumentAttendu.GridFichiers.DataSource.NomFichier));
+colActionVisualiser.Href.BindData(aas.Expression('TodosService.DownloadDocument.bin.cmd.ashx?strKeyFile=' + vDocumentAttendu.GridFichiers.DataSource.TimosKey + '&strFileName=' + vDocumentAttendu.GridFichiers.DataSource.NomFichier));
 
 // Supprimer un fichier
 var colActionSupprimer = vDocumentAttendu.GridFichiers.AddGridColumn("ActionSupprimer", aas.ColumnType.TimosButton);

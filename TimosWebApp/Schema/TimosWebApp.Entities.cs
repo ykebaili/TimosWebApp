@@ -579,6 +579,7 @@ namespace TimosWebApp
 			public const string OrdreAffichage = "OrdreAffichage";
 			public const string TimosId = "TimosId";
 			public const string Expand = "Expand";
+			public const string InfosSecondaires = "InfosSecondaires";
 		}
 
 		void IDataWrapper.InitData(DataRow data, string namePrefix)
@@ -612,6 +613,13 @@ namespace TimosWebApp
 		{
 			get { return getValue<bool>("Expand"); }
 			set { setValue<bool>("Expand", value); }
+		}
+
+		[Data(DefaultValue = false)]
+		public bool InfosSecondaires
+		{
+			get { return getValue<bool>("InfosSecondaires"); }
+			set { setValue<bool>("InfosSecondaires", value); }
 		}
 
 	}

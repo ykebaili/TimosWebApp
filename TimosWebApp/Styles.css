@@ -193,7 +193,6 @@ img.logo{
     font-weight: 900;
     content: "\f044"; /* fa-edit */
 }
-
 /* Tab documents attendus */
 .aasTabDocumentsAttendusTodo > a:before{
     font-family: 'Font Awesome 5 Free';
@@ -204,21 +203,21 @@ img.logo{
     font-weight: 900;
     content: "\f0c6"; /* fa-paperclip */
 }
-.gcActionSupprimer > span > a:before {
+/* Tab informations secondaires */
+.aasTabInfosSecondaires > a:before{
     font-family: 'Font Awesome 5 Free';
     width: 16px;
     height: 16px;
     display: inline-block;
     margin-right: 2px;
     font-weight: 900;
-    content: "\f2ed"; /* fa-trash-alt */
+    content: "\f05a"; /* fa-info-circle */
 }
-.gcActionSupprimer > span > a {
-    color: #dc3545;
+
+.gcActionSupprimer, .gcActionVisualiser {
+    width: 100px;
 }
-.gcActionSupprimer > span > a:hover{
-    text-decoration:none;
-}
+
 /* Masquer l'onglet Documents si pas de documents présents
 .aasTabDocumentsAttendusTodo{
     display:none !important;

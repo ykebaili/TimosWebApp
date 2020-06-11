@@ -82,6 +82,7 @@
         <entityProperty name="OrdreAffichage" type="Int32" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
         <entityProperty name="TimosId" type="Int32" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" identifier="Identifier" />
         <entityProperty name="Expand" type="Boolean" defaultValue="false" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="InfosSecondaires" type="Boolean" defaultValue="false" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
       </properties>
     </entity>
   </entities>
