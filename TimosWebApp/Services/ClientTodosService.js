@@ -69,6 +69,7 @@ Global.ClientTodosService = {
         cmd.Attributes.aasMergeData = true;
         cmd.Attributes.aasDataName = this.MainData;
         cmd.OnComplete = function (result) {
+            // Executé au retour de l'appel serveur si tout est OK (pas d'excetpion)
             Aspectize.ExecuteCommand(aas.Services.Browser.BootStrapClientService.CloseModal(aas.ViewName.ConfirmationEndTodo));
             Aspectize.ExecuteCommand(aas.Services.Browser.ClientTodosService.ToastAlert("Todo terminé", "L'étape " + labelTodo + " a été validée avec succès."));
         }

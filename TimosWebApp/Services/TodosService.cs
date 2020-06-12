@@ -80,6 +80,7 @@ namespace TimosWebApp.Services
                                 groupeChamps.TimosId = (int)rowGroupe[CGroupeChamps.c_champId];
                                 groupeChamps.Titre = (string)rowGroupe[CGroupeChamps.c_champTitre];
                                 groupeChamps.OrdreAffichage = (int)rowGroupe[CGroupeChamps.c_champOrdreAffichage];
+                                groupeChamps.InfosSecondaires = (bool)rowGroupe[CGroupeChamps.c_champIsInfosSecondaires];
 
                                 em.AssociateInstance<RelationTodoGroupeChamps>(todo, groupeChamps);
                             }
