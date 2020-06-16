@@ -76,23 +76,30 @@ namespace TimosWebApp.Services
                             DataTable tableGroupes = ds.Tables[CGroupeChamps.c_nomTable];
                             foreach (DataRow rowGroupe in tableGroupes.Rows)
                             {
-                                var groupeChamps = em.CreateInstance<GroupeChamps>();
-                                groupeChamps.TimosId = (int)rowGroupe[CGroupeChamps.c_champId];
-                                groupeChamps.Titre = (string)rowGroupe[CGroupeChamps.c_champTitre];
-                                groupeChamps.OrdreAffichage = (int)rowGroupe[CGroupeChamps.c_champOrdreAffichage];
-                                groupeChamps.InfosSecondaires = (bool)rowGroupe[CGroupeChamps.c_champIsInfosSecondaires];
+                                int nIdGroupe = (int)rowGroupe[CGroupeChamps.c_champId];
+                                if (em.GetInstance<GroupeChamps>(nIdGroupe) == null)
+                                {
+                                    var groupeChamps = em.CreateInstance<GroupeChamps>();
+                                    groupeChamps.TimosId = nIdGroupe;
+                                    groupeChamps.Titre = (string)rowGroupe[CGroupeChamps.c_champTitre];
+                                    groupeChamps.OrdreAffichage = (int)rowGroupe[CGroupeChamps.c_champOrdreAffichage];
+                                    groupeChamps.InfosSecondaires = (bool)rowGroupe[CGroupeChamps.c_champIsInfosSecondaires];
 
-                                em.AssociateInstance<RelationTodoGroupeChamps>(todo, groupeChamps);
+                                    em.AssociateInstance<RelationTodoGroupeChamps>(todo, groupeChamps);
+                                }
                             }
 
                             // Définition des champs
                             DataTable tableChampsTimos = ds.Tables[CChampTimosWebApp.c_nomTable];
                             foreach (DataRow rowChamp in tableChampsTimos.Rows)
                             {
-                                var champTimos = em.CreateInstance<ChampTimos>();
+                                int nIdChamp = (int)rowChamp[CChampTimosWebApp.c_champId];
+                                var champTimos = em.GetInstance<ChampTimos>(nIdChamp);
+                                if(champTimos == null)
+                                    champTimos = em.CreateInstance<ChampTimos>();
+                                champTimos.TimosId = nIdChamp;
                                 champTimos.Nom = (string)rowChamp[CChampTimosWebApp.c_champNom];
                                 champTimos.DisplayOrder = (int)rowChamp[CChampTimosWebApp.c_champOrdreAffichage];
-                                champTimos.TimosId = (int)rowChamp[CChampTimosWebApp.c_champId];
                                 champTimos.TypeDonneChamp = (TypeDonnee)rowChamp[CChampTimosWebApp.c_champTypeDonne];
                                 champTimos.LibelleConvivial = (string)rowChamp[CChampTimosWebApp.c_champLibelleConvivial];
                                 bool bIsSelect = (bool)rowChamp[CChampTimosWebApp.c_champIsChoixParmis];
@@ -140,7 +147,8 @@ namespace TimosWebApp.Services
                                 }
 
                                 GroupeChamps groupeAssocie = em.GetInstance<GroupeChamps>(nIdGroupeAssocie);
-                                em.AssociateInstance<RelationGroupeChampsChampsTimos>(groupeAssocie, champTimos);
+                                if(champTimos.GetAssociatedInstance<GroupeChamps, RelationGroupeChampsChampsTimos>() == null)
+                                    em.AssociateInstance<RelationGroupeChampsChampsTimos>(groupeAssocie, champTimos);
                             }
 
                             // Gestion des valeurs possibles de champs
@@ -165,42 +173,45 @@ namespace TimosWebApp.Services
                             DataTable tableValeursChamps = ds.Tables[CTodoValeurChamp.c_nomTable];
                             foreach (DataRow rowVal in tableValeursChamps.Rows)
                             {
-                                var valTimos = em.CreateInstance<TodoValeurChamp>();
-                                valTimos.LibelleChamp = (string)rowVal[CTodoValeurChamp.c_champLibelle];
-                                valTimos.OrdreChamp = (int)rowVal[CTodoValeurChamp.c_champOrdreAffichage];
-                                valTimos.ChampTimosId = (int)rowVal[CTodoValeurChamp.c_champId];
-
-                                string valeurChamp = (string)rowVal[CTodoValeurChamp.c_champValeur];
-
-                                if (valeurChamp != "")
+                                int nIdValeurChamp = (int)rowVal[CTodoValeurChamp.c_champId];
+                                var valTimos = em.GetInstance<TodoValeurChamp>(nIdValeurChamp);
+                                if (valTimos == null)
                                 {
-                                    var champTimos = em.GetInstance<ChampTimos>(valTimos.ChampTimosId);
-                                    if (champTimos.IsSelect)
+                                    valTimos = em.CreateInstance<TodoValeurChamp>();
+                                    valTimos.ChampTimosId = nIdValeurChamp;
+                                    valTimos.LibelleChamp = (string)rowVal[CTodoValeurChamp.c_champLibelle];
+                                    valTimos.OrdreChamp = (int)rowVal[CTodoValeurChamp.c_champOrdreAffichage];
+
+                                    string valeurChamp = (string)rowVal[CTodoValeurChamp.c_champValeur];
+                                    if (valeurChamp != "")
                                     {
-                                        bool bFound = false;
-                                        var valPossibles = em.GetAllInstances<ValeursChamp>();
-                                        foreach (var valPossible in valPossibles)
+                                        var champTimos = em.GetInstance<ChampTimos>(valTimos.ChampTimosId);
+                                        if (champTimos.IsSelect)
                                         {
-                                            if (valPossible.StoredValue == valeurChamp)
+                                            bool bFound = false;
+                                            var valPossibles = em.GetAllInstances<ValeursChamp>();
+                                            foreach (var valPossible in valPossibles)
                                             {
-                                                valeurChamp = valPossible.StoredValue;
-                                                bFound = true;
-                                                break;
+                                                if (valPossible.StoredValue == valeurChamp)
+                                                {
+                                                    valeurChamp = valPossible.StoredValue;
+                                                    bFound = true;
+                                                    break;
+                                                }
                                             }
+                                            if (!bFound)
+                                                throw new SmartException("On a un problème de valeurs possibles sur le champ id " + valTimos.ChampTimosId);
                                         }
-                                        if (!bFound)
-                                            throw new SmartException("On a un problème de valeurs possibles sur le champ id " + valTimos.ChampTimosId);
+                                    }
+                                    valTimos.ValeurChamp = valeurChamp;
+
+                                    ChampTimos champ = em.GetInstance<ChampTimos>(valTimos.ChampTimosId);
+                                    if (champ != null)
+                                    {
+                                        GroupeChamps groupe = champ.GetAssociatedInstance<GroupeChamps, RelationGroupeChampsChampsTimos>();
+                                        em.AssociateInstance<RelationTodoValeurChamp>(groupe, valTimos);
                                     }
                                 }
-                                valTimos.ValeurChamp = valeurChamp;
-
-                                ChampTimos champ = em.GetInstance<ChampTimos>(valTimos.ChampTimosId);
-                                if (champ != null)
-                                {
-                                    GroupeChamps groupe = champ.GetAssociatedInstance<GroupeChamps, RelationGroupeChampsChampsTimos>();
-                                    em.AssociateInstance<RelationTodoValeurChamp>(groupe, valTimos);
-                                }
-
                             }
 
 
