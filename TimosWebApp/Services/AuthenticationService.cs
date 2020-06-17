@@ -99,6 +99,13 @@ namespace TimosWebApp
                             todo.ElementType = (string)row[CTodoTimosWebApp.c_champTypeElementEdite];
                             todo.ElementId = (int)row[CTodoTimosWebApp.c_champIdElementEdite];
                             todo.ElementDescription = (string)row[CTodoTimosWebApp.c_champElementDescription];
+                            todo.DureeStandard = (int)row[CTodoTimosWebApp.c_champDureeStandard];
+                            int nEtat = (int)row[CTodoTimosWebApp.c_champEtatTodo];
+                            todo.EtatTodo = (EtatTodo)nEtat;
+                            if (row[CTodoTimosWebApp.c_champDateFin] == DBNull.Value)
+                                todo.EndDate = null;
+                            else
+                                todo.EndDate = (DateTime)row[CTodoTimosWebApp.c_champDateFin];
                         }
                     }
 

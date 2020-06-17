@@ -75,7 +75,9 @@ namespace TimosWebApp
 		[Description("Erreur")]
 		Erreur		 = 		4,
 		[Description("Annule")]
-		Annule		 = 		5
+		Annule		 = 		5,
+		[Description("EnRetard")]
+		EnRetard		 = 		6
 	}
 
 	[DataDefinition]

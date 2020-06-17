@@ -8,6 +8,7 @@
         Couleur gris panel  : #fcfcfd  
         Couleur orange      : #ff8e01
         Couleur vert        : #5cb85c
+        Couleur rouge       : #d9534f
 
     Typographie : 
 */
@@ -84,6 +85,19 @@ img.logo{
 .input-group-addon.filter-input {
     background-color: #fff;
 }
+.section-filtre .form-check{
+    background-color:#f2f4f7;
+    padding: 1% 4%;
+    margin-bottom: 2px;
+}
+.section-filtre input[type="checkbox"] {
+    vertical-align: baseline;
+}
+.section-filtre .form-check-label{
+    margin-top : 3%;
+    margin-left : 4%;
+    color: gray;
+}
 .compteur-todos {
     font-size: 18px;
     text-align: right;
@@ -127,6 +141,29 @@ img.logo{
 #ListeTodos-GridListeTodos tbody > tr > td.gclibelle {
     font-weight: bold;
 }
+#ListeTodos-GridListeTodos tbody > tr > td.gcetattodo > span {
+    color: transparent;
+}
+#ListeTodos-GridListeTodos tbody > tr > td.gcetattodo > span:before {
+    font-family: 'Font Awesome 5 Free';
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    font-weight: 900;
+}
+#ListeTodos-GridListeTodos tbody > tr > td.gcEtatTodo2 > span:before {
+    color: #ff8e01;
+    content: "\f044"; /* fas fa-edit */
+}
+#ListeTodos-GridListeTodos tbody > tr > td.gcEtatTodo3 > span:before {
+    color: #5cb85c;
+    content: "\f00c"; /* fas fa-check */
+}
+#ListeTodos-GridListeTodos tbody > tr > td.gcEtatTodo6 > span:before {
+    color: #d9534f;
+    content: "\f017"; /* far fa-clock */
+}
+
 @media (max-width: 767px) {
     #ListeTodos-GridListeTodos tbody > tr > td.gclibelle {
         float: left;

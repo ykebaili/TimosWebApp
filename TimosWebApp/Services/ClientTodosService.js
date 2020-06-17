@@ -7,10 +7,29 @@ Global.ClientTodosService = {
     MainData : 'MainData',
 
     //-------------------------------------------------------------------------------------------------------
-    FiltreTodos: function (filtreLabel) {
+    FiltreTodos: function (filtreLabel, etatDemarre, etatTermine, etatRetard) {
         var filtre = '';
         if (filtreLabel) {
             filtre = '((Label).toLowerCase().indexOf("' + filtreLabel + '".toLowerCase())) !== -1';
+        }
+        if (etatDemarre || etatTermine || etatRetard) {
+            var filtreEtat = '';
+            if (etatDemarre)
+                filtreEtat += '(EtatTodo == 2)';
+            if (etatTermine) {
+                if (filtreEtat)
+                    filtreEtat += ' || ';
+                filtreEtat += '(EtatTodo == 3)';
+            }
+            if (etatRetard) {
+                if (filtreEtat)
+                    filtreEtat += ' || ';
+                filtreEtat += '(EtatTodo == 6)';
+            }
+
+            if (filtre)
+                filtre += ' && ';
+            filtre += '(' + filtreEtat + ')';
         }
         Aspectize.ExecuteCommand(aas.Services.Browser.UIService.SetCustomFilter(aas.ViewName.ListeTodos.GridListeTodos, filtre));
 

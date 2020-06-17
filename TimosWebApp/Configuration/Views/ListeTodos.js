@@ -8,18 +8,22 @@ vListeTodos.GridListeTodos.OnRowClick.BindCommand(aas.Services.Browser.UIService
 vListeTodos.GridListeTodos.PageSize.BindData(20);
 
 // Colonnes de la liste des todos
+var colEtat = vListeTodos.GridListeTodos.AddGridColumn("etattodo", aas.ColumnType.Bootstrap.BootstrapSpan);
+colEtat.HeaderText.BindData("Etat");
+colEtat.Text.BindData(vListeTodos.GridListeTodos.DataSource.EtatTodo);
+colEtat.className.BindData(aas.Expression('gcEtatTodo' + vListeTodos.GridListeTodos.DataSource.EtatTodo));
 var colStartDate = vListeTodos.GridListeTodos.AddGridColumn("startdate", aas.ColumnType.Span);
-colStartDate.Text.BindData(vListeTodos.GridListeTodos.DataSource.StartDate, "dd MMM yyyy");
 colStartDate.HeaderText.BindData("Démarré le");
+colStartDate.Text.BindData(vListeTodos.GridListeTodos.DataSource.StartDate, "dd MMM yyyy");
 var colLabael = vListeTodos.GridListeTodos.AddGridColumn("libelle", aas.ColumnType.Span);
-colLabael.Text.BindData(vListeTodos.GridListeTodos.DataSource.Label);
 colLabael.HeaderText.BindData("Libellé du todo");
-/*var colAction = vListeTodos.GridListeTodos.AddGridColumn("action", aas.ColumnType.Span);
-colAction.Text.BindData('>');
-colAction.HeaderText.BindData('');*/
+colLabael.Text.BindData(vListeTodos.GridListeTodos.DataSource.Label);
 
 // Filtre et compteur
-vListeTodos.ChampFiltreLabel.keyup.BindCommand(aas.Services.Browser.ClientTodosService.FiltreTodos(vListeTodos.ChampFiltreLabel.value));
+vListeTodos.ChampFiltreLabel.keyup.BindCommand(aas.Services.Browser.ClientTodosService.FiltreTodos(vListeTodos.ChampFiltreLabel.value, vListeTodos.CheckFiltreDemarre.checked, vListeTodos.CheckFiltreTermine.checked, vListeTodos.CheckFiltreRetard.checked));
+vListeTodos.CheckFiltreDemarre.CheckedChanged.BindCommand(aas.Services.Browser.ClientTodosService.FiltreTodos(vListeTodos.ChampFiltreLabel.value, vListeTodos.CheckFiltreDemarre.checked, vListeTodos.CheckFiltreTermine.checked, vListeTodos.CheckFiltreRetard.checked));
+vListeTodos.CheckFiltreTermine.CheckedChanged.BindCommand(aas.Services.Browser.ClientTodosService.FiltreTodos(vListeTodos.ChampFiltreLabel.value, vListeTodos.CheckFiltreDemarre.checked, vListeTodos.CheckFiltreTermine.checked, vListeTodos.CheckFiltreRetard.checked));
+vListeTodos.CheckFiltreRetard.CheckedChanged.BindCommand(aas.Services.Browser.ClientTodosService.FiltreTodos(vListeTodos.ChampFiltreLabel.value, vListeTodos.CheckFiltreDemarre.checked, vListeTodos.CheckFiltreTermine.checked, vListeTodos.CheckFiltreRetard.checked));
 vListeTodos.CompteurTodos.BindData(vListeTodos.GridListeTodos.RowCount);
 vListeTodos.TotalTodos.BindData(aas.Services.Browser.DataService.Count(aas.Data.MainData.Todos));
 

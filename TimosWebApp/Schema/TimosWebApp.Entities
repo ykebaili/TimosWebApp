@@ -167,6 +167,7 @@
         <enumItem name="Termine" value="3" />
         <enumItem name="Erreur" value="4" />
         <enumItem name="Annule" value="5" />
+        <enumItem name="EnRetard" value="6" />
       </enumItems>
     </enumEntity>
   </enumEntities>
