@@ -105,6 +105,7 @@ Global.ClientTodosService = {
         cmd.OnComplete = function (result) {
             var em = Aspectize.EntityManagerFromContextDataName(dataName);
             em.ClearInstance('FichiersAttaches', { 'TimosKey': strKeyFile });
+            Aspectize.ExecuteCommand(aas.Services.Browser.BootStrapClientService.CloseModal(aas.ViewName.ConfirmationSupprimerFichier));
             Aspectize.ExecuteCommand(aas.Services.Browser.ClientTodosService.ToastAlert("Fichier supprimé", "Le fichier " + strNomFichier + " a été supprimé avec succès."));
         }
         cmd.Call(aas.Services.Server.TodosService.DeleteDocument(strKeyFile));

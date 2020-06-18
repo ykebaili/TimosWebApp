@@ -185,6 +185,28 @@
         </div>
     </div>
 
+    <!------------------------------------------------------- Modale confirmation temriner todo ----------------------------------------------->
+    <div aas-control="name:'ConfirmationSupprimerFichier', isModal:true">
+        <div class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title text-center"><i class="fas fa-trash"></i> Supprimer le fichier</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="alert alert-warning">
+                            <p>Êtes-vous sûr(e) de vouloir supprimer définitivement ce fichier ?</p>
+                            <p><strong>{NomFichier}</strong></p>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button name="BtnNon" class="btn btn-default">Non</button>
+                        <button name="BtnOui" class="btn btn-success">Oui</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </body>
 </html>

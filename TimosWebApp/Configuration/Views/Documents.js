@@ -17,7 +17,7 @@ colNomFichier.Text.BindData(vDocumentAttendu.GridFichiers.DataSource.NomFichier)
 vDocumentAttendu.GridFichiers.HideHeadersIfNoData.BindData(true);
 
 // Visualiser (télécharger) un fihcier
-var colActionVisualiser = vDocumentAttendu.GridFichiers.AddGridColumn("ActionVisualiser", aas.ColumnType.TimosButton);
+var colActionVisualiser = vDocumentAttendu.GridFichiers.AddGridColumn("ActionVisualiser", aas.ColumnType.TimosLink);
 colActionVisualiser.BtnClasse.BindData("btn-info");
 colActionVisualiser.IconButton.BindData("fas fa-eye");
 colActionVisualiser.HeaderText.BindData("");
@@ -26,9 +26,18 @@ colActionVisualiser.Href.BindData(aas.Expression('TodosService.DownloadDocument.
 
 // Supprimer un fichier
 var colActionSupprimer = vDocumentAttendu.GridFichiers.AddGridColumn("ActionSupprimer", aas.ColumnType.TimosButton);
-colActionSupprimer.IconButton.BindData("fas fa-trash");
 colActionSupprimer.BtnClasse.BindData("btn-danger");
+colActionSupprimer.IconButton.BindData("fas fa-trash");
 colActionSupprimer.HeaderText.BindData("");
 colActionSupprimer.Text.BindData("Supprimer");
-colActionSupprimer.Click.BindCommand(aas.Services.Browser.ClientTodosService.DeleteDocument(vDocumentAttendu.ParentData.RelationFichiers.FichiersAttaches.TimosKey, vDocumentAttendu.ParentData.RelationFichiers.FichiersAttaches.NomFichier));
+// Suppression sans confirmation
+colActionSupprimer.Click.BindCommand(aas.Services.Browser.ClientTodosService.DeleteDocument(vDocumentAttendu.GridFichiers.DataSource.TimosKey, vDocumentAttendu.GridFichiers.DataSource.NomFichier));
+// Suppression avec confirmation
+//colActionSupprimer.Click.BindCommand(aas.Services.Browser.BootStrapClientService.ShowModal(aas.ViewName.ConfirmationSupprimerFichier, true, true, false));
+
+// Confirmation supprimer fichier
+var vConfirmationSupprimerFichier = Aspectize.CreateView("ConfirmationSupprimerFichier", aas.Controls.ConfirmationSupprimerFichier, "", false, aas.Data.MainData.Todos.RelationTodoDocument.DocumentsAttendus.RelationFichiers.FichiersAttaches);
+vConfirmationSupprimerFichier.NomFichier.BindData(vDocumentAttendu.GridFichiers.DataSource.NomFichier);
+vConfirmationSupprimerFichier.BtnNon.click.BindCommand(aas.Services.Browser.BootStrapClientService.CloseModal(aas.ViewName.ConfirmationSupprimerFichier));
+vConfirmationSupprimerFichier.BtnOui.click.BindCommand(aas.Services.Browser.ClientTodosService.DeleteDocument(vDocumentAttendu.GridFichiers.DataSource.TimosKey, vDocumentAttendu.GridFichiers.DataSource.NomFichier));
 
