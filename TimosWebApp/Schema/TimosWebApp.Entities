@@ -53,6 +53,8 @@
         <entityProperty name="LibelleChamp" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
         <entityProperty name="OrdreChamp" type="Int32" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
         <entityProperty name="ChampTimosId" type="Int32" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" identifier="Identifier" />
+        <entityProperty name="ElementType" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="ElementId" type="Int32" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
       </properties>
     </entity>
     <entity Id="add8dab3-78b4-4646-a39b-ecdbc4b217de" name="DocumentsAttendus" guid="71a60e89-2883-4ea0-b3bb-4d6636f54926" guidIdentifier="false" hasCustomValidators="false" hasTriggers="false">

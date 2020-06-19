@@ -2,13 +2,14 @@
     Timos Web App
     
     Jeu de couleurs
-        Couleur bleu foncé  : #21314d
-        Couleur bleu clair  : #007bbe (Logo timos)
-        Couleur gris fond   : #f2f4f7
-        Couleur gris panel  : #fcfcfd  
-        Couleur orange      : #ff8e01
-        Couleur vert        : #5cb85c
-        Couleur rouge       : #d9534f
+        Couleur rouge ooredoo   : #ec1c24
+        Couleur bleu foncé      : #21314d
+        Couleur bleu clair      : #007bbe (Logo timos)
+        Couleur gris fond       : #f2f4f7
+        Couleur gris panel      : #fcfcfd  
+        Couleur orange          : #ff8e01
+        Couleur vert            : #5cb85c
+        Couleur rouge           : #d9534f
 
     Typographie : 
 */
@@ -45,17 +46,17 @@ h1{
     background-color: transparent;
 }
 .login-logo{
-    background-image:url("../TimosWebApp/Images/logo-timos-web-1.png");
+    background-image:url("../TimosWebApp/Images/logo-ooredoox.png");
     background-position: center;
     background-repeat: no-repeat;
     height: 60px;
     width: 100%;
-    background-size: auto;
+    background-size: contain;
 }
 
 /* Barre de navigation */
 .navbar-default {
-    background-color : #21314d;
+    background-color : #ec1c24;
     border : 0px;
     border-radius : 0px;
 }
@@ -208,12 +209,12 @@ img.logo{
     content: "\f00c";
 }
 .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover {
-    background-color: #21314d;
+    background-color: #ec1c24;
     color: white;
 }
 .nav-tabs > li > a {
     border-radius: 0px;
-    color: #21314d;
+    color: #ec1c24;
     padding: 16px 22px;
     border: 1px solid #DCE3E6;
 }
@@ -275,8 +276,8 @@ img.logo{
 .titre-groupe > a:hover{
     text-decoration:none;
 }
-.section-titre-groupe{
-    background-color:#007bbe;
+.section-titre-groupe {
+    background-color: #ec1c24;
 }
 .section-titre-groupe .btn-link{
     color:#fff;
@@ -300,10 +301,10 @@ img.logo{
 /* Edition modale */
 #EditionTodo .modal-header{
     color:#fff;
-    background-color:#007bbe;
+    background-color:#ec1c24;
 }
 
-/* Confirmation fin terminer todo */
+/* Confirmation terminer todo */
 #ConfirmationEndTodo .modal-header{
     color: #5cb85c;
 }
