@@ -12,9 +12,12 @@ vGroupeInfosSecondaires.GridChampsInfosSecondaires.TypeTableNameColumn.BindData(
 vGroupeInfosSecondaires.GridChampsInfosSecondaires.TypeTableTypeColumn.BindData("AspectizeFieldType");
 vGroupeInfosSecondaires.GridChampsInfosSecondaires.TypeTableControlTypeColumn.BindData("AspectizeControlType");
 vGroupeInfosSecondaires.GridChampsInfosSecondaires.TypeTableFormatColumn.BindData(aas.Path.MainData.ChampTimos.FormatDate);
+vGroupeInfosSecondaires.GridChampsInfosSecondaires.TypeTableEditModeColumn.BindData(aas.Path.MainData.ChampTimos.Editable);
+vGroupeInfosSecondaires.GridChampsInfosSecondaires.TypeTableClassColumn.BindData(aas.Path.MainData.ChampTimos.CustomClass);
 vGroupeInfosSecondaires.GridChampsInfosSecondaires.EnumValuesTableName.BindData(vGroupeInfosSecondaires.ParentPath.ValeursPossibles.ValeursChamp);
 vGroupeInfosSecondaires.GridChampsInfosSecondaires.EnumValuesTableOptionTextColumn.BindData("DisplayedValue");
 vGroupeInfosSecondaires.GridChampsInfosSecondaires.EnumValuesTableOptionValueColumn.BindData("StoredValue");
 vGroupeInfosSecondaires.GridChampsInfosSecondaires.EnumValuesTableTypeColumn.BindData("ChampTimosId");
-vGroupeInfosSecondaires.OnActivated.BindCommand(aas.Services.Browser.ClientTodosService.InitPropertyGrid(aas.ViewName.GroupeChampsSecondaires.GridChampsInfosSecondaires, false));
+vGroupeInfosSecondaires.GridChampsInfosSecondaires.OnEndRender.BindCommand(aas.Services.Browser.ClientTodosService.InitPropertyGrid(aas.Expression('GroupeChampsSecondaires:' + vGroupeInfosSecondaires.ParentData.TimosId + '-GridChampsInfosSecondaires')));
+
 

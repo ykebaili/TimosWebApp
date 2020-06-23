@@ -17,11 +17,14 @@ vGroupeChamps.GridChampsTodo.TypeTableNameColumn.BindData("LibelleConvivial");
 vGroupeChamps.GridChampsTodo.TypeTableTypeColumn.BindData("AspectizeFieldType");
 vGroupeChamps.GridChampsTodo.TypeTableControlTypeColumn.BindData("AspectizeControlType");
 vGroupeChamps.GridChampsTodo.TypeTableFormatColumn.BindData(aas.Path.MainData.ChampTimos.FormatDate);
+vGroupeChamps.GridChampsTodo.TypeTableEditModeColumn.BindData(aas.Path.MainData.ChampTimos.Editable);
+vGroupeChamps.GridChampsTodo.TypeTableClassColumn.BindData(aas.Path.MainData.ChampTimos.CustomClass);
 vGroupeChamps.GridChampsTodo.EnumValuesTableName.BindData(vGroupeChamps.ParentPath.ValeursPossibles.ValeursChamp);
 vGroupeChamps.GridChampsTodo.EnumValuesTableOptionTextColumn.BindData("DisplayedValue");
 vGroupeChamps.GridChampsTodo.EnumValuesTableOptionValueColumn.BindData("StoredValue");
 vGroupeChamps.GridChampsTodo.EnumValuesTableTypeColumn.BindData("ChampTimosId");
-vGroupeChamps.OnActivated.BindCommand(aas.Services.Browser.ClientTodosService.InitPropertyGrid(aas.ViewName.GroupeChamps.GridChampsTodo, false));
+//vGroupeChamps.OnActivated.BindCommand(aas.Services.Browser.ClientTodosService.InitPropertyGrid(aas.ViewName.GroupeChamps.GridChampsTodo, false));
+vGroupeChamps.GridChampsTodo.OnEndRender.BindCommand(aas.Services.Browser.ClientTodosService.InitPropertyGrid(aas.Expression('GroupeChamps:' + vGroupeChamps.ParentData.TimosId + '-GridChampsTodo')));
 
 
 // Configuration du controle d'édition d'un todo en modal
@@ -44,9 +47,11 @@ vEditionTodo.GridChampsTodo.TypeTableNameColumn.BindData("LibelleConvivial");
 vEditionTodo.GridChampsTodo.TypeTableTypeColumn.BindData("AspectizeFieldType");
 vEditionTodo.GridChampsTodo.TypeTableControlTypeColumn.BindData("AspectizeControlType");
 vEditionTodo.GridChampsTodo.TypeTableFormatColumn.BindData(aas.Path.MainData.ChampTimos.FormatDate);
+vEditionTodo.GridChampsTodo.TypeTableEditModeColumn.BindData(aas.Path.MainData.ChampTimos.Editable);
+vEditionTodo.GridChampsTodo.TypeTableClassColumn.BindData(aas.Path.MainData.ChampTimos.CustomClass);
 vEditionTodo.GridChampsTodo.EnumValuesTableName.BindData(vGroupeChamps.ParentPath.ValeursPossibles.ValeursChamp);
 vEditionTodo.GridChampsTodo.EnumValuesTableOptionTextColumn.BindData("DisplayedValue");
 vEditionTodo.GridChampsTodo.EnumValuesTableOptionValueColumn.BindData("StoredValue");
 vEditionTodo.GridChampsTodo.EnumValuesTableTypeColumn.BindData("ChampTimosId");
 vEditionTodo.GridChampsTodo.EditMode.BindData(true);
-vEditionTodo.OnActivated.BindCommand(aas.Services.Browser.ClientTodosService.InitPropertyGrid(aas.ViewName.EditionTodo.GridChampsTodo, true));
+vEditionTodo.GridChampsTodo.OnEndRender.BindCommand(aas.Services.Browser.ClientTodosService.InitPropertyGrid(aas.ViewName.EditionTodo.GridChampsTodo));

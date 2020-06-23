@@ -36,7 +36,7 @@ Global.ClientTodosService = {
     },
 
     //-------------------------------------------------------------------------------------------------------
-    InitPropertyGrid: function (gridId, edit) {
+    InitPropertyGridOld: function (gridId, edit) {
 
         var colLabel = 'col-xs-12 col-md-4';
         var colValue = 'col-xs-12 col-md-8';
@@ -62,6 +62,28 @@ Global.ClientTodosService = {
         }
 
     },
+
+    //-------------------------------------------------------------------------------------------------------
+    InitPropertyGrid: function (gridId) {
+
+        var colLabel = 'col-xs-12 col-md-4';
+        var colValue = 'col-xs-12 col-md-8';
+
+        gridId = jq(gridId);
+
+        $('#' + gridId + '.aasPropertyGrid').addClass('form-horizontal');
+        $('#' + gridId + '.aasPropertyGrid > div.aasDynamicControl').addClass('form-group');
+        $('#' + gridId + '.aasPropertyGrid > .aasDynamicControl .aasLabelZone').addClass('control-label ' + colLabel);
+        $('#' + gridId + '.aasPropertyGrid > .aasDynamicControl .aasValueZoneContainer').addClass(colValue);
+        $('#' + gridId + '.aasPropertyGrid > .aasDynamicControl .aasValueZoneContainer div.aasValueZone').addClass('form-control-static');
+
+        $('#' + gridId + '.aasPropertyGrid > .aasDynamicControl .aasValueZoneContainer textarea').addClass('form-control');
+        $('#' + gridId + '.aasPropertyGrid > .aasDynamicControl .aasValueZoneContainer select').addClass('form-control');
+        $('#' + gridId + '.aasPropertyGrid > .aasDynamicControl .aasValueZoneContainer input[type=\'text\']:not(.BootstrapDateTimePicker)').addClass('form-control');
+        $('#' + gridId + '.aasPropertyGrid > .aasDynamicControl .aasValueZoneContainer input[type=\'number\']').addClass('form-control');
+
+    },
+
 
     //-------------------------------------------------------------------------------------------------------
     UploadDocument: function (id, uploader) {

@@ -253,6 +253,7 @@ namespace TimosWebApp
 			public const string FormatDate = "FormatDate";
 			public const string Editable = "Editable";
 			public const string Multiline = "Multiline";
+			public const string CustomClass = "CustomClass";
 		}
 
 		void IDataWrapper.InitData(DataRow data, string namePrefix)
@@ -324,18 +325,25 @@ namespace TimosWebApp
 			set { setValue<string>("FormatDate", value); }
 		}
 
-		[Data]
+		[Data(DefaultValue = true)]
 		public bool Editable
 		{
 			get { return getValue<bool>("Editable"); }
 			set { setValue<bool>("Editable", value); }
 		}
 
-		[Data]
+		[Data(DefaultValue = false)]
 		public bool Multiline
 		{
 			get { return getValue<bool>("Multiline"); }
 			set { setValue<bool>("Multiline", value); }
+		}
+
+		[Data]
+		public string CustomClass
+		{
+			get { return getValue<string>("CustomClass"); }
+			set { setValue<string>("CustomClass", value); }
 		}
 
 	}

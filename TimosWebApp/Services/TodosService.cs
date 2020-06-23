@@ -181,6 +181,8 @@ namespace TimosWebApp.Services
                                     valTimos.ChampTimosId = nIdValeurChamp;
                                     valTimos.LibelleChamp = (string)rowVal[CTodoValeurChamp.c_champLibelle];
                                     valTimos.OrdreChamp = (int)rowVal[CTodoValeurChamp.c_champOrdreAffichage];
+                                    valTimos.ElementType = (string)rowVal[CTodoValeurChamp.c_champElementType];
+                                    valTimos.ElementId = (int)rowVal[CTodoValeurChamp.c_champElementId];
 
                                     string valeurChamp = (string)rowVal[CTodoValeurChamp.c_champValeur];
                                     if (valeurChamp != "")
@@ -413,15 +415,27 @@ namespace TimosWebApp.Services
                         em.AssociateInstance<RelationFichiers>(doc, fichier);
 
                         BinaryReader reader = new BinaryReader(file.Stream);
-                        byte[] octets = reader.ReadBytes((int)file.Stream.Length);
-
-                        CResultAErreur resultFile = serviceClientAspectize.AddFile(nTimosSessionId, file.Name, octets);
-                        if (!resultFile)
+                        try
                         {
-                            throw new SmartException(1030, resultFile.MessageErreur);
+                            byte[] octets = reader.ReadBytes((int)file.Stream.Length);
+
+                            CResultAErreur resultFile = serviceClientAspectize.AddFile(nTimosSessionId, file.Name, octets);
+                            if (!resultFile)
+                            {
+                                throw new SmartException(1030, resultFile.MessageErreur);
+                            }
+                            string cheminTimos = (string)resultFile.Data;
+                            fichier.CheminTemporaire = cheminTimos;
+
                         }
-                        string cheminTimos = (string)resultFile.Data;
-                        fichier.CheminTemporaire = cheminTimos;
+                        catch (Exception ex)
+                        {
+                            throw new SmartException(1031, ex.Message);
+                        }
+                        finally
+                        {
+                            reader.Close();
+                        }
                     }
                 }
 
