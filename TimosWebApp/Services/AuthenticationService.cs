@@ -22,6 +22,7 @@ namespace TimosWebApp
         AspectizeUser IAuthentication.Authenticate(string userName, string secret, AuthenticationProtocol protocol, HashHelper.Algorithm algorithm, string challenge)
         {
             // Authentification TIMOS
+            
             ITimosServiceForAspectize serviceClientAspectize = (ITimosServiceForAspectize)C2iFactory.GetNewObject(typeof(ITimosServiceForAspectize));
             CResultAErreur result = serviceClientAspectize.OpenSession(userName, secret);
             
@@ -76,7 +77,7 @@ namespace TimosWebApp
                 user.Login = (string)aspectizeUser[CUserTimosWebApp.c_champUserLogin];
                 user.TimosKey = (string)aspectizeUser[CUserTimosWebApp.c_champUserKey];
                 user.TimosSessionId = (int)aspectizeUser[CUserTimosWebApp.c_champSessionId];
-
+                user.IsAdministrator = (bool)aspectizeUser[CUserTimosWebApp.c_champIsAdministrator];
 
                 // Instancie les To do de l'utilisateur en cours
                 ITimosServiceForAspectize serviceClientAspectize = (ITimosServiceForAspectize)C2iFactory.GetNewObject(typeof(ITimosServiceForAspectize));

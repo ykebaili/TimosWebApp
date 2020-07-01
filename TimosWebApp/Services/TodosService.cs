@@ -202,7 +202,8 @@ namespace TimosWebApp.Services
                                                 }
                                             }
                                             if (!bFound)
-                                                throw new SmartException("On a un problème de valeurs possibles sur le champ id " + valTimos.ChampTimosId);
+                                                valeurChamp = "ND";
+                                                //throw new SmartException("Problème de valeurs possibles sur le champ id = " + valTimos.ChampTimosId + ", valeurChamp = " + valeurChamp + ", n'est pas dans la liste des valeurs possibles. ");
                                         }
                                     }
                                     valTimos.ValeurChamp = valeurChamp;

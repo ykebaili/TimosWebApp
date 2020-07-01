@@ -22,6 +22,7 @@
         <entityProperty name="Login" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
         <entityProperty name="TimosKey" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
         <entityProperty name="TimosSessionId" type="Int32" defaultValue="-1" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="IsAdministrator" type="Boolean" defaultValue="false" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
       </properties>
     </entity>
     <entity Id="289e1e37-c821-4ff6-9464-4c5474b1d657" name="ChampTimos" guid="810ed001-de78-48ed-8c70-6373f6c8e6b8" guidIdentifier="false" hasCustomValidators="false" hasTriggers="false">

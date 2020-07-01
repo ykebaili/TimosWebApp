@@ -22,3 +22,8 @@ TimosInitialisationService.TimosServerURL = "tcp://127.0.0.1:8160";
 var DbLogException = Aspectize.ConfigureNewService("DbLogExceptionService", aas.ConfigurableServices.DBLogException);
 DbLogException.MailServiceName = "MailService";
 DbLogException.MailTo = "ykebaili@futurocom.com";
+
+var FileService = Aspectize.ConfigureNewService("TimosFileService", aas.ConfigurableServices.FileService);
+FileService.RootDirectory = "c:\partage";
+FileService.StorageType = "FileSystem";
+

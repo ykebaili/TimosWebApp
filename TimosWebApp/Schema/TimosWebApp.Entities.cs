@@ -186,6 +186,7 @@ namespace TimosWebApp
 			public const string Login = "Login";
 			public const string TimosKey = "TimosKey";
 			public const string TimosSessionId = "TimosSessionId";
+			public const string IsAdministrator = "IsAdministrator";
 		}
 
 		void IDataWrapper.InitData(DataRow data, string namePrefix)
@@ -233,6 +234,13 @@ namespace TimosWebApp
 		{
 			get { return getValue<int>("TimosSessionId"); }
 			set { setValue<int>("TimosSessionId", value); }
+		}
+
+		[Data(DefaultValue = false)]
+		public bool IsAdministrator
+		{
+			get { return getValue<bool>("IsAdministrator"); }
+			set { setValue<bool>("IsAdministrator", value); }
 		}
 
 	}

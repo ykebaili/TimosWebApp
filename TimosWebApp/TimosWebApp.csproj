@@ -79,6 +79,7 @@
       <DependentUpon>TimosWebApp.Entities</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\AdministrationService.cs" />
     <Compile Include="Services\AuthenticationService.cs" />
     <Compile Include="Services\InitialisationService.cs" />
     <Compile Include="Services\TodosService.cs" />
@@ -87,6 +88,7 @@
     <Content Include="Configuration\Application.js" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Configuration\Views\Administration.js" />
     <Content Include="Configuration\Views\ChampsTodo.js" />
     <Content Include="Configuration\Views\Documents.js" />
     <Content Include="Configuration\Views\InfosSecondaires.js" />
@@ -100,6 +102,7 @@
     <Content Include="Configuration\Services\Service.js" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Controls\Administration.html" />
     <Content Include="Controls\DetailTodo.htm" />
     <Content Include="Controls\Inscription.htm" />
     <Content Include="Controls\Home.htm" />
