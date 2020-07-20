@@ -18,7 +18,7 @@ namespace TimosWebApp.Services
         [Command(IsSaveCommand = true)]
         void SaveTodo(DataSet dataSet, int nIdTodo, string elementType, int elementId);
         DataSet EndTodo(int nIdTodo);
-        DataSet UploadDocuments(UploadedFile[] uploadedFiles, int nIdTodo, int nIdDocument, int nIdCategorie);
+        DataSet UploadDocuments(UploadedFile[] uploadedFiles, int nIdTodo, int nIdDocument, string strLibelle, int nIdCategorie);
         void DeleteDocument(string strKeyFile);
         byte[] DownloadDocument(string strKeyFile, string strFileName);
 
@@ -374,7 +374,7 @@ namespace TimosWebApp.Services
         }
 
         //-----------------------------------------------------------------------------------------
-        public DataSet UploadDocuments(UploadedFile[] uploadedFiles, int nIdTodo, int nIdDocument, int nIdCategorie)
+        public DataSet UploadDocuments(UploadedFile[] uploadedFiles, int nIdTodo, int nIdDocument, string strLibelle, int nIdCategorie)
         {
             AspectizeUser aspectizeUser = ExecutingContext.CurrentUser;
             IEntityManager em = EntityManager.FromDataSet(DataSetHelper.Create());
@@ -391,6 +391,7 @@ namespace TimosWebApp.Services
                 DocumentsAttendus doc = em.CreateInstance<DocumentsAttendus>();
 
                 doc.TimosId = nIdDocument;
+                doc.Libelle = strLibelle;
                 doc.IdCategorie = nIdCategorie;
                 doc.DateLastUpload = DateTime.Now;
 
@@ -398,7 +399,6 @@ namespace TimosWebApp.Services
 
                 if (doc != null)
                 {
-
                     foreach (UploadedFile file in uploadedFiles)
                     {
                         var fichier = em.CreateInstance<FichiersAttaches>();

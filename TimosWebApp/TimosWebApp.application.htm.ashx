@@ -39,17 +39,18 @@
 <!-- CSS Link -->
 <link rel='stylesheet' type='text/css' href='../Aspectize.core/Aspectize.css?@FileDate' />
 
-<script src="http://ajax.aspnetcdn.com/ajax/jquery/jquery-1.9.1.js"></script>
-<link rel='stylesheet' type='text/css' href='http://ajax.aspnetcdn.com/ajax/jquery.ui/1.10.0/themes/smoothness/jquery-ui.css' />
-<script src="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.10.0/jquery-ui.min.js"></script>
+<!-- Ressources locales -->
+<script src="~Bootstrap/jquery/jquery-1.9.1.min.js"></script>
+<link rel='stylesheet' type='text/css' href='~Bootstrap/jquery/jquery-ui.css' />
+<script src="~Bootstrap/jquery/jquery-ui.min.js"></script>
 
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link href="~Bootstrap/bootstrap-3.3.7/css/bootstrap.min.css" rel="stylesheet">
+<script src="~Bootstrap/bootstrap-3.3.7/js/bootstrap.min.js"></script>
 
-<script src="https://kit.fontawesome.com/d6253fbd45.js" crossorigin="anonymous"></script>
+<link href="~Fontawesome/css/all.css" rel="stylesheet">
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-<link rel='stylesheet' type='text/css' href='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css'/>
+<script src="~Toastr/build/toastr.min.js"></script>
+<link rel='stylesheet' type='text/css' href='~Toastr/build/toastr.min.css'/>
 
 <!-- bootstrap datepicker -->
 <script src='~BootstrapDateTimePicker/Moment/moment.min.js'></script>
