@@ -4,7 +4,7 @@ Global.ClientTodosService = {
 
     aasService: 'ClientTodosService',
     aasPublished: true,
-    MainData : 'MainData',
+    MainData: 'MainData',
 
     //-------------------------------------------------------------------------------------------------------
     FiltreTodos: function (filtreLabel, etatDemarre, etatTermine, etatRetard) {
@@ -102,9 +102,9 @@ Global.ClientTodosService = {
 
     //-------------------------------------------------- Terminer un todo -------------------------------------------
     EndTodo: function (nIdTodo, labelTodo) {
-      
+
         var cmd = Aspectize.PrepareCommand();
-        
+
         cmd.Attributes.aasShowWaiting = true;
         cmd.Attributes.aasAsynchronousCall = true;
         cmd.Attributes.aasMergeData = true;
@@ -119,7 +119,7 @@ Global.ClientTodosService = {
 
     //-------------------------------------------------- Supprimer un fihcier attaché -------------------------------------------
     DeleteDocument: function (strKeyFile, strNomFichier) {
-    
+
         var dataName = this.MainData;
         var cmd = Aspectize.PrepareCommand();
         cmd.Attributes.aasShowWaiting = true;
@@ -172,18 +172,45 @@ Global.ClientTodosService = {
         }
 
         toastr[state](message, titre);
-                
+
     },
 
     //-------------------------------------------------------------------------------------------------------
     ExpandGroup: function (nIdGroupe) {
-        
+
         var em = Aspectize.EntityManagerFromContextDataName(this.MainData);
         var groupeToExpand = em.GetInstance('GroupeChamps', { 'TimosId': nIdGroupe });
         groupeToExpand.SetField('Expand', !groupeToExpand.Expand);
-        
-    }
 
+    },
+
+    //-------------------------------------------------------------------------------------------------------
+    // DEBUG UNIQUEMENT
+    TestAppelServeur: function () {
+
+        var cmd = Aspectize.PrepareCommand();
+        cmd.Attributes.aasShowWaiting = true;
+        cmd.Attributes.aasAsynchronousCall = true;
+        cmd.OnComplete = function (result) {
+            // Executé au retour de l'appel serveur si tout est OK (pas d'excetpion)
+            Aspectize.ExecuteCommand(aas.Services.Browser.ClientTodosService.ToastAlert("Appel serveur OK", "Resultat : " + result));
+        }
+        cmd.Call(aas.Services.Server.TodosService.TestAppelServeur());
+    },
+
+    //-------------------------------------------------------------------------------------------------------
+    // DEBUG UNIQUEMENT
+    TestAppelServeurParametres: function (alpha, beta) {
+
+        var cmd = Aspectize.PrepareCommand();
+        cmd.Attributes.aasShowWaiting = true;
+        cmd.Attributes.aasAsynchronousCall = true;
+        cmd.OnComplete = function (result) {
+            // Executé au retour de l'appel serveur si tout est OK (pas d'excetpion)
+            Aspectize.ExecuteCommand(aas.Services.Browser.ClientTodosService.ToastAlert('Appel serveur OK', result));
+        }
+        cmd.Call(aas.Services.Server.TodosService.TestAppelServeurAvecParmatres(alpha, beta));
+    }
 
 };
 

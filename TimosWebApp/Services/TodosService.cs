@@ -21,6 +21,9 @@ namespace TimosWebApp.Services
         DataSet UploadDocuments(UploadedFile[] uploadedFiles, int nIdTodo, int nIdDocument, string strLibelle, int nIdCategorie);
         void DeleteDocument(string strKeyFile);
         byte[] DownloadDocument(string strKeyFile, string strFileName);
+        bool TestAppelServeur();
+        string TestAppelServeurAvecParmatres(string alpha, string beta);
+
 
     }
 
@@ -521,6 +524,17 @@ namespace TimosWebApp.Services
             return null;
         }
 
+        //--------------------------------------------------------------------------------------------------
+        // POUR DEBUG UNIQUEMENT
+        public bool TestAppelServeur()
+        {
+            //throw new SmartException(9900, "Erreur dans test d'appel serveur");
+            return true;
+        }
+        public string TestAppelServeurAvecParmatres(string alpha, string beta)
+        {
+            return "Paramètre alpha = " + alpha + Environment.NewLine + "Paramètre beta = " + beta;
+        }
     }
 
 }

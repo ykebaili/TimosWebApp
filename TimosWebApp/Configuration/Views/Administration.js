@@ -3,3 +3,5 @@ vAdministration.OnActivated.BindCommand(aas.Services.Browser.History.PushState(a
 
 vAdministration.UploaderFichierAdmin.MultipleFiles.BindData(true);
 vAdministration.UploaderFichierAdmin.OnFileSelected.BindCommand(aas.Services.Server.AdministrationService.UploadFiles(vAdministration.UploaderFichierAdmin.SelectedFile), "", false, true);
+vAdministration.BoutonTestAppelServeur.click.BindCommand(aas.Services.Browser.ClientTodosService.TestAppelServeur());
+vAdministration.BoutonTestAppelServeurAvecParametres.click.BindCommand(aas.Services.Browser.ClientTodosService.TestAppelServeurParametres(vAdministration.TextAlpha.value, vAdministration.TextBeta.value));
