@@ -5,6 +5,7 @@ var vChampsTodo = Aspectize.CreateView("ChampsTodo", aas.Controls.ChampsTodo, "D
 var vGroupeChamps = Aspectize.CreateRepeatedView("GroupeChamps", aas.Controls.GroupeChamps, aas.Zones.ChampsTodo.PanelGroupesChamps, aas.Data.MainData.Todos.RelationTodoGroupeChamps.GroupeChamps, "", aas.Expression('!InfosSecondaires'));
 vGroupeChamps.TitreGroupe.BindData(vGroupeChamps.ParentData.Titre);
 vGroupeChamps.BoutonEditionTodo.click.BindCommand(aas.Services.Browser.BootStrapClientService.ShowModal(aas.ViewName.EditionTodo, true, false, true));
+//vGroupeChamps.BoutonEditionTodo.click.BindCommand(aas.Services.Browser.SystemServices.Alert(vGroupeChamps.ParentData.RelationTodoGroupeChamps.Todos.Label));
 vGroupeChamps.CollapseGroupe.click.BindCommand(aas.Services.Browser.ClientTodosService.ExpandGroup(vGroupeChamps.ParentData.TimosId));
 vGroupeChamps.DisplayExpand.BindData(aas.Expression(IIF(vGroupeChamps.ParentData.Expand, '', 'hidden')));
 vGroupeChamps.FaCaretClass.BindData(aas.Expression(IIF(vGroupeChamps.ParentData.Expand, 'fa-caret-down', 'fa-caret-right')));
@@ -29,8 +30,9 @@ vGroupeChamps.GridChampsTodo.OnEndRender.BindCommand(aas.Services.Browser.Client
 
 // Configuration du controle d'édition d'un todo en modal
 var vEditionTodo = Aspectize.CreateView("EditionTodo", aas.Controls.EditionTodo, "", false, aas.Data.MainData.Todos.RelationTodoGroupeChamps.GroupeChamps);
-vEditionTodo.LabelToDo.BindData(vEditionTodo.ParentData.RelationTodoGroupeChamps.Todos.Label);
 vEditionTodo.OnActivated.BindCommand(aas.Services.Browser.DataRecorder.Start(aas.Data.MainData));
+//vEditionTodo.LabelToDo.BindData(vEditionTodo.ParentData.RelationTodoGroupeChamps.Todos.Label); // Ne fonctionne pas alors qu'il devrait
+vEditionTodo.LabelToDo.BindData(aas.Data.MainData.Todos.Label); // Ce binding fonctionne bien
 vEditionTodo.BtnCancel.click.BindCommand(aas.Services.Browser.BootStrapClientService.CloseModal(aas.ViewName.EditionTodo));
 vEditionTodo.BtnCancel.click.BindCommand(aas.Services.Browser.DataRecorder.CancelRowChanges(aas.Data.MainData));
 vEditionTodo.BtnSave.click.BindCommand(aas.Services.Server.TodosService.SaveTodo(

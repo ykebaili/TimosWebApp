@@ -77,6 +77,7 @@ namespace TimosWebApp.Services
 
                             // Création des groupes de champs
                             DataTable tableGroupes = ds.Tables[CGroupeChamps.c_nomTable];
+                            bool bExpand = true;
                             foreach (DataRow rowGroupe in tableGroupes.Rows)
                             {
                                 int nIdGroupe = (int)rowGroupe[CGroupeChamps.c_champId];
@@ -87,6 +88,8 @@ namespace TimosWebApp.Services
                                     groupeChamps.Titre = (string)rowGroupe[CGroupeChamps.c_champTitre];
                                     groupeChamps.OrdreAffichage = (int)rowGroupe[CGroupeChamps.c_champOrdreAffichage];
                                     groupeChamps.InfosSecondaires = (bool)rowGroupe[CGroupeChamps.c_champIsInfosSecondaires];
+                                    groupeChamps.Expand = bExpand;
+                                    bExpand = false;
 
                                     em.AssociateInstance<RelationTodoGroupeChamps>(todo, groupeChamps);
                                 }
