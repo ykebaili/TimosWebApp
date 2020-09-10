@@ -270,14 +270,8 @@ img.logo{
 /* Groupes de champs */
 .titre-groupe{
     margin-top:10px;
-}
-.titre-groupe > a{
+    color:white;
     font-size:22px;
-    margin-top:6px;
-    color:#fff;
-}
-.titre-groupe > a:hover{
-    text-decoration:none;
 }
 .section-titre-groupe {
     background-color: #ec1c24;

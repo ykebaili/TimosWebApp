@@ -1,15 +1,21 @@
 ﻿// Création de l'onglet Champs Todo
 var vChampsTodo = Aspectize.CreateView("ChampsTodo", aas.Controls.ChampsTodo, "DetailTodoTabs.0:Champs", true, aas.Data.MainData.Todos);
 
+
+var vTabsGroupesChamps = Aspectize.CreateRepeatedView("GroupeNavTab", aas.Controls.GroupeNavTab, aas.Zones.ChampsTodo.PanelGroupesNavTabs, aas.Data.MainData.Todos.RelationTodoGroupeChamps.GroupeChamps, "", aas.Expression('!InfosSecondaires'));
+vTabsGroupesChamps.TitreGroupe.BindData(vTabsGroupesChamps.ParentData.Titre);
+vTabsGroupesChamps.IdGroupe.BindData(vTabsGroupesChamps.ParentData.TimosId);
+
 // Binding des groupes de champs
 var vGroupeChamps = Aspectize.CreateRepeatedView("GroupeChamps", aas.Controls.GroupeChamps, aas.Zones.ChampsTodo.PanelGroupesChamps, aas.Data.MainData.Todos.RelationTodoGroupeChamps.GroupeChamps, "", aas.Expression('!InfosSecondaires'));
 vGroupeChamps.TitreGroupe.BindData(vGroupeChamps.ParentData.Titre);
+vGroupeChamps.IdGroupe.BindData(vGroupeChamps.ParentData.TimosId);
 vGroupeChamps.BoutonEditionTodo.click.BindCommand(aas.Services.Browser.BootStrapClientService.ShowModal(aas.ViewName.EditionTodo, true, false, true));
 //vGroupeChamps.BoutonEditionTodo.click.BindCommand(aas.Services.Browser.SystemServices.Alert(vGroupeChamps.ParentData.RelationTodoGroupeChamps.Todos.Label));
-vGroupeChamps.CollapseGroupe.click.BindCommand(aas.Services.Browser.ClientTodosService.ExpandGroup(vGroupeChamps.ParentData.TimosId));
-vGroupeChamps.DisplayExpand.BindData(aas.Expression(IIF(vGroupeChamps.ParentData.Expand, '', 'hidden')));
-vGroupeChamps.FaCaretClass.BindData(aas.Expression(IIF(vGroupeChamps.ParentData.Expand, 'fa-caret-down', 'fa-caret-right')));
-vGroupeChamps.SectionTitreGroupe.BindData(aas.Expression(IIF(vGroupeChamps.ParentData.Expand, 'section-titre-expanded', 'section-titre-collapsed')));
+//vGroupeChamps.CollapseGroupe.click.BindCommand(aas.Services.Browser.ClientTodosService.ExpandGroup(vGroupeChamps.ParentData.TimosId));
+vGroupeChamps.IsActiveIn.BindData(aas.Expression(IIF(vGroupeChamps.ParentData.Expand, 'active in', '')));
+//vGroupeChamps.FaCaretClass.BindData(aas.Expression(IIF(vGroupeChamps.ParentData.Expand, 'fa-caret-down', 'fa-caret-right')));
+//vGroupeChamps.SectionTitreGroupe.BindData(aas.Expression(IIF(vGroupeChamps.ParentData.Expand, 'section-titre-expanded', 'section-titre-collapsed')));
 
 //******************************** Configuration de la PropertyGrid en lecture seule *******************************************
 vGroupeChamps.GridChampsTodo.BindList(vGroupeChamps.ParentData.RelationTodoValeurChamp.TodoValeurChamp, "ValeurChamp", "LibelleChamp", "OrdreChamp");

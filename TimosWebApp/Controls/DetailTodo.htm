@@ -51,24 +51,41 @@
         </div>
         <div class="row">
             <div class="col-xs-12">
-                <div aas-name="PanelGroupesChamps" aas-type="AspectizeRepeaterPanel"></div>
+                <ul class="nav nav-tabs">
+                    <div aas-name="PanelGroupesNavTabs" aas-type="AspectizeRepeaterPanel"></div>
+                </ul>
+                <div class="tab-content">
+                    <div aas-name="PanelGroupesChamps" aas-type="AspectizeRepeaterPanel"></div>
+                </div>
             </div>
         </div>
     </div>
 
+    <!------------------------------------------------------- Tab dynamique pour groupe de champs ----------------------------------------------->
+    <div aas-control="GroupeNavTab">
+        <li class=""><a data-toggle="tab" href="#{IdGroupe}">{TitreGroupe}</a></li>
+    </div>
+
     <!------------------------------------------------------- Un groupe de champs ----------------------------------------------->
     <div aas-control="GroupeChamps">
-        <div class="row section-titre-groupe {SectionTitreGroupe}">
-            <div class="col-xs-12">
-                <h3 class="titre-groupe"><a class="collapse-groupe" name="CollapseGroupe"><i class="fas {FaCaretClass}"></i> {TitreGroupe}</a></h3>
+        <div id="{IdGroupe}" class="tab-pane fade {IsActiveIn}">
+            <div class="row section-titre-groupe">
+                <div class="col-xs-12">
+                    <h3 class="titre-groupe">{TitreGroupe}</h3>
+                </div>
             </div>
-        </div>
-        <div class="row section-contenu-groupe {DisplayExpand}">
-            <div class="col-xs-9 col-sm-10">
-                <div aas-name="GridChampsTodo" aas-type="AspectizePropertyGrid"></div>
+            <div class="row section-contenu-groupe">
+                <div class="col-xs-9 col-sm-10">
+                    <div aas-name="GridChampsTodo" aas-type="AspectizePropertyGrid"></div>
+                </div>
+                <div class="col-xs-3 col-sm-2">
+                    <button class="btn btn-primary" name="BoutonEditionTodo"><i class="fas fa-edit"></i> Editer</button>
+                </div>
             </div>
-            <div class="col-xs-3 col-sm-2">
-                <button class="btn btn-primary" name="BoutonEditionTodo"><i class="fas fa-edit"></i> Editer</button>
+            <div class="row section-caracteristiques">
+                <div class="col-xs-12">
+                    <h3>Caractéristiques associées</h3>
+                </div>
             </div>
         </div>
     </div>

@@ -89,6 +89,11 @@
         <entityProperty name="InfosSecondaires" type="Boolean" defaultValue="false" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
       </properties>
     </entity>
+    <entity Id="36da5692-c34f-4c95-82cf-9afdf083209f" name="Caracteristiques" guid="605400be-7106-4580-8c8d-dd0591cb1a80" guidIdentifier="false" hasCustomValidators="false" hasTriggers="false">
+      <properties>
+        <entityProperty name="TimosId" type="Int32" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" identifier="Identifier" />
+      </properties>
+    </entity>
   </entities>
   <relations>
     <relation Id="775f2974-b3c3-4516-bed2-2c69ad4bec9d" name="ValeursPossibles" guid="00000000-0000-0000-0000-000000000000" hasTriggers="false" hasCustomValidators="false">

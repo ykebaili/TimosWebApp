@@ -23,6 +23,7 @@ namespace TimosWebApp
 			public const string DocumentsAttendus = "DocumentsAttendus";
 			public const string FichiersAttaches = "FichiersAttaches";
 			public const string GroupeChamps = "GroupeChamps";
+			public const string Caracteristiques = "Caracteristiques";
 		}
 
 		public static partial class Relations
@@ -654,6 +655,28 @@ namespace TimosWebApp
 		{
 			get { return getValue<bool>("InfosSecondaires"); }
 			set { setValue<bool>("InfosSecondaires", value); }
+		}
+
+	}
+
+	[DataDefinition]
+	public class Caracteristiques : Entity, IDataWrapper
+	{
+		public static partial class Fields
+		{
+			public const string TimosId = "TimosId";
+		}
+
+		void IDataWrapper.InitData(DataRow data, string namePrefix)
+		{
+			base.InitData(data, null);
+		}
+
+		[Data(IsPrimaryKey = true)]
+		public int TimosId
+		{
+			get { return getValue<int>("TimosId"); }
+			set { setValue<int>("TimosId", value); }
 		}
 
 	}
