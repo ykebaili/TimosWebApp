@@ -80,12 +80,16 @@ namespace TimosWebApp.Services
                             bool bExpand = true;
                             foreach (DataRow rowGroupe in tableGroupes.Rows)
                             {
+                                string strTitre = (string)rowGroupe[CGroupeChamps.c_champTitre];
+                                if (strTitre.Contains("Document"))
+                                    continue;
+
                                 int nIdGroupe = (int)rowGroupe[CGroupeChamps.c_champId];
                                 if (em.GetInstance<GroupeChamps>(nIdGroupe) == null)
                                 {
                                     var groupeChamps = em.CreateInstance<GroupeChamps>();
                                     groupeChamps.TimosId = nIdGroupe;
-                                    groupeChamps.Titre = (string)rowGroupe[CGroupeChamps.c_champTitre];
+                                    groupeChamps.Titre = strTitre;
                                     groupeChamps.OrdreAffichage = (int)rowGroupe[CGroupeChamps.c_champOrdreAffichage];
                                     groupeChamps.InfosSecondaires = (bool)rowGroupe[CGroupeChamps.c_champIsInfosSecondaires];
                                     groupeChamps.Expand = bExpand;

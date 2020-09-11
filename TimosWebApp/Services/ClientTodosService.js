@@ -210,6 +210,20 @@ Global.ClientTodosService = {
             Aspectize.ExecuteCommand(aas.Services.Browser.ClientTodosService.ToastAlert('Appel serveur OK', result));
         }
         cmd.Call(aas.Services.Server.TodosService.TestAppelServeurAvecParmatres(alpha, beta));
+    },
+
+    //-------------------------------------------------------------------------------------------------------
+    // DEBUG UNIQUEMENT
+    TestAppelServeurRadius: function (host, secrt, user, password) {
+
+        var cmd = Aspectize.PrepareCommand();
+        cmd.Attributes.aasShowWaiting = true;
+        cmd.Attributes.aasAsynchronousCall = true;
+        cmd.OnComplete = function (result) {
+            // Executé au retour de l'appel serveur si tout est OK (pas d'excetpion)
+            Aspectize.ExecuteCommand(aas.Services.Browser.ClientTodosService.ToastAlert('Appel serveur Radius OK', result));
+        }
+        cmd.Call(aas.Services.Server.AdministrationService.TestAppelServeurRadius(host, secrt, user, password));
     }
 
 };

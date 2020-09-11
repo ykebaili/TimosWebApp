@@ -42,6 +42,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Radius">
+      <HintPath>..\..\Radius.NET\Radius\bin\Debug\Radius.dll</HintPath>
+    </Reference>
     <Reference Include="sc2i.common">
       <HintPath>..\dep\sc2i.common.dll</HintPath>
     </Reference>
