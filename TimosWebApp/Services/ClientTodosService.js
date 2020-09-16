@@ -214,7 +214,7 @@ Global.ClientTodosService = {
 
     //-------------------------------------------------------------------------------------------------------
     // DEBUG UNIQUEMENT
-    TestAppelServeurRadius: function (host, secrt, user, password) {
+    TestAppelServeurRadius: function (host, secret, user, password) {
 
         var cmd = Aspectize.PrepareCommand();
         cmd.Attributes.aasShowWaiting = true;
@@ -223,7 +223,7 @@ Global.ClientTodosService = {
             // Executé au retour de l'appel serveur si tout est OK (pas d'excetpion)
             Aspectize.ExecuteCommand(aas.Services.Browser.ClientTodosService.ToastAlert('Appel serveur Radius OK', result));
         }
-        cmd.Call(aas.Services.Server.AdministrationService.TestAppelServeurRadius(host, secrt, user, password));
+        cmd.Call(aas.Services.Server.AdministrationService.TestAppelServeurRadius(host, secret, user, password));
     }
 
 };

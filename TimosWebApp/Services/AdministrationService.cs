@@ -5,6 +5,8 @@ using System.Data;
 using Aspectize.Core;
 using System.Security.Permissions;
 using FP.Radius;
+using System.Threading.Tasks;
+using sc2i.common;
 
 namespace TimosWebApp.Services
 {
@@ -39,18 +41,29 @@ namespace TimosWebApp.Services
             return em.Data;
         }
 
-
-        public void TestAppelServeurRadius(string strIP, string strSecret, string strUser, string strPassword)
+        public void TestAppelServeurRadius(string strHostName, string strSharedSecret, string strUserName, string strPassword)
         {
-            throw new SmartException(1100, "Echec d'appel du serveur RADIUS");
+            try
+            {
+                AuthenticateRadius(strHostName, strSharedSecret, strUserName, strPassword).Wait();
+            }
+            catch (Exception e)
+            {
+                throw new SmartException(9900, "Erreur d'appel serveur Radius : " + e.Message);
+            }
+        }
 
-            /*
-            RadiusClient rc = new RadiusClient(strIP, strSecret);
-            RadiusPacket authPacket = rc.Authenticate(strUser, strPassword);
+        private async static Task AuthenticateRadius(string strHostName, string strSharedSecret, string strUserName, string strPassword)
+        {
+            string strCryptedPassword = C2iCrypto.Crypte(strPassword);
+
+            RadiusClient rc = new RadiusClient(strHostName, strSharedSecret);
+            RadiusPacket authPacket = rc.Authenticate(strUserName, strCryptedPassword);
             authPacket.SetAttribute(new VendorSpecificAttribute(10135, 1, UTF8Encoding.UTF8.GetBytes("Testing")));
             authPacket.SetAttribute(new VendorSpecificAttribute(10135, 2, new[] { (byte)7 }));
             RadiusPacket receivedPacket = await rc.SendAndReceivePacket(authPacket);
-            if (receivedPacket == null) throw new Exception("Can't contact remote radius server !");
+            if (receivedPacket == null)
+                throw new SmartException(9901, "Can't contact remote radius server !");
 
             switch (receivedPacket.PacketType)
             {
@@ -70,7 +83,7 @@ namespace TimosWebApp.Services
                 default:
                     Console.WriteLine("Rejected");
                     break;
-            }*/
+            }
 
         }
     }
