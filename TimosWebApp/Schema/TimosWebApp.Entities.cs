@@ -34,6 +34,10 @@ namespace TimosWebApp
 			public const string RelationTodoDocument = "RelationTodoDocument";
 			public const string RelationFichiers = "RelationFichiers";
 			public const string RelationGroupeChampsChampsTimos = "RelationGroupeChampsChampsTimos";
+			public const string RelationGroupeChampCaracteristique = "RelationGroupeChampCaracteristique";
+			public const string RelationCaracChamp = "RelationCaracChamp";
+			public const string RelationCaracValeurChamp = "RelationCaracValeurChamp";
+			public const string RelationCaracValeursPossibles = "RelationCaracValeursPossibles";
 		}
 	}
 
@@ -665,6 +669,9 @@ namespace TimosWebApp
 		public static partial class Fields
 		{
 			public const string TimosId = "TimosId";
+			public const string Titre = "Titre";
+			public const string OrdreAffichage = "OrdreAffichage";
+			public const string Expand = "Expand";
 		}
 
 		void IDataWrapper.InitData(DataRow data, string namePrefix)
@@ -677,6 +684,27 @@ namespace TimosWebApp
 		{
 			get { return getValue<int>("TimosId"); }
 			set { setValue<int>("TimosId", value); }
+		}
+
+		[Data]
+		public string Titre
+		{
+			get { return getValue<string>("Titre"); }
+			set { setValue<string>("Titre", value); }
+		}
+
+		[Data]
+		public int OrdreAffichage
+		{
+			get { return getValue<int>("OrdreAffichage"); }
+			set { setValue<int>("OrdreAffichage", value); }
+		}
+
+		[Data]
+		public bool Expand
+		{
+			get { return getValue<bool>("Expand"); }
+			set { setValue<bool>("Expand", value); }
 		}
 
 	}
@@ -774,6 +802,70 @@ namespace TimosWebApp
 
 		[RelationEnd(Type = typeof(ChampTimos), Role = typeof(ChampTimos), Multiplicity = Multiplicity.OneOrMany)]
 		public IEntity ChampTimos;
+
+	}
+
+	[DataDefinition]
+	public class RelationGroupeChampCaracteristique : DataWrapper, IDataWrapper, IRelation
+	{
+		void IDataWrapper.InitData(DataRow data, string namePrefix)
+		{
+			base.InitData(data, null);
+		}
+
+		[RelationEnd(Type = typeof(GroupeChamps), Role = typeof(GroupeChamps), Multiplicity = Multiplicity.ZeroOrOne)]
+		public IEntity GroupeChamps;
+
+		[RelationEnd(Type = typeof(Caracteristiques), Role = typeof(Caracteristiques), Multiplicity = Multiplicity.ZeroOrMany)]
+		public IEntity Caracteristiques;
+
+	}
+
+	[DataDefinition]
+	public class RelationCaracChamp : DataWrapper, IDataWrapper, IRelation
+	{
+		void IDataWrapper.InitData(DataRow data, string namePrefix)
+		{
+			base.InitData(data, null);
+		}
+
+		[RelationEnd(Type = typeof(Caracteristiques), Role = typeof(Caracteristiques), Multiplicity = Multiplicity.ZeroOrOne)]
+		public IEntity Caracteristiques;
+
+		[RelationEnd(Type = typeof(ChampTimos), Role = typeof(ChampTimos), Multiplicity = Multiplicity.ZeroOrMany)]
+		public IEntity ChampTimos;
+
+	}
+
+	[DataDefinition]
+	public class RelationCaracValeurChamp : DataWrapper, IDataWrapper, IRelation
+	{
+		void IDataWrapper.InitData(DataRow data, string namePrefix)
+		{
+			base.InitData(data, null);
+		}
+
+		[RelationEnd(Type = typeof(Caracteristiques), Role = typeof(Caracteristiques), Multiplicity = Multiplicity.ZeroOrOne)]
+		public IEntity Caracteristiques;
+
+		[RelationEnd(Type = typeof(TodoValeurChamp), Role = typeof(TodoValeurChamp), Multiplicity = Multiplicity.ZeroOrMany)]
+		public IEntity TodoValeurChamp;
+
+	}
+
+	[DataDefinition]
+	public class RelationCaracValeursPossibles : DataWrapper, IDataWrapper, IRelation
+	{
+		void IDataWrapper.InitData(DataRow data, string namePrefix)
+		{
+			base.InitData(data, null);
+		}
+
+		[RelationEnd(Type = typeof(Caracteristiques), Role = typeof(Caracteristiques), Multiplicity = Multiplicity.ZeroOrOne)]
+		public IEntity Caracteristiques;
+
+		[RelationEnd(Type = typeof(ValeursChamp), Role = typeof(ValeursChamp), Multiplicity = Multiplicity.ZeroOrMany)]
+		public IEntity ValeursChamp;
 
 	}
 

@@ -1,7 +1,6 @@
 ﻿// Création de l'onglet Champs Todo
 var vChampsTodo = Aspectize.CreateView("ChampsTodo", aas.Controls.ChampsTodo, "DetailTodoTabs.0:Champs", true, aas.Data.MainData.Todos);
 
-
 var vTabsGroupesChamps = Aspectize.CreateRepeatedView("GroupeNavTab", aas.Controls.GroupeNavTab, aas.Zones.ChampsTodo.PanelGroupesNavTabs, aas.Data.MainData.Todos.RelationTodoGroupeChamps.GroupeChamps, "", aas.Expression('!InfosSecondaires'));
 vTabsGroupesChamps.TitreGroupe.BindData(vTabsGroupesChamps.ParentData.Titre);
 vTabsGroupesChamps.IdGroupe.BindData(vTabsGroupesChamps.ParentData.TimosId);
@@ -30,9 +29,7 @@ vGroupeChamps.GridChampsTodo.EnumValuesTableName.BindData(vGroupeChamps.ParentPa
 vGroupeChamps.GridChampsTodo.EnumValuesTableOptionTextColumn.BindData("DisplayedValue");
 vGroupeChamps.GridChampsTodo.EnumValuesTableOptionValueColumn.BindData("StoredValue");
 vGroupeChamps.GridChampsTodo.EnumValuesTableTypeColumn.BindData("ChampTimosId");
-//vGroupeChamps.OnActivated.BindCommand(aas.Services.Browser.ClientTodosService.InitPropertyGrid(aas.ViewName.GroupeChamps.GridChampsTodo, false));
 vGroupeChamps.GridChampsTodo.OnEndRender.BindCommand(aas.Services.Browser.ClientTodosService.InitPropertyGrid(aas.Expression('GroupeChamps:' + vGroupeChamps.ParentData.TimosId + '-GridChampsTodo')));
-
 
 // Configuration du controle d'édition d'un todo en modal
 var vEditionTodo = Aspectize.CreateView("EditionTodo", aas.Controls.EditionTodo, "", false, aas.Data.MainData.Todos.RelationTodoGroupeChamps.GroupeChamps);
