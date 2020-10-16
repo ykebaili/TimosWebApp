@@ -13,8 +13,14 @@ home.MesTodos.click.BindCommand(aas.Services.Browser.UIService.ShowView(aas.View
 home.Admin.click.BindCommand(aas.Services.Browser.UIService.ShowView(aas.ViewName.Administration));
 home.DisplayAdminNav.BindData(aas.Expression(IIF(aas.Data.MainData.User.IsAdministrator, '', 'hidden')));
 
-var login = Aspectize.CreateView("Login", aas.Controls.Login);
-login.AddAuthorizationRole(aas.Roles.Anonymous, aas.Enum.AccessControl.ReadWrite);
-login.BtnLogin.click.BindCommand(aas.Services.Browser.SecurityServices.Authenticate(login.TxtEmail.value, login.TxtPwd.value, login.CheckBoxRememberMe.checked));
-//login.BtnLogin.click.BindCommand(aas.Services.Browser.ClientInscriptionService.AfterLogin(aas.ViewName.Login.TxtPwd));
-login.OnLoad.BindCommand(aas.Services.Browser.Keyboard.BindEnterKeyToButtonClick(aas.ViewName.Login.TxtPwd, aas.ViewName.Login.BtnLogin));
+var vLogin = Aspectize.CreateView("Login", aas.Controls.Login);
+vLogin.AddAuthorizationRole(aas.Roles.Anonymous, aas.Enum.AccessControl.ReadWrite);
+//vLogin.BtnLogin.click.BindCommand(aas.Services.Browser.SecurityServices.Authenticate(vLogin.TxtEmail.value, vLogin.TxtPwd.value, vLogin.CheckBoxRememberMe.checked));
+vLogin.BtnLogin.click.BindCommand(aas.Services.Browser.ClientTodosService.AuthenticateRadiusEtape1(vLogin.TxtEmail.value, vLogin.TxtPwd.value, vLogin.CheckBoxRememberMe.checked));
+vLogin.OnLoad.BindCommand(aas.Services.Browser.Keyboard.BindEnterKeyToButtonClick(aas.ViewName.Login.TxtPwd, aas.ViewName.Login.BtnLogin));
+
+var vChallenge = Aspectize.CreateView("Challenge", aas.Controls.Challenge);
+vChallenge.AddAuthorizationRole(aas.Roles.Anonymous, aas.Enum.AccessControl.ReadWrite);
+vChallenge.OnLoad.BindCommand(aas.Services.Browser.Keyboard.BindEnterKeyToButtonClick(aas.ViewName.Challenge.TxtOTP, aas.ViewName.Challenge.BtnValider));
+vChallenge.BtnValider.click.BindCommand(aas.Services.Browser.ClientTodosService.AuthenticateRadiusEtape2(vChallenge.TxtOTP.value));
+

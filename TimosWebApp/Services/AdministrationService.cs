@@ -46,6 +46,7 @@ namespace TimosWebApp.Services
             try
             {
                 AuthenticateRadius(strHostName, strSharedSecret, strUserName, strPassword).Wait();
+                
             }
             catch (Exception e)
             {
@@ -53,12 +54,12 @@ namespace TimosWebApp.Services
             }
         }
 
-        private async static Task AuthenticateRadius(string strHostName, string strSharedSecret, string strUserName, string strPassword)
+        public async static Task AuthenticateRadius(string strHostName, string strSharedSecret, string strUserName, string strPassword)
         {
-            string strCryptedPassword = C2iCrypto.Crypte(strPassword);
+            //string strCryptedPassword = C2iCrypto.Crypte(strPassword);
 
-            RadiusClient rc = new RadiusClient(strHostName, strSharedSecret);
-            RadiusPacket authPacket = rc.Authenticate(strUserName, strCryptedPassword);
+            RadiusClient rc = new RadiusClient(strHostName, strSharedSecret, authPort:1815);
+            RadiusPacket authPacket = rc.Authenticate(strUserName, strPassword);
             authPacket.SetAttribute(new VendorSpecificAttribute(10135, 1, UTF8Encoding.UTF8.GetBytes("Testing")));
             authPacket.SetAttribute(new VendorSpecificAttribute(10135, 2, new[] { (byte)7 }));
             RadiusPacket receivedPacket = await rc.SendAndReceivePacket(authPacket);
@@ -70,10 +71,16 @@ namespace TimosWebApp.Services
                 case RadiusCode.ACCESS_ACCEPT:
                     Console.WriteLine("Access-Accept");
                     foreach (var attr in receivedPacket.Attributes)
+                    {
                         Console.WriteLine(attr.Type.ToString() + " = " + attr.Value);
+                    }
                     break;
                 case RadiusCode.ACCESS_CHALLENGE:
                     Console.WriteLine("Access-Challenge");
+                    foreach (var attr in receivedPacket.Attributes)
+                    {
+                        Console.WriteLine(attr.Type.ToString() + " = " + attr.Value);
+                    }
                     break;
                 case RadiusCode.ACCESS_REJECT:
                     Console.WriteLine("Access-Reject");

@@ -26,6 +26,13 @@ namespace TimosWebApp.Services
         [Parameter(Optional = false)]
         public string TimosServerURL = "";
 
+        /*[Parameter(Optional = false)]
+        public string RadiusServerURL = "";
+        [Parameter(Optional = false)]
+        public uint RadiusServerPort = 1815;
+        [Parameter(Optional = false)]
+        public string RadiusSharedKey = "";*/
+
         public void InitTimos()
         {
             CResultAErreur result = CResultAErreur.True;

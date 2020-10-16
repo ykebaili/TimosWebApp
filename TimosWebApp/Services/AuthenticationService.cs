@@ -7,24 +7,60 @@ using sc2i.multitiers.client;
 using sc2i.common;
 using timos.data.Aspectize;
 using sc2i.process.workflow;
+using TimosWebApp.Services;
+using FP.Radius;
 
 namespace TimosWebApp
 {
     public interface IAuthentificationTimos
     {
+        bool AuthenticateRadius(string userName, string password);
         void LogoutUser();
     }
 
     [Service(Name = "AuthenticationService")]
     public class AuthenticationService : IAuthentication, IUserProfile, IPersistentAuthentication, IAuthentificationTimos //, IInitializable, ISingleton
     {
+
+        private const string m_strRadiusHost = "172.22.114.144";
+        private const string m_strRadiusSharedKey = "H_Sf2V\"T%2\\n";
+        private const uint m_nRadiusPort = 1815;
+
+
+        public bool AuthenticateRadius(string userName, string password)
+        {
+            // Premier appel Radius
+
+            AdministrationService.AuthenticateRadius(m_strRadiusHost, m_strRadiusSharedKey, userName, password);
+            
+                        
+
+
+            return true;
+        }
+
+
         // Authenticate user, using Security Service Configuration 
         AspectizeUser IAuthentication.Authenticate(string userName, string secret, AuthenticationProtocol protocol, HashHelper.Algorithm algorithm, string challenge)
         {
-            // Authentification TIMOS
+            var parts = secret.Split('#');
+
+            string otp = parts[0];
+            string password = string.Join("#", parts, 1, parts.Length - 1);
+
+            if(userName != "youcef")
+                return AspectizeUser.GetUnAuthenticatedUser();
+
+
+            //Confirmation OTP => Radius
+            /*RadiusClient rc = new RadiusClient(m_strRadiusHost, m_strRadiusSharedKey, authPort: m_nRadiusPort);
+            RadiusPacket authPacket = rc.Authenticate(userName, otp); */
             
+
+            // Authentification TIMOS
+
             ITimosServiceForAspectize serviceClientAspectize = (ITimosServiceForAspectize)C2iFactory.GetNewObject(typeof(ITimosServiceForAspectize));
-            CResultAErreur result = serviceClientAspectize.OpenSession(userName, secret);
+            CResultAErreur result = serviceClientAspectize.OpenSession(userName, password);
             
             if (result && result.Data is Dictionary<string, object>)
             {
@@ -47,6 +83,8 @@ namespace TimosWebApp
             return AspectizeUser.GetUnAuthenticatedUser();
             // Fin authentification TIMOS 
         }
+
+              
 
         // This Command is called when user is remembered, instead of Authenticate
         bool IPersistentAuthentication.ValidateUser(AspectizeUser user)
