@@ -16,11 +16,11 @@ home.DisplayAdminNav.BindData(aas.Expression(IIF(aas.Data.MainData.User.IsAdmini
 var vLogin = Aspectize.CreateView("Login", aas.Controls.Login);
 vLogin.AddAuthorizationRole(aas.Roles.Anonymous, aas.Enum.AccessControl.ReadWrite);
 //vLogin.BtnLogin.click.BindCommand(aas.Services.Browser.SecurityServices.Authenticate(vLogin.TxtEmail.value, vLogin.TxtPwd.value, vLogin.CheckBoxRememberMe.checked));
-vLogin.BtnLogin.click.BindCommand(aas.Services.Browser.ClientTodosService.AuthenticateRadiusEtape1(vLogin.TxtEmail.value, vLogin.TxtPwd.value, vLogin.CheckBoxRememberMe.checked));
+vLogin.BtnLogin.click.BindCommand(aas.Services.Browser.ClientAuthenticationService.AuthenticateRadiusEtape1(vLogin.TxtEmail.value, vLogin.TxtPwd.value, vLogin.CheckBoxRememberMe.checked));
 vLogin.OnLoad.BindCommand(aas.Services.Browser.Keyboard.BindEnterKeyToButtonClick(aas.ViewName.Login.TxtPwd, aas.ViewName.Login.BtnLogin));
 
 var vChallenge = Aspectize.CreateView("Challenge", aas.Controls.Challenge);
 vChallenge.AddAuthorizationRole(aas.Roles.Anonymous, aas.Enum.AccessControl.ReadWrite);
 vChallenge.OnLoad.BindCommand(aas.Services.Browser.Keyboard.BindEnterKeyToButtonClick(aas.ViewName.Challenge.TxtOTP, aas.ViewName.Challenge.BtnValider));
-vChallenge.BtnValider.click.BindCommand(aas.Services.Browser.ClientTodosService.AuthenticateRadiusEtape2(vChallenge.TxtOTP.value));
+vChallenge.BtnValider.click.BindCommand(aas.Services.Browser.ClientAuthenticationService.AuthenticateRadiusEtape2(vChallenge.TxtOTP.value));
 

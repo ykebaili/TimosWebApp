@@ -14,7 +14,7 @@ namespace TimosWebApp
 {
     public interface IAuthentificationTimos
     {
-        bool AuthenticateRadius(string userName, string password);
+        string AuthenticateRadius(string strUserName, string strPassword);
         void LogoutUser();
     }
 
@@ -27,35 +27,34 @@ namespace TimosWebApp
         private const uint m_nRadiusPort = 1815;
 
 
-        public bool AuthenticateRadius(string userName, string password)
+        public string AuthenticateRadius(string strUserName, string strPassword)
         {
+            C2iEventLog.WriteInfo("Appel Radius étape 1 : " + strUserName + " | " + strPassword);
+
             // Premier appel Radius
-
-            AdministrationService.AuthenticateRadius(m_strRadiusHost, m_strRadiusSharedKey, userName, password);
-            
-                        
-
-
-            return true;
+            return AdministrationService.AuthenticateRadius(m_strRadiusHost, m_nRadiusPort, m_strRadiusSharedKey, strUserName, strPassword, "");
         }
 
 
         // Authenticate user, using Security Service Configuration 
         AspectizeUser IAuthentication.Authenticate(string userName, string secret, AuthenticationProtocol protocol, HashHelper.Algorithm algorithm, string challenge)
         {
+            C2iEventLog.WriteInfo("Appel Radius étape 2 : " + userName + " | " + secret);
+
             var parts = secret.Split('#');
 
             string otp = parts[0];
-            string password = string.Join("#", parts, 1, parts.Length - 1);
+            //string password = string.Join("#", parts, 1, parts.Length - 1);
+            string password = parts[1];
+            string state = parts[2];
 
-            if(userName != "youcef")
-                return AspectizeUser.GetUnAuthenticatedUser();
-
-
-            //Confirmation OTP => Radius
-            /*RadiusClient rc = new RadiusClient(m_strRadiusHost, m_strRadiusSharedKey, authPort: m_nRadiusPort);
-            RadiusPacket authPacket = rc.Authenticate(userName, otp); */
-            
+            if (userName != "youcef")
+            {
+                string retour = AdministrationService.AuthenticateRadius(m_strRadiusHost, m_nRadiusPort, m_strRadiusSharedKey, userName, otp, state);
+                var parts2 = retour.Split('#');
+                if(parts2[0] != "2")
+                    return AspectizeUser.GetUnAuthenticatedUser();
+            }
 
             // Authentification TIMOS
 

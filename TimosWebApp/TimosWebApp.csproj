@@ -114,6 +114,7 @@
     <Content Include="manifest.json" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Services\ClientAuthenticationService.js" />
     <Content Include="Services\ClientTodosService.js" />
     <Content Include="Services\DisplayCustomExceptionService.js" />
     <Content Include="Styles.css" />

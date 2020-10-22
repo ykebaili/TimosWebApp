@@ -193,7 +193,7 @@ Global.ClientTodosService = {
         cmd.Attributes.aasAsynchronousCall = true;
         cmd.OnComplete = function (result) {
             // Executé au retour de l'appel serveur si tout est OK (pas d'excetpion)
-            Aspectize.ExecuteCommand(aas.Services.Browser.ClientTodosService.ToastAlert("Appel serveur OK", "Resultat : " + result));
+            Aspectize.ExecuteCommand(aas.Services.Browser.ClientTodosService.ToastAlert("Appel serveur OK", "Resultat : \n" + result));
         }
         cmd.Call(aas.Services.Server.TodosService.TestAppelServeur());
     },
@@ -210,64 +210,6 @@ Global.ClientTodosService = {
             Aspectize.ExecuteCommand(aas.Services.Browser.ClientTodosService.ToastAlert('Appel serveur OK', result));
         }
         cmd.Call(aas.Services.Server.TodosService.TestAppelServeurAvecParmatres(alpha, beta));
-    },
-
-    //-------------------------------------------------------------------------------------------------------
-    // DEBUG UNIQUEMENT
-    TestAppelServeurRadius: function (host, secret, user, password) {
-
-        var cmd = Aspectize.PrepareCommand();
-        cmd.Attributes.aasShowWaiting = true;
-        cmd.Attributes.aasAsynchronousCall = true;
-        cmd.OnComplete = function (result) {
-            // Executé au retour de l'appel serveur si tout est OK (pas d'excetpion)
-            Aspectize.ExecuteCommand(aas.Services.Browser.ClientTodosService.ToastAlert('Appel serveur Radius OK', result));
-        }
-        cmd.Call(aas.Services.Server.AdministrationService.TestAppelServeurRadius(host, secret, user, password));
-    },
-
-    //---------------------------------------------------------------------------------------------------------
-    AuthenticateRadiusEtape1: function (userName, password, rememberMe) {
-
-        var cmd = Aspectize.PrepareCommand();
-        cmd.Attributes.aasShowWaiting = true;
-        cmd.Attributes.aasAsynchronousCall = true;
-        cmd.OnComplete = function (result) {
-            // Executé au retour de l'appel serveur si tout est OK (pas d'excetpion)
-            if(result) {
-                Aspectize.ExecuteCommand(aas.Services.Browser.UIService.SetContextValue('TimosUserName', userName));
-                Aspectize.ExecuteCommand(aas.Services.Browser.UIService.SetContextValue('TimosUserPwd', password));
-                Aspectize.ExecuteCommand(aas.Services.Browser.UIService.SetContextValue('TimosRememberMe', rememberMe));
-                Aspectize.ExecuteCommand(aas.Services.Browser.UIService.ShowView(aas.ViewName.Challenge));
-            }
-            else {
-                Aspectize.ExecuteCommand(aas.Services.Browser.UIService.SetContextValue('TimosUserName', ''));
-                Aspectize.ExecuteCommand(aas.Services.Browser.UIService.SetContextValue('TimosUserPwd', ''));
-                Aspectize.ExecuteCommand(aas.Services.Browser.UIService.SetContextValue('TimosRememberMe', ''));
-                Aspectize.ExecuteCommand(aas.Services.Browser.ClientTodosService.ToastAlert('Erreur', 'Login ou mot de passe incorrect', 'error'));
-            }
-        }
-        cmd.Call(aas.Services.Server.AuthenticationService.AuthenticateRadius(userName, password));
-    },
-
-    AuthenticateRadiusEtape2: function (OTP) {
-
-        var userName = Aspectize.ExecuteCommand(aas.Services.Browser.UIService.GetContextValue('TimosUserName'));
-        var password = Aspectize.ExecuteCommand(aas.Services.Browser.UIService.GetContextValue('TimosUserPwd'));
-        var rememberMe = Aspectize.ExecuteCommand(aas.Services.Browser.UIService.GetContextValue('TimosRememberMe'));
-
-        var secret = OTP + '#' + password;
-
-        Aspectize.ExecuteCommand(aas.Services.Browser.SecurityServices.Authenticate, userName, secret, rememberMe, function (isAuthenticated) {
-            // Authentification 
-            if (isAuthenticated) {
-                //Aspectize.ExecuteCommand(aas.Services.Browser.ClientTodosService.ToastAlert('OK', ''));
-            }
-            else {
-                Aspectize.ExecuteCommand(aas.Services.Browser.ClientTodosService.ToastAlert('Erreur OTP', 'Echec authentification', 'error'));
-            }
-
-        });
     }
 
 };
