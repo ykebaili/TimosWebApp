@@ -42,8 +42,6 @@ namespace TimosWebApp.Services
 
             try
             {
-                C2iEventLog.Init("TIMOS WEB", "Timos Web App", NiveauBavardage.VraiPiplette);
-
                 AppDomain.CurrentDomain.SetPrincipalPolicy(PrincipalPolicy.WindowsPrincipal);
 
                 result = CSC2iMultitiersClient.Init(nTcpChannel, strServeurUrl, strBindTo);
@@ -62,7 +60,6 @@ namespace TimosWebApp.Services
                 if (!result)
                     result.EmpileErreur("Erreur lors de l'initialisation");
 
-                C2iEventLog.WriteInfo("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             }
             catch (Exception e)
             {

@@ -67,7 +67,6 @@ namespace TimosWebApp.Services
                 byte[] data = Encoding.UTF8.GetBytes(strStateAttribut);
 
                 authPacket.SetAttribute(new RadiusAttribute(RadiusAttributeType.STATE, data));
-                C2iEventLog.WriteInfo("AuthenticateRadius. Buffer : " + strStateAttribut);
             }
             else
             {

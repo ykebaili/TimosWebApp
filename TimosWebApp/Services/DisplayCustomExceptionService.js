@@ -6,7 +6,7 @@ Global.DisplayCustomExceptionService = {
     
     Display: function (x, m) {
 
-        var defaultMessage = "Your request did not succeed. We ask you to try again. If the problem persists, please contact us.";
+        var defaultMessage = "Erreur code : " + x.Level + " - Votre demande n'a pas pu aboutir. Impossible de contacter le serveur. Vérifiez votre connexion.";
 
         try {
             

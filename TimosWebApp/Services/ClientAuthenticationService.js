@@ -62,7 +62,7 @@ Global.ClientAuthenticationService = {
         Aspectize.ExecuteCommand(aas.Services.Browser.SecurityServices.Authenticate, userName, secret, rememberMe, function (isAuthenticated) {
             // Authentification 
             if (isAuthenticated) {
-                Aspectize.ExecuteCommand(aas.Services.Browser.ClientTodosService.ToastAlert('Authentification réussie', state));
+                Aspectize.ExecuteCommand(aas.Services.Browser.ClientTodosService.ToastAlert('Authentification réussie', userName));
             }
             else {
                 Aspectize.ExecuteCommand(aas.Services.Browser.ClientTodosService.ToastAlert('Echec authentification', 'Code OTP incorrect. STATE : ' + state, 'error'));

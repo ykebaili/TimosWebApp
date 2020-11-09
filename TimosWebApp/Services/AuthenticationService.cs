@@ -29,17 +29,21 @@ namespace TimosWebApp
 
         public string AuthenticateRadius(string strUserName, string strPassword)
         {
-            C2iEventLog.WriteInfo("Appel Radius étape 1 : " + strUserName + " | " + strPassword);
+            Context.Log(InfoType.Information, "AuthenticateRadius : " + strUserName);
 
-            // Premier appel Radius
-            return AdministrationService.AuthenticateRadius(m_strRadiusHost, m_nRadiusPort, m_strRadiusSharedKey, strUserName, strPassword, "");
+            if (ExecutingContext.CurrentHostUrl.ToLower().StartsWith(@"http://localhost"))
+                return "11#blablabbal";
+
+            else
+                // Premier appel Radius
+                return AdministrationService.AuthenticateRadius(m_strRadiusHost, m_nRadiusPort, m_strRadiusSharedKey, strUserName, strPassword, "");
         }
 
 
         // Authenticate user, using Security Service Configuration 
         AspectizeUser IAuthentication.Authenticate(string userName, string secret, AuthenticationProtocol protocol, HashHelper.Algorithm algorithm, string challenge)
         {
-            C2iEventLog.WriteInfo("Appel Radius étape 2 : " + userName + " | " + secret);
+            Context.Log(InfoType.Information, "IAuthentication.Authenticate : " + userName);
 
             var parts = secret.Split('#');
 

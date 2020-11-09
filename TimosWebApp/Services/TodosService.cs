@@ -288,6 +288,8 @@ namespace TimosWebApp.Services
         //-----------------------------------------------------------------------------------------
         public void SaveTodo(DataSet dataSet, int nIdTodo, string elementType, int elementId)
         {
+            Context.Log(InfoType.Information, "TodosService.SaveTodo. nIdTodo = " + nIdTodo.ToString());
+
             if (!dataSet.HasChanges())
                 return;
 
@@ -300,6 +302,8 @@ namespace TimosWebApp.Services
                     int nTimosSessionId = (int)aspectizeUser[CUserTimosWebApp.c_champSessionId];
                     IEntityManager em = EntityManager.FromDataSet(dataSet);
 
+                    Context.Log(InfoType.Information, "TodosService before SaveTodo. nTimosSessionId = " + nTimosSessionId.ToString());
+
                     ITimosServiceForAspectize serviceClientAspectize = (ITimosServiceForAspectize)C2iFactory.GetNewObject(typeof(ITimosServiceForAspectize));
                     CResultAErreur result = serviceClientAspectize.GetSession(nTimosSessionId);
                     if (!result)
@@ -307,6 +311,7 @@ namespace TimosWebApp.Services
                         throw new SmartException(1100, "Votre session a expiré, veuillez vous reconnecter");
                     }
                     result = serviceClientAspectize.SaveTodo(nTimosSessionId, dataSet, nIdTodo, elementType, elementId);
+                    Context.Log(InfoType.Information, "TodosService after SaveTodo. result = " + result.Result);
 
                     if (!result)
                         throw new SmartException(1010, result.MessageErreur);
@@ -329,12 +334,16 @@ namespace TimosWebApp.Services
         //-----------------------------------------------------------------------------------------
         public DataSet EndTodo(int nIdTodo)
         {
+            Context.Log(InfoType.Information, "TodosService.EndTodo. nIdTodo = " + nIdTodo.ToString());
+
             AspectizeUser aspectizeUser = ExecutingContext.CurrentUser;
             IEntityManager em = EntityManager.FromDataSet(DataSetHelper.Create());
 
             if (aspectizeUser.IsAuthenticated)
             {
                 int nTimosSessionId = (int)aspectizeUser[CUserTimosWebApp.c_champSessionId];
+
+                Context.Log(InfoType.Information, "TodosService before EndTodo. nTimosSessionId = " + nTimosSessionId.ToString());
 
                 ITimosServiceForAspectize serviceClientAspectize = (ITimosServiceForAspectize)C2iFactory.GetNewObject(typeof(ITimosServiceForAspectize));
                 CResultAErreur result = serviceClientAspectize.GetSession(nTimosSessionId);
@@ -343,6 +352,7 @@ namespace TimosWebApp.Services
                     throw new SmartException(1100, "Votre session a expiré, veuillez vous reconnecter");
                 }
                 result = serviceClientAspectize.EndTodo(nTimosSessionId, nIdTodo);
+                Context.Log(InfoType.Information, "TodosService after EndTodo. result = " + result.Result);
 
                 if (!result)
                     throw new SmartException(1020, result.MessageErreur);
