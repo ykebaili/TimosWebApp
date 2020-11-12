@@ -99,6 +99,21 @@ namespace TimosWebApp.Services
                                 }
                             }
 
+                            // Création des caractéristiques
+                            DataTable tableCaracteristiques = ds.Tables[CCaracteristique.c_nomTable];
+                            foreach (DataRow rowCarac in tableCaracteristiques.Rows)
+                            {
+                                string strTitre = (string)rowCarac[CCaracteristique.c_champTitre];
+                                int nIdCarac = (int)rowCarac[CCaracteristique.c_champTimosId];
+                                if(em.GetInstance<Caracteristiques>(nIdCarac) == null)
+                                {
+                                    var caracteristique = em.CreateInstance<Caracteristiques>();
+                                    caracteristique.TimosId = nIdCarac;
+                                    caracteristique.Titre = strTitre;
+                                    caracteristique.OrdreAffichage = (int)rowCarac[CCaracteristique.c_champOrdreAffichage];
+                                }
+                            }
+
                             // Définition des champs
                             DataTable tableChampsTimos = ds.Tables[CChampTimosWebApp.c_nomTable];
                             foreach (DataRow rowChamp in tableChampsTimos.Rows)
@@ -156,6 +171,7 @@ namespace TimosWebApp.Services
 
                                 }
 
+                                // Le champ appartient à un Groupe ou une Caracteristique
                                 GroupeChamps groupeAssocie = em.GetInstance<GroupeChamps>(nIdGroupeAssocie);
                                 if(champTimos.GetAssociatedInstance<GroupeChamps, RelationGroupeChampsChampsTimos>() == null)
                                     em.AssociateInstance<RelationGroupeChampsChampsTimos>(groupeAssocie, champTimos);

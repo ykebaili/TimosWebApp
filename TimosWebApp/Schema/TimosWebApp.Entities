@@ -154,7 +154,7 @@
         <relationReferencesEntityReferenceClasses Id="a8d8ec87-82ea-4006-9476-9cabeb92b290" role="GroupeChamps" cardinality="O__N">
           <entityMoniker Id="35b2f47a-897c-4654-818e-7265fac6760e" />
         </relationReferencesEntityReferenceClasses>
-        <relationReferencesEntityReferenceClasses Id="cdeb2a4f-5688-4956-948c-4ebff9fe28d6" role="ChampTimos" cardinality="I__N">
+        <relationReferencesEntityReferenceClasses Id="cdeb2a4f-5688-4956-948c-4ebff9fe28d6" role="ChampTimos" cardinality="O__N">
           <entityMoniker Id="289e1e37-c821-4ff6-9464-4c5474b1d657" />
         </relationReferencesEntityReferenceClasses>
       </entityReferenceClasses>

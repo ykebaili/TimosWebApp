@@ -800,7 +800,7 @@ namespace TimosWebApp
 		[RelationEnd(Type = typeof(GroupeChamps), Role = typeof(GroupeChamps), Multiplicity = Multiplicity.ZeroOrMany)]
 		public IEntity GroupeChamps;
 
-		[RelationEnd(Type = typeof(ChampTimos), Role = typeof(ChampTimos), Multiplicity = Multiplicity.OneOrMany)]
+		[RelationEnd(Type = typeof(ChampTimos), Role = typeof(ChampTimos), Multiplicity = Multiplicity.ZeroOrMany)]
 		public IEntity ChampTimos;
 
 	}

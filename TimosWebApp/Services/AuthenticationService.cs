@@ -57,7 +57,7 @@ namespace TimosWebApp
                 string retour = AdministrationService.AuthenticateRadius(m_strRadiusHost, m_nRadiusPort, m_strRadiusSharedKey, userName, otp, state);
                 var parts2 = retour.Split('#');
                 if(parts2[0] != "2")
-                    return AspectizeUser.GetUnAuthenticatedUser();
+                    return AspectizeUser.GetUnAuthenticatedUser(); // L'authentification OTP a échoué
             }
 
             // Authentification TIMOS
