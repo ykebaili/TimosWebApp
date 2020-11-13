@@ -171,7 +171,7 @@
     </relation>
     <relation Id="266f0356-b547-49ac-8d5a-899f28f1d1c8" name="RelationCaracChamp" guid="00000000-0000-0000-0000-000000000000" hasTriggers="false" hasCustomValidators="false">
       <entityReferenceClasses>
-        <relationReferencesEntityReferenceClasses Id="e3f44a22-924d-44a9-ae68-ce610c9d2dfe" role="Caracteristiques" cardinality="O__I">
+        <relationReferencesEntityReferenceClasses Id="e3f44a22-924d-44a9-ae68-ce610c9d2dfe" role="Caracteristiques" cardinality="O__N">
           <entityMoniker Id="36da5692-c34f-4c95-82cf-9afdf083209f" />
         </relationReferencesEntityReferenceClasses>
         <relationReferencesEntityReferenceClasses Id="19f0ac2a-bd21-4169-b23c-99b60ea365fc" role="ChampTimos" cardinality="O__N">
@@ -181,7 +181,7 @@
     </relation>
     <relation Id="5ef813ed-f3b8-4b89-9ba2-2bca505e0c69" name="RelationCaracValeurChamp" guid="00000000-0000-0000-0000-000000000000" hasTriggers="false" hasCustomValidators="false">
       <entityReferenceClasses>
-        <relationReferencesEntityReferenceClasses Id="ef77d0db-5439-4e1e-8353-dbea7bf38462" role="Caracteristiques" cardinality="O__I">
+        <relationReferencesEntityReferenceClasses Id="ef77d0db-5439-4e1e-8353-dbea7bf38462" role="Caracteristiques" cardinality="O__N">
           <entityMoniker Id="36da5692-c34f-4c95-82cf-9afdf083209f" />
         </relationReferencesEntityReferenceClasses>
         <relationReferencesEntityReferenceClasses Id="45dbe6e6-aad8-4c44-94e1-e5a7152d3ec2" role="TodoValeurChamp" cardinality="O__N">
@@ -191,7 +191,7 @@
     </relation>
     <relation Id="5635c6e5-82a1-49ed-afef-528996be5afc" name="RelationCaracValeursPossibles" guid="00000000-0000-0000-0000-000000000000" hasTriggers="false" hasCustomValidators="false">
       <entityReferenceClasses>
-        <relationReferencesEntityReferenceClasses Id="bbd502d6-689b-494d-a430-bc507042c2d4" role="Caracteristiques" cardinality="O__I">
+        <relationReferencesEntityReferenceClasses Id="bbd502d6-689b-494d-a430-bc507042c2d4" role="Caracteristiques" cardinality="O__N">
           <entityMoniker Id="36da5692-c34f-4c95-82cf-9afdf083209f" />
         </relationReferencesEntityReferenceClasses>
         <relationReferencesEntityReferenceClasses Id="faae425b-83b0-4e51-9781-c7694af6d60f" role="ValeursChamp" cardinality="O__N">

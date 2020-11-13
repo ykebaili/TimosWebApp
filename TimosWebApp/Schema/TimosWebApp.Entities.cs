@@ -829,7 +829,7 @@ namespace TimosWebApp
 			base.InitData(data, null);
 		}
 
-		[RelationEnd(Type = typeof(Caracteristiques), Role = typeof(Caracteristiques), Multiplicity = Multiplicity.ZeroOrOne)]
+		[RelationEnd(Type = typeof(Caracteristiques), Role = typeof(Caracteristiques), Multiplicity = Multiplicity.ZeroOrMany)]
 		public IEntity Caracteristiques;
 
 		[RelationEnd(Type = typeof(ChampTimos), Role = typeof(ChampTimos), Multiplicity = Multiplicity.ZeroOrMany)]
@@ -845,7 +845,7 @@ namespace TimosWebApp
 			base.InitData(data, null);
 		}
 
-		[RelationEnd(Type = typeof(Caracteristiques), Role = typeof(Caracteristiques), Multiplicity = Multiplicity.ZeroOrOne)]
+		[RelationEnd(Type = typeof(Caracteristiques), Role = typeof(Caracteristiques), Multiplicity = Multiplicity.ZeroOrMany)]
 		public IEntity Caracteristiques;
 
 		[RelationEnd(Type = typeof(TodoValeurChamp), Role = typeof(TodoValeurChamp), Multiplicity = Multiplicity.ZeroOrMany)]
@@ -861,7 +861,7 @@ namespace TimosWebApp
 			base.InitData(data, null);
 		}
 
-		[RelationEnd(Type = typeof(Caracteristiques), Role = typeof(Caracteristiques), Multiplicity = Multiplicity.ZeroOrOne)]
+		[RelationEnd(Type = typeof(Caracteristiques), Role = typeof(Caracteristiques), Multiplicity = Multiplicity.ZeroOrMany)]
 		public IEntity Caracteristiques;
 
 		[RelationEnd(Type = typeof(ValeursChamp), Role = typeof(ValeursChamp), Multiplicity = Multiplicity.ZeroOrMany)]
