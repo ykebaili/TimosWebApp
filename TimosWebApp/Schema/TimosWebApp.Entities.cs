@@ -24,6 +24,7 @@ namespace TimosWebApp
 			public const string FichiersAttaches = "FichiersAttaches";
 			public const string GroupeChamps = "GroupeChamps";
 			public const string Caracteristiques = "Caracteristiques";
+			public const string CaracValeurChamp = "CaracValeurChamp";
 		}
 
 		public static partial class Relations
@@ -710,6 +711,76 @@ namespace TimosWebApp
 	}
 
 	[DataDefinition]
+	public class CaracValeurChamp : Entity, IDataWrapper
+	{
+		public static partial class Fields
+		{
+			public const string ValeurChamp = "ValeurChamp";
+			public const string LibelleChamp = "LibelleChamp";
+			public const string OrdreChamp = "OrdreChamp";
+			public const string ChampTimosId = "ChampTimosId";
+			public const string ElementType = "ElementType";
+			public const string ElementId = "ElementId";
+			public const string CaracId = "CaracId";
+		}
+
+		void IDataWrapper.InitData(DataRow data, string namePrefix)
+		{
+			base.InitData(data, null);
+		}
+
+		[Data]
+		public string ValeurChamp
+		{
+			get { return getValue<string>("ValeurChamp"); }
+			set { setValue<string>("ValeurChamp", value); }
+		}
+
+		[Data]
+		public string LibelleChamp
+		{
+			get { return getValue<string>("LibelleChamp"); }
+			set { setValue<string>("LibelleChamp", value); }
+		}
+
+		[Data]
+		public int OrdreChamp
+		{
+			get { return getValue<int>("OrdreChamp"); }
+			set { setValue<int>("OrdreChamp", value); }
+		}
+
+		[Data(IsPrimaryKey = true)]
+		public string ChampTimosId
+		{
+			get { return getValue<string>("ChampTimosId"); }
+			set { setValue<string>("ChampTimosId", value); }
+		}
+
+		[Data]
+		public string ElementType
+		{
+			get { return getValue<string>("ElementType"); }
+			set { setValue<string>("ElementType", value); }
+		}
+
+		[Data]
+		public int ElementId
+		{
+			get { return getValue<int>("ElementId"); }
+			set { setValue<int>("ElementId", value); }
+		}
+
+		[Data]
+		public int CaracId
+		{
+			get { return getValue<int>("CaracId"); }
+			set { setValue<int>("CaracId", value); }
+		}
+
+	}
+
+	[DataDefinition]
 	public class ValeursPossibles : DataWrapper, IDataWrapper, IRelation
 	{
 		void IDataWrapper.InitData(DataRow data, string namePrefix)
@@ -752,7 +823,7 @@ namespace TimosWebApp
 		[RelationEnd(Type = typeof(TodoValeurChamp), Role = typeof(TodoValeurChamp), Multiplicity = Multiplicity.ZeroOrMany)]
 		public IEntity TodoValeurChamp;
 
-		[RelationEnd(Type = typeof(GroupeChamps), Role = typeof(GroupeChamps), Multiplicity = Multiplicity.ZeroOrOne)]
+		[RelationEnd(Type = typeof(GroupeChamps), Role = typeof(GroupeChamps), Multiplicity = Multiplicity.ZeroOrMany)]
 		public IEntity GroupeChamps;
 
 	}
@@ -848,8 +919,8 @@ namespace TimosWebApp
 		[RelationEnd(Type = typeof(Caracteristiques), Role = typeof(Caracteristiques), Multiplicity = Multiplicity.ZeroOrMany)]
 		public IEntity Caracteristiques;
 
-		[RelationEnd(Type = typeof(TodoValeurChamp), Role = typeof(TodoValeurChamp), Multiplicity = Multiplicity.ZeroOrMany)]
-		public IEntity TodoValeurChamp;
+		[RelationEnd(Type = typeof(CaracValeurChamp), Role = typeof(CaracValeurChamp), Multiplicity = Multiplicity.ZeroOrMany)]
+		public IEntity CaracValeurChamp;
 
 	}
 
@@ -861,7 +932,7 @@ namespace TimosWebApp
 			base.InitData(data, null);
 		}
 
-		[RelationEnd(Type = typeof(Caracteristiques), Role = typeof(Caracteristiques), Multiplicity = Multiplicity.ZeroOrMany)]
+		[RelationEnd(Type = typeof(Caracteristiques), Role = typeof(Caracteristiques), Multiplicity = Multiplicity.ZeroOrOne)]
 		public IEntity Caracteristiques;
 
 		[RelationEnd(Type = typeof(ValeursChamp), Role = typeof(ValeursChamp), Multiplicity = Multiplicity.ZeroOrMany)]

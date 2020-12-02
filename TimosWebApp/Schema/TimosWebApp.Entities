@@ -97,6 +97,17 @@
         <entityProperty name="Expand" type="Boolean" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
       </properties>
     </entity>
+    <entity Id="41978310-6a5d-4748-956e-cdcbf1da5f88" name="CaracValeurChamp" guid="f6beafe2-cf7e-491d-af99-cdb9b897af78" guidIdentifier="false" hasCustomValidators="false" hasTriggers="false">
+      <properties>
+        <entityProperty name="ValeurChamp" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="LibelleChamp" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="OrdreChamp" type="Int32" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="ChampTimosId" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" identifier="Identifier" />
+        <entityProperty name="ElementType" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="ElementId" type="Int32" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="CaracId" type="Int32" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+      </properties>
+    </entity>
   </entities>
   <relations>
     <relation Id="775f2974-b3c3-4516-bed2-2c69ad4bec9d" name="ValeursPossibles" guid="00000000-0000-0000-0000-000000000000" hasTriggers="false" hasCustomValidators="false">
@@ -124,7 +135,7 @@
         <relationReferencesEntityReferenceClasses Id="9b3ecb57-8a92-4729-aa31-9d1bae48f752" role="TodoValeurChamp" cardinality="O__N">
           <entityMoniker Id="0f2ba6b8-2ed7-4917-a1d2-6f2265942534" />
         </relationReferencesEntityReferenceClasses>
-        <relationReferencesEntityReferenceClasses Id="c6ead170-4168-44a5-9a9f-b6d73f901b6a" role="GroupeChamps" cardinality="O__I">
+        <relationReferencesEntityReferenceClasses Id="c6ead170-4168-44a5-9a9f-b6d73f901b6a" role="GroupeChamps" cardinality="O__N">
           <entityMoniker Id="35b2f47a-897c-4654-818e-7265fac6760e" />
         </relationReferencesEntityReferenceClasses>
       </entityReferenceClasses>
@@ -184,14 +195,14 @@
         <relationReferencesEntityReferenceClasses Id="ef77d0db-5439-4e1e-8353-dbea7bf38462" role="Caracteristiques" cardinality="O__N">
           <entityMoniker Id="36da5692-c34f-4c95-82cf-9afdf083209f" />
         </relationReferencesEntityReferenceClasses>
-        <relationReferencesEntityReferenceClasses Id="45dbe6e6-aad8-4c44-94e1-e5a7152d3ec2" role="TodoValeurChamp" cardinality="O__N">
-          <entityMoniker Id="0f2ba6b8-2ed7-4917-a1d2-6f2265942534" />
+        <relationReferencesEntityReferenceClasses Id="6710df40-737e-4c13-ac4a-9fcf8bf241fe" role="CaracValeurChamp" cardinality="O__N">
+          <entityMoniker Id="41978310-6a5d-4748-956e-cdcbf1da5f88" />
         </relationReferencesEntityReferenceClasses>
       </entityReferenceClasses>
     </relation>
     <relation Id="5635c6e5-82a1-49ed-afef-528996be5afc" name="RelationCaracValeursPossibles" guid="00000000-0000-0000-0000-000000000000" hasTriggers="false" hasCustomValidators="false">
       <entityReferenceClasses>
-        <relationReferencesEntityReferenceClasses Id="bbd502d6-689b-494d-a430-bc507042c2d4" role="Caracteristiques" cardinality="O__N">
+        <relationReferencesEntityReferenceClasses Id="bbd502d6-689b-494d-a430-bc507042c2d4" role="Caracteristiques" cardinality="O__I">
           <entityMoniker Id="36da5692-c34f-4c95-82cf-9afdf083209f" />
         </relationReferencesEntityReferenceClasses>
         <relationReferencesEntityReferenceClasses Id="faae425b-83b0-4e51-9781-c7694af6d60f" role="ValeursChamp" cardinality="O__N">

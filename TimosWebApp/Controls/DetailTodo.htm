@@ -83,8 +83,14 @@
                 </div>
             </div>
 
-
             <div class="row section-caracteristiques">
+                <div class="col-xs-12">
+                    <hr />
+                    <div aas-name="RepeaterPanelCaracteristiques" aas-type="AspectizeRepeaterPanel"></div>
+                </div>
+            </div>
+
+            <div class="row section-actions">
                 <div class="col-xs-12">
                     <hr />
                     <h3><i class="fas fa-cog"></i> Actions</h3>
@@ -102,6 +108,17 @@
 
         </div>
     </div>
+
+    <!--------------------------------------------------- Controle affichage d'une caratéristique---------------------------------------->
+    <div aas-control="Caracteristique">
+        <div class="row">
+            <div class="col-xs-12">
+                <h4>{LibelleCarac}</h4>
+                <div aas-name="GridChampsCaracteristique" aas-type="AspectizePropertyGrid"></div>
+            </div>
+        </div>
+    </div>
+
 
     <!------------------------------------------------------- Onglet Documents attendus ----------------------------------------------->
     <div aas-control="DocumentsAttendus">

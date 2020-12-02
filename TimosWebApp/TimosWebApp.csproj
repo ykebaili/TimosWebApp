@@ -93,6 +93,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Configuration\Views\Administration.js" />
+    <Content Include="Configuration\Views\Caracteristiques.js" />
     <Content Include="Configuration\Views\ChampsTodo.js" />
     <Content Include="Configuration\Views\Documents.js" />
     <Content Include="Configuration\Views\InfosSecondaires.js" />
