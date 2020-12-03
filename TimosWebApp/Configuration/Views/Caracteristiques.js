@@ -1,9 +1,9 @@
-﻿// Création des caractéristiques
+﻿/*/ Création des caractéristiques
 var vCaracteristiques = Aspectize.CreateRepeatedView("Caracteristique", aas.Controls.Caracteristique, aas.Zones.GroupeChamps.RepeaterPanelCaracteristiques,
-    aas.Data.MainData.Todos.RelationTodoGroupeChamps.GroupeChamps.RelationGroupeChampCaracteristique.Caracteristiques);
+    aas.Data.MainData.Todos.RelationTodoCaracteristique.Caracteristiques, '', '');
 vCaracteristiques.LibelleCarac.BindData(vCaracteristiques.ParentData.Titre);
 
-//*/ Initialisation de la property grid
+/// Initialisation de la property grid
 vCaracteristiques.GridChampsCaracteristique.BindList(vCaracteristiques.ParentData.RelationCaracValeurChamp.CaracValeurChamp, "ValeurChamp", "LibelleChamp", "OrdreChamp");
 
 vCaracteristiques.GridChampsCaracteristique.TypeTableName.BindData(vCaracteristiques.ParentPath.RelationCaracChamp.ChampTimos);

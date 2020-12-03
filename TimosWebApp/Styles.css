@@ -309,3 +309,21 @@ img.logo{
     color: #fff;
     background-color: #ff8e01;
 }
+
+/* Init property grid générale */
+.form-group{
+    margin-bottom: 2px;
+}
+
+/* Property Grid Caractéristiques */
+.section-caracteristiques .aasRepeaterItem{
+    border: solid 1px #ec1c24;
+    margin-bottom: 2px;
+}
+.section-caracteristiques h4 {
+    color: #ec1c24;
+}
+.item-caracteristique{
+    margin-top: 8px;
+    padding-top: 8px;
+}

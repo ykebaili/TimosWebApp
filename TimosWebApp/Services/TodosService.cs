@@ -111,11 +111,9 @@ namespace TimosWebApp.Services
                                     caracteristique.TimosId = nIdCarac;
                                     caracteristique.Titre = strTitre;
                                     caracteristique.OrdreAffichage = (int)rowCarac[CCaracteristique.c_champOrdreAffichage];
-                                    int nIdGroupe = (int)rowCarac[CCaracteristique.c_champIdGroupeChamps];
+                                    caracteristique.IdGroupePourFiltre = (int)rowCarac[CCaracteristique.c_champIdGroupeChamps];
 
-                                    GroupeChamps groupeAssocie = em.GetInstance<GroupeChamps>(nIdGroupe);
-                                    if (groupeAssocie != null)
-                                        em.AssociateInstance<RelationGroupeChampCaracteristique>(groupeAssocie, caracteristique);
+                                    em.AssociateInstance<RelationTodoCaracteristique>(todo, caracteristique);
                                 }
                             }
 
@@ -197,6 +195,7 @@ namespace TimosWebApp.Services
                                 valPossible.StoredValue = (string)rowValPossbile[CChampValeursPossibles.c_champValue];
                                 valPossible.DisplayedValue = (string)rowValPossbile[CChampValeursPossibles.c_champDisplay];
 
+
                                 ChampTimos champ = em.GetInstance<ChampTimos>(valPossible.ChampTimosId);
                                 if (champ != null)
                                 {
@@ -204,7 +203,8 @@ namespace TimosWebApp.Services
                                     if (groupeAssocie != null)
                                         em.AssociateInstance<ValeursPossibles>(groupeAssocie, valPossible);
 
-                                    Caracteristiques caracAssociee = champ.GetAssociatedInstance<Caracteristiques, RelationCaracChamp>();
+                                    int nIdCaracAssociee = (int)rowValPossbile[CChampValeursPossibles.c_champIdCaracteristique];
+                                    Caracteristiques caracAssociee = em.GetInstance<Caracteristiques>(nIdCaracAssociee);
                                     if (caracAssociee != null)
                                         em.AssociateInstance<RelationCaracValeursPossibles>(caracAssociee, valPossible);
                                 }
@@ -303,7 +303,7 @@ namespace TimosWebApp.Services
                                     if (caracAssociee != null)
                                     {
                                         em.AssociateInstance<RelationCaracValeurChamp>(caracAssociee, valChampTimos);
-                                        valChampTimos.ChampTimosId = nIdCaracAssociee + "_" + nIdChampTimosAssocie;
+                                        valChampTimos.ChampTimosId = nIdChampTimosAssocie.ToString();
                                     }
 
                                 }
@@ -369,8 +369,6 @@ namespace TimosWebApp.Services
         //-----------------------------------------------------------------------------------------
         public void SaveTodo(DataSet dataSet, int nIdTodo, string elementType, int elementId)
         {
-            Context.Log(InfoType.Information, "TodosService.SaveTodo. nIdTodo = " + nIdTodo.ToString());
-
             if (!dataSet.HasChanges())
                 return;
 
@@ -383,8 +381,6 @@ namespace TimosWebApp.Services
                     int nTimosSessionId = (int)aspectizeUser[CUserTimosWebApp.c_champSessionId];
                     IEntityManager em = EntityManager.FromDataSet(dataSet);
 
-                    Context.Log(InfoType.Information, "TodosService before SaveTodo. nTimosSessionId = " + nTimosSessionId.ToString());
-
                     ITimosServiceForAspectize serviceClientAspectize = (ITimosServiceForAspectize)C2iFactory.GetNewObject(typeof(ITimosServiceForAspectize));
                     CResultAErreur result = serviceClientAspectize.GetSession(nTimosSessionId);
                     if (!result)
@@ -392,7 +388,6 @@ namespace TimosWebApp.Services
                         throw new SmartException(1100, "Votre session a expiré, veuillez vous reconnecter");
                     }
                     result = serviceClientAspectize.SaveTodo(nTimosSessionId, dataSet, nIdTodo, elementType, elementId);
-                    Context.Log(InfoType.Information, "TodosService after SaveTodo. result = " + result.Result);
 
                     if (!result)
                         throw new SmartException(1010, result.MessageErreur);
@@ -415,16 +410,12 @@ namespace TimosWebApp.Services
         //-----------------------------------------------------------------------------------------
         public DataSet EndTodo(int nIdTodo)
         {
-            Context.Log(InfoType.Information, "TodosService.EndTodo. nIdTodo = " + nIdTodo.ToString());
-
             AspectizeUser aspectizeUser = ExecutingContext.CurrentUser;
             IEntityManager em = EntityManager.FromDataSet(DataSetHelper.Create());
 
             if (aspectizeUser.IsAuthenticated)
             {
                 int nTimosSessionId = (int)aspectizeUser[CUserTimosWebApp.c_champSessionId];
-
-                Context.Log(InfoType.Information, "TodosService before EndTodo. nTimosSessionId = " + nTimosSessionId.ToString());
 
                 ITimosServiceForAspectize serviceClientAspectize = (ITimosServiceForAspectize)C2iFactory.GetNewObject(typeof(ITimosServiceForAspectize));
                 CResultAErreur result = serviceClientAspectize.GetSession(nTimosSessionId);
@@ -433,7 +424,6 @@ namespace TimosWebApp.Services
                     throw new SmartException(1100, "Votre session a expiré, veuillez vous reconnecter");
                 }
                 result = serviceClientAspectize.EndTodo(nTimosSessionId, nIdTodo);
-                Context.Log(InfoType.Information, "TodosService after EndTodo. result = " + result.Result);
 
                 if (!result)
                     throw new SmartException(1020, result.MessageErreur);

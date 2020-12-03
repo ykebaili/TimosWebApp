@@ -35,7 +35,7 @@ namespace TimosWebApp
 			public const string RelationTodoDocument = "RelationTodoDocument";
 			public const string RelationFichiers = "RelationFichiers";
 			public const string RelationGroupeChampsChampsTimos = "RelationGroupeChampsChampsTimos";
-			public const string RelationGroupeChampCaracteristique = "RelationGroupeChampCaracteristique";
+			public const string RelationTodoCaracteristique = "RelationTodoCaracteristique";
 			public const string RelationCaracChamp = "RelationCaracChamp";
 			public const string RelationCaracValeurChamp = "RelationCaracValeurChamp";
 			public const string RelationCaracValeursPossibles = "RelationCaracValeursPossibles";
@@ -673,6 +673,8 @@ namespace TimosWebApp
 			public const string Titre = "Titre";
 			public const string OrdreAffichage = "OrdreAffichage";
 			public const string Expand = "Expand";
+			public const string IdGroupePourFiltre = "IdGroupePourFiltre";
+			public const string ElementType = "ElementType";
 		}
 
 		void IDataWrapper.InitData(DataRow data, string namePrefix)
@@ -708,6 +710,20 @@ namespace TimosWebApp
 			set { setValue<bool>("Expand", value); }
 		}
 
+		[Data]
+		public int IdGroupePourFiltre
+		{
+			get { return getValue<int>("IdGroupePourFiltre"); }
+			set { setValue<int>("IdGroupePourFiltre", value); }
+		}
+
+		[Data]
+		public string ElementType
+		{
+			get { return getValue<string>("ElementType"); }
+			set { setValue<string>("ElementType", value); }
+		}
+
 	}
 
 	[DataDefinition]
@@ -715,18 +731,25 @@ namespace TimosWebApp
 	{
 		public static partial class Fields
 		{
+			public const string Id = "Id";
 			public const string ValeurChamp = "ValeurChamp";
 			public const string LibelleChamp = "LibelleChamp";
 			public const string OrdreChamp = "OrdreChamp";
 			public const string ChampTimosId = "ChampTimosId";
 			public const string ElementType = "ElementType";
 			public const string ElementId = "ElementId";
-			public const string CaracId = "CaracId";
 		}
 
 		void IDataWrapper.InitData(DataRow data, string namePrefix)
 		{
 			base.InitData(data, null);
+		}
+
+		[Data(IsPrimaryKey=true)]
+		public Guid Id
+		{
+			get { return getValue<Guid>("Id"); }
+			set { setValue<Guid>("Id", value); }
 		}
 
 		[Data]
@@ -750,7 +773,7 @@ namespace TimosWebApp
 			set { setValue<int>("OrdreChamp", value); }
 		}
 
-		[Data(IsPrimaryKey = true)]
+		[Data]
 		public string ChampTimosId
 		{
 			get { return getValue<string>("ChampTimosId"); }
@@ -769,13 +792,6 @@ namespace TimosWebApp
 		{
 			get { return getValue<int>("ElementId"); }
 			set { setValue<int>("ElementId", value); }
-		}
-
-		[Data]
-		public int CaracId
-		{
-			get { return getValue<int>("CaracId"); }
-			set { setValue<int>("CaracId", value); }
 		}
 
 	}
@@ -877,18 +893,18 @@ namespace TimosWebApp
 	}
 
 	[DataDefinition]
-	public class RelationGroupeChampCaracteristique : DataWrapper, IDataWrapper, IRelation
+	public class RelationTodoCaracteristique : DataWrapper, IDataWrapper, IRelation
 	{
 		void IDataWrapper.InitData(DataRow data, string namePrefix)
 		{
 			base.InitData(data, null);
 		}
 
-		[RelationEnd(Type = typeof(GroupeChamps), Role = typeof(GroupeChamps), Multiplicity = Multiplicity.ZeroOrOne)]
-		public IEntity GroupeChamps;
-
 		[RelationEnd(Type = typeof(Caracteristiques), Role = typeof(Caracteristiques), Multiplicity = Multiplicity.ZeroOrMany)]
 		public IEntity Caracteristiques;
+
+		[RelationEnd(Type = typeof(Todos), Role = typeof(Todos), Multiplicity = Multiplicity.ZeroOrOne)]
+		public IEntity Todos;
 
 	}
 
