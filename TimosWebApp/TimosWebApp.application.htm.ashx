@@ -61,6 +61,10 @@
 <link rel='stylesheet' type='text/css' href='~Bootstrap/BootstrapOverride.css' />
 <link rel='stylesheet' type='text/css' href='~/Styles.css?@FileDate' />
 
+<link rel="stylesheet" href="~TimosWebApp/BootstrapSelect/css/bootstrap-select.css">
+<script src="~TimosWebApp/BootstrapSelect/js/bootstrap-select.min.js"></script>
+<script src="~TimosWebApp/BootstrapSelect/js/i18n/defaults-fr_FR.js"></script>
+
 
 <title>TimosWebApp by Ooredoo</title>
 </head>

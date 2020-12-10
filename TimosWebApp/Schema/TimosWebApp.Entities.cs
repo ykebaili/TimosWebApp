@@ -367,23 +367,16 @@ namespace TimosWebApp
 	{
 		public static partial class Fields
 		{
-			public const string Id = "Id";
 			public const string Index = "Index";
 			public const string StoredValue = "StoredValue";
 			public const string DisplayedValue = "DisplayedValue";
 			public const string ChampTimosId = "ChampTimosId";
+			public const string Id = "Id";
 		}
 
 		void IDataWrapper.InitData(DataRow data, string namePrefix)
 		{
 			base.InitData(data, null);
-		}
-
-		[Data(IsPrimaryKey=true)]
-		public Guid Id
-		{
-			get { return getValue<Guid>("Id"); }
-			set { setValue<Guid>("Id", value); }
 		}
 
 		[Data]
@@ -412,6 +405,13 @@ namespace TimosWebApp
 		{
 			get { return getValue<string>("ChampTimosId"); }
 			set { setValue<string>("ChampTimosId", value); }
+		}
+
+		[Data(IsPrimaryKey = true)]
+		public string Id
+		{
+			get { return getValue<string>("Id"); }
+			set { setValue<string>("Id", value); }
 		}
 
 	}
@@ -675,6 +675,7 @@ namespace TimosWebApp
 			public const string Expand = "Expand";
 			public const string IdGroupePourFiltre = "IdGroupePourFiltre";
 			public const string ElementType = "ElementType";
+			public const string IsTemplate = "IsTemplate";
 		}
 
 		void IDataWrapper.InitData(DataRow data, string namePrefix)
@@ -724,6 +725,13 @@ namespace TimosWebApp
 			set { setValue<string>("ElementType", value); }
 		}
 
+		[Data]
+		public bool IsTemplate
+		{
+			get { return getValue<bool>("IsTemplate"); }
+			set { setValue<bool>("IsTemplate", value); }
+		}
+
 	}
 
 	[DataDefinition]
@@ -731,25 +739,18 @@ namespace TimosWebApp
 	{
 		public static partial class Fields
 		{
-			public const string Id = "Id";
 			public const string ValeurChamp = "ValeurChamp";
 			public const string LibelleChamp = "LibelleChamp";
 			public const string OrdreChamp = "OrdreChamp";
 			public const string ChampTimosId = "ChampTimosId";
 			public const string ElementType = "ElementType";
 			public const string ElementId = "ElementId";
+			public const string Id = "Id";
 		}
 
 		void IDataWrapper.InitData(DataRow data, string namePrefix)
 		{
 			base.InitData(data, null);
-		}
-
-		[Data(IsPrimaryKey=true)]
-		public Guid Id
-		{
-			get { return getValue<Guid>("Id"); }
-			set { setValue<Guid>("Id", value); }
 		}
 
 		[Data]
@@ -774,10 +775,10 @@ namespace TimosWebApp
 		}
 
 		[Data]
-		public string ChampTimosId
+		public int ChampTimosId
 		{
-			get { return getValue<string>("ChampTimosId"); }
-			set { setValue<string>("ChampTimosId", value); }
+			get { return getValue<int>("ChampTimosId"); }
+			set { setValue<int>("ChampTimosId", value); }
 		}
 
 		[Data]
@@ -792,6 +793,13 @@ namespace TimosWebApp
 		{
 			get { return getValue<int>("ElementId"); }
 			set { setValue<int>("ElementId", value); }
+		}
+
+		[Data(IsPrimaryKey = true)]
+		public string Id
+		{
+			get { return getValue<string>("Id"); }
+			set { setValue<string>("Id", value); }
 		}
 
 	}
@@ -948,7 +956,7 @@ namespace TimosWebApp
 			base.InitData(data, null);
 		}
 
-		[RelationEnd(Type = typeof(Caracteristiques), Role = typeof(Caracteristiques), Multiplicity = Multiplicity.ZeroOrOne)]
+		[RelationEnd(Type = typeof(Caracteristiques), Role = typeof(Caracteristiques), Multiplicity = Multiplicity.ZeroOrMany)]
 		public IEntity Caracteristiques;
 
 		[RelationEnd(Type = typeof(ValeursChamp), Role = typeof(ValeursChamp), Multiplicity = Multiplicity.ZeroOrMany)]

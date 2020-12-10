@@ -10,6 +10,7 @@ var vGroupeChamps = Aspectize.CreateRepeatedView("GroupeChamps", aas.Controls.Gr
 vGroupeChamps.TitreGroupe.BindData(vGroupeChamps.ParentData.Titre);
 vGroupeChamps.IdGroupe.BindData(vGroupeChamps.ParentData.TimosId);
 vGroupeChamps.BoutonEditionTodo.click.BindCommand(aas.Services.Browser.BootStrapClientService.ShowModal(aas.ViewName.EditionTodo, true, false, true));
+vGroupeChamps.BoutonAjouterCarac.click.BindCommand(aas.Services.Browser.ClientTodosService.AddCaracteristic(aas.Data.MainData.Todos.TimosId, vGroupeChamps.ParentData.TimosId));
 //vGroupeChamps.BoutonEditionTodo.click.BindCommand(aas.Services.Browser.SystemServices.Alert(vGroupeChamps.ParentData.RelationTodoGroupeChamps.Todos.Label));
 //vGroupeChamps.CollapseGroupe.click.BindCommand(aas.Services.Browser.ClientTodosService.ExpandGroup(vGroupeChamps.ParentData.TimosId));
 vGroupeChamps.IsActiveIn.BindData(aas.Expression(IIF(vGroupeChamps.ParentData.Expand, 'active in', '')));
@@ -32,10 +33,10 @@ vGroupeChamps.GridChampsTodo.EnumValuesTableTypeColumn.BindData("ChampTimosId");
 vGroupeChamps.GridChampsTodo.OnEndRender.BindCommand(aas.Services.Browser.ClientTodosService.InitPropertyGrid(aas.Expression('GroupeChamps:' + vGroupeChamps.ParentData.TimosId + '-GridChampsTodo')));
 
 // Configuration du controle d'édition d'un todo en modal
-var vEditionTodo = Aspectize.CreateView("EditionTodo", aas.Controls.EditionTodo, "", false, aas.Data.MainData.Todos.RelationTodoGroupeChamps.GroupeChamps);
+var vEditionTodo = Aspectize.CreateView("EditionTodo", aas.Controls.EditionChamps, "", false, aas.Data.MainData.Todos.RelationTodoGroupeChamps.GroupeChamps);
 vEditionTodo.OnActivated.BindCommand(aas.Services.Browser.DataRecorder.Start(aas.Data.MainData));
 //vEditionTodo.LabelToDo.BindData(vEditionTodo.ParentData.RelationTodoGroupeChamps.Todos.Label); // Ne fonctionne pas alors qu'il devrait
-vEditionTodo.LabelToDo.BindData(aas.Data.MainData.Todos.Label); // Ce binding fonctionne bien
+vEditionTodo.LabelElementEdite.BindData(aas.Data.MainData.Todos.Label); // Ce binding fonctionne bien
 vEditionTodo.BtnCancel.click.BindCommand(aas.Services.Browser.BootStrapClientService.CloseModal(aas.ViewName.EditionTodo));
 vEditionTodo.BtnCancel.click.BindCommand(aas.Services.Browser.DataRecorder.CancelRowChanges(aas.Data.MainData));
 vEditionTodo.BtnSave.click.BindCommand(aas.Services.Server.TodosService.SaveTodo(
@@ -44,29 +45,30 @@ vEditionTodo.BtnSave.click.BindCommand(aas.Services.Server.TodosService.SaveTodo
     vEditionTodo.ParentData.RelationTodoGroupeChamps.Todos.ElementType,
     vEditionTodo.ParentData.RelationTodoGroupeChamps.Todos.ElementId), "", false, true);
 vEditionTodo.BtnSave.click.BindCommand(aas.Services.Browser.BootStrapClientService.CloseModal(aas.ViewName.EditionTodo));
-
 // Configuration de la PropertyGrid en mode édition
-vEditionTodo.GridChampsTodo.BindList(vGroupeChamps.ParentData.RelationTodoValeurChamp.TodoValeurChamp, "ValeurChamp", "LibelleChamp", "OrdreChamp");
-vEditionTodo.GridChampsTodo.TypeTableName.BindData(vGroupeChamps.ParentPath.RelationGroupeChampsChampsTimos.ChampTimos);
-vEditionTodo.GridChampsTodo.TypeTableNameColumn.BindData("LibelleConvivial");
-vEditionTodo.GridChampsTodo.TypeTableTypeColumn.BindData("AspectizeFieldType");
-vEditionTodo.GridChampsTodo.TypeTableControlTypeColumn.BindData("AspectizeControlType");
-vEditionTodo.GridChampsTodo.TypeTableFormatColumn.BindData(aas.Path.MainData.ChampTimos.FormatDate);
-vEditionTodo.GridChampsTodo.TypeTableEditModeColumn.BindData(aas.Path.MainData.ChampTimos.Editable);
-vEditionTodo.GridChampsTodo.TypeTableClassColumn.BindData(aas.Path.MainData.ChampTimos.CustomClass);
-vEditionTodo.GridChampsTodo.EnumValuesTableName.BindData(vGroupeChamps.ParentPath.ValeursPossibles.ValeursChamp);
-vEditionTodo.GridChampsTodo.EnumValuesTableOptionTextColumn.BindData("DisplayedValue");
-vEditionTodo.GridChampsTodo.EnumValuesTableOptionValueColumn.BindData("StoredValue");
-vEditionTodo.GridChampsTodo.EnumValuesTableTypeColumn.BindData("ChampTimosId");
-vEditionTodo.GridChampsTodo.EditMode.BindData(true);
-vEditionTodo.GridChampsTodo.OnEndRender.BindCommand(aas.Services.Browser.ClientTodosService.InitPropertyGrid(aas.ViewName.EditionTodo.GridChampsTodo));
+vEditionTodo.GridChamps.BindList(vGroupeChamps.ParentData.RelationTodoValeurChamp.TodoValeurChamp, "ValeurChamp", "LibelleChamp", "OrdreChamp");
+vEditionTodo.GridChamps.TypeTableName.BindData(vGroupeChamps.ParentPath.RelationGroupeChampsChampsTimos.ChampTimos);
+vEditionTodo.GridChamps.TypeTableNameColumn.BindData("LibelleConvivial");
+vEditionTodo.GridChamps.TypeTableTypeColumn.BindData("AspectizeFieldType");
+vEditionTodo.GridChamps.TypeTableControlTypeColumn.BindData("AspectizeControlType");
+vEditionTodo.GridChamps.TypeTableFormatColumn.BindData(aas.Path.MainData.ChampTimos.FormatDate);
+vEditionTodo.GridChamps.TypeTableEditModeColumn.BindData(aas.Path.MainData.ChampTimos.Editable);
+vEditionTodo.GridChamps.TypeTableClassColumn.BindData(aas.Path.MainData.ChampTimos.CustomClass);
+vEditionTodo.GridChamps.EnumValuesTableName.BindData(vGroupeChamps.ParentPath.ValeursPossibles.ValeursChamp);
+vEditionTodo.GridChamps.EnumValuesTableOptionTextColumn.BindData("DisplayedValue");
+vEditionTodo.GridChamps.EnumValuesTableOptionValueColumn.BindData("StoredValue");
+vEditionTodo.GridChamps.EnumValuesTableTypeColumn.BindData("ChampTimosId");
+vEditionTodo.GridChamps.EditMode.BindData(true);
+vEditionTodo.GridChamps.OnEndRender.BindCommand(aas.Services.Browser.ClientTodosService.InitPropertyGrid(aas.ViewName.EditionTodo.GridChamps));
 
 
 // Création des caractéristiques
 var vCaracteristiques = Aspectize.CreateRepeatedView("Caracteristique", aas.Controls.Caracteristique, aas.Zones.GroupeChamps.RepeaterPanelCaracteristiques,
-    aas.Data.MainData.Todos.RelationTodoCaracteristique.Caracteristiques, '', aas.Expression('IdGroupePourFiltre === ' + vGroupeChamps.ParentData.TimosId));
+    aas.Data.MainData.Todos.RelationTodoCaracteristique.Caracteristiques, '',
+    aas.Expression('IdGroupePourFiltre === ' + vGroupeChamps.ParentData.TimosId + ' && !IsTemplate'));
 //*/
 vCaracteristiques.LibelleCarac.BindData(vCaracteristiques.ParentData.Titre);
+vCaracteristiques.BoutonEditerCarac.click.BindCommand(aas.Services.Browser.BootStrapClientService.ShowModal(aas.ViewName.EditionCarac, true, false, true));
 
 /// Initialisation de la property grid
 vCaracteristiques.GridChampsCaracteristique.BindList(vCaracteristiques.ParentData.RelationCaracValeurChamp.CaracValeurChamp, "ValeurChamp", "LibelleChamp", "OrdreChamp");
@@ -82,5 +84,34 @@ vCaracteristiques.GridChampsCaracteristique.EnumValuesTableOptionTextColumn.Bind
 vCaracteristiques.GridChampsCaracteristique.EnumValuesTableOptionValueColumn.BindData("StoredValue");
 vCaracteristiques.GridChampsCaracteristique.EnumValuesTableTypeColumn.BindData("ChampTimosId");
 vCaracteristiques.GridChampsCaracteristique.OnEndRender.BindCommand(aas.Services.Browser.ClientTodosService.InitPropertyGrid(aas.Expression('Caracteristique:' + vCaracteristiques.ParentData.TimosId + '-GridChampsCaracteristique')));
+//*/
+
+// Configuration du controle d'édition d'une Caractéristique en modal
+var vEditionCarac = Aspectize.CreateView("EditionCarac", aas.Controls.EditionChamps, "", false, aas.Data.MainData.Todos.RelationTodoCaracteristique.Caracteristiques);
+vEditionCarac.OnActivated.BindCommand(aas.Services.Browser.DataRecorder.Start(aas.Data.MainData));
+vEditionCarac.LabelElementEdite.BindData(aas.Data.MainData.Todos.Label); // Ce binding fonctionne bien
+vEditionCarac.BtnCancel.click.BindCommand(aas.Services.Browser.BootStrapClientService.CloseModal(aas.ViewName.EditionCarac));
+vEditionCarac.BtnCancel.click.BindCommand(aas.Services.Browser.DataRecorder.CancelRowChanges(aas.Data.MainData));
+vEditionCarac.BtnSave.click.BindCommand(aas.Services.Server.TodosService.SaveCaracteristique(
+    aas.Data.MainData,
+    vEditionCarac.ParentData.RelationTodoCaracteristique.Caracteristiques.TimosId,
+    vEditionCarac.ParentData.RelationTodoCaracteristique.Caracteristiques.ElementType), "", false, true);
+vEditionCarac.BtnSave.click.BindCommand(aas.Services.Browser.BootStrapClientService.CloseModal(aas.ViewName.EditionCarac));
+// Configuration de la PropertyGrid en mode édition
+vEditionCarac.GridChamps.BindList(vCaracteristiques.ParentData.RelationCaracValeurChamp.CaracValeurChamp, "ValeurChamp", "LibelleChamp", "OrdreChamp");
+vEditionCarac.GridChamps.TypeTableName.BindData(vCaracteristiques.ParentPath.RelationCaracChamp.ChampTimos);
+vEditionCarac.GridChamps.TypeTableNameColumn.BindData("LibelleConvivial");
+vEditionCarac.GridChamps.TypeTableTypeColumn.BindData("AspectizeFieldType");
+vEditionCarac.GridChamps.TypeTableControlTypeColumn.BindData("AspectizeControlType");
+vEditionCarac.GridChamps.TypeTableFormatColumn.BindData(aas.Path.MainData.ChampTimos.FormatDate);
+vEditionCarac.GridChamps.TypeTableEditModeColumn.BindData(aas.Path.MainData.ChampTimos.Editable);
+vEditionCarac.GridChamps.TypeTableClassColumn.BindData(aas.Path.MainData.ChampTimos.CustomClass);
+vEditionCarac.GridChamps.EnumValuesTableName.BindData(vCaracteristiques.ParentPath.RelationCaracValeursPossibles.ValeursChamp);
+vEditionCarac.GridChamps.EnumValuesTableOptionTextColumn.BindData("DisplayedValue");
+vEditionCarac.GridChamps.EnumValuesTableOptionValueColumn.BindData("StoredValue");
+vEditionCarac.GridChamps.EnumValuesTableTypeColumn.BindData("ChampTimosId");
+vEditionCarac.GridChamps.EditMode.BindData(true);
+vEditionCarac.GridChamps.OnEndRender.BindCommand(aas.Services.Browser.ClientTodosService.InitPropertyGrid(aas.ViewName.EditionCarac.GridChamps));
+
 
 //*/

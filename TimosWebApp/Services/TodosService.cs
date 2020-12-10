@@ -17,6 +17,8 @@ namespace TimosWebApp.Services
 
         [Command(IsSaveCommand = true)]
         void SaveTodo(DataSet dataSet, int nIdTodo, string elementType, int elementId);
+        [Command(IsSaveCommand = true)]
+        void SaveCaracteristique(DataSet dataSet, int nIdCarac, string elementType);
         DataSet EndTodo(int nIdTodo);
         DataSet UploadDocuments(UploadedFile[] uploadedFiles, int nIdTodo, int nIdDocument, string strLibelle, int nIdCategorie);
         void DeleteDocument(string strKeyFile);
@@ -109,9 +111,11 @@ namespace TimosWebApp.Services
                                 {
                                     var caracteristique = em.CreateInstance<Caracteristiques>();
                                     caracteristique.TimosId = nIdCarac;
+                                    caracteristique.ElementType = (string)rowCarac[CCaracteristique.c_champElementType];
                                     caracteristique.Titre = strTitre;
                                     caracteristique.OrdreAffichage = (int)rowCarac[CCaracteristique.c_champOrdreAffichage];
                                     caracteristique.IdGroupePourFiltre = (int)rowCarac[CCaracteristique.c_champIdGroupeChamps];
+                                    caracteristique.IsTemplate = (bool)rowCarac[CCaracteristique.c_champIsTemplate];
 
                                     em.AssociateInstance<RelationTodoCaracteristique>(todo, caracteristique);
                                 }
@@ -189,24 +193,34 @@ namespace TimosWebApp.Services
                             DataTable tableValeursPossibles = ds.Tables[CChampValeursPossibles.c_nomTable];
                             foreach (DataRow rowValPossbile in tableValeursPossibles.Rows)
                             {
-                                var valPossible = em.CreateInstance<ValeursChamp>();
-                                valPossible.ChampTimosId = rowValPossbile[CChampValeursPossibles.c_champId].ToString();
-                                valPossible.Index = (int)rowValPossbile[CChampValeursPossibles.c_champIndex];
-                                valPossible.StoredValue = (string)rowValPossbile[CChampValeursPossibles.c_champValue];
-                                valPossible.DisplayedValue = (string)rowValPossbile[CChampValeursPossibles.c_champDisplay];
+                                string strChampTimosId = rowValPossbile[CChampValeursPossibles.c_champId].ToString();
+                                int nIndex = (int)rowValPossbile[CChampValeursPossibles.c_champIndex];
+                                string strStoredValue = (string)rowValPossbile[CChampValeursPossibles.c_champValue];
+                                string strDisplayeddValue = (string)rowValPossbile[CChampValeursPossibles.c_champDisplay];
+                                int nIdCaracAssociee = (int)rowValPossbile[CChampValeursPossibles.c_champIdCaracteristique];
 
-
-                                ChampTimos champ = em.GetInstance<ChampTimos>(valPossible.ChampTimosId);
+                                ChampTimos champ = em.GetInstance<ChampTimos>(strChampTimosId);
                                 if (champ != null)
                                 {
+                                    string strId = strChampTimosId + "-" + strStoredValue;
+                                    ValeursChamp valPossible = em.GetInstance<ValeursChamp>(strId);
+                                    if (valPossible == null)
+                                    {
+                                        valPossible = em.CreateInstance<ValeursChamp>();
+                                        valPossible.Id = strId;
+                                        valPossible.ChampTimosId = strChampTimosId;
+                                        valPossible.Index = nIndex;
+                                        valPossible.StoredValue = strStoredValue;
+                                        valPossible.DisplayedValue = strDisplayeddValue;
+                                    }
                                     GroupeChamps groupeAssocie = champ.GetAssociatedInstance<GroupeChamps, RelationGroupeChampsChampsTimos>();
                                     if (groupeAssocie != null)
                                         em.AssociateInstance<ValeursPossibles>(groupeAssocie, valPossible);
 
-                                    int nIdCaracAssociee = (int)rowValPossbile[CChampValeursPossibles.c_champIdCaracteristique];
                                     Caracteristiques caracAssociee = em.GetInstance<Caracteristiques>(nIdCaracAssociee);
                                     if (caracAssociee != null)
                                         em.AssociateInstance<RelationCaracValeursPossibles>(caracAssociee, valPossible);
+
                                 }
                             }
 
@@ -268,11 +282,15 @@ namespace TimosWebApp.Services
                                 valChampTimos.OrdreChamp = (int)rowVal[CCaracValeurChamp.c_champOrdreAffichage];
                                 valChampTimos.ElementType = (string)rowVal[CCaracValeurChamp.c_champElementType];
                                 valChampTimos.ElementId = (int)rowVal[CCaracValeurChamp.c_champElementId];
-
                                 int nIdChampTimosAssocie = (int)rowVal[CCaracValeurChamp.c_champId];
+                                string valeurChamp = (string)rowVal[CCaracValeurChamp.c_champValeur];
+                                int nIdCaracAssociee = (int)rowVal[CCaracValeurChamp.c_champIdCaracteristique];
+
+                                valChampTimos.ChampTimosId = nIdChampTimosAssocie;
+                                valChampTimos.Id = nIdCaracAssociee.ToString() + "-" + nIdChampTimosAssocie.ToString();
+
                                 ChampTimos champ = em.GetInstance<ChampTimos>(nIdChampTimosAssocie);
 
-                                string valeurChamp = (string)rowVal[CCaracValeurChamp.c_champValeur];
                                 if (valeurChamp != "")
                                 {
                                     if (champ != null && champ.IsSelect)
@@ -295,7 +313,6 @@ namespace TimosWebApp.Services
                                 }
                                 valChampTimos.ValeurChamp = valeurChamp;
 
-                                int nIdCaracAssociee = (int)rowVal[CCaracValeurChamp.c_champIdCaracteristique];
 
                                 if (champ != null)
                                 {
@@ -303,7 +320,6 @@ namespace TimosWebApp.Services
                                     if (caracAssociee != null)
                                     {
                                         em.AssociateInstance<RelationCaracValeurChamp>(caracAssociee, valChampTimos);
-                                        valChampTimos.ChampTimosId = nIdChampTimosAssocie.ToString();
                                     }
 
                                 }
@@ -464,7 +480,43 @@ namespace TimosWebApp.Services
             return em.Data;
         }
 
-        //-----------------------------------------------------------------------------------------
+        //------------------------------------------------------------------------------------------------------------
+
+
+        //------------------------------------------------------------------------------------------------------------
+        public void SaveCaracteristique(DataSet dataSet, int nIdCarac, string elementType)
+        {
+            if (!dataSet.HasChanges())
+                return;
+
+            AspectizeUser aspectizeUser = ExecutingContext.CurrentUser;
+
+            if (aspectizeUser.IsAuthenticated)
+            {
+                if (dataSet.HasChanges())
+                {
+                    int nTimosSessionId = (int)aspectizeUser[CUserTimosWebApp.c_champSessionId];
+                    IEntityManager em = EntityManager.FromDataSet(dataSet);
+
+                    ITimosServiceForAspectize serviceClientAspectize = (ITimosServiceForAspectize)C2iFactory.GetNewObject(typeof(ITimosServiceForAspectize));
+                    CResultAErreur result = serviceClientAspectize.GetSession(nTimosSessionId);
+                    if (!result)
+                    {
+                        throw new SmartException(1100, "Votre session a expiré, veuillez vous reconnecter");
+                    }
+                    //result = serviceClientAspectize.SaveTodo(nTimosSessionId, dataSet, nIdTodo, elementType, elementId);
+
+                    if (!result)
+                        throw new SmartException(1010, result.MessageErreur);
+                }
+            }
+            else
+            {
+                throw new SmartException(1100, "Votre session a expiré, veuillez vous reconnecter");
+            }
+        }
+
+        //------------------------------------------------------------------------------------------------------------
         public DataSet UploadDocuments(UploadedFile[] uploadedFiles, int nIdTodo, int nIdDocument, string strLibelle, int nIdCategorie)
         {
             AspectizeUser aspectizeUser = ExecutingContext.CurrentUser;

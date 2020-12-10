@@ -180,18 +180,18 @@
         </div>
     </div>
 
-    <!------------------------------------------------------- Modale édition champs todo ----------------------------------------------->
-    <div aas-control="name:'EditionTodo', isModal:true">
+    <!------------------------------------------------------- Modale édition des champs sur todo ou caractéristique ---------------------------------->
+    <div aas-control="name:'EditionChamps', isModal:true">
         <div class="modal fade">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title text-center">Edition du Todo</h4>
+                        <h4 class="modal-title text-center">Edition</h4>
                     </div>
                     <div class="modal-body">
-                        <h3>{LabelToDo}</h3>
+                        <h3>{LabelElementEdite}</h3>
                         <div class="form-horizontal">
-                            <div aas-name="GridChampsTodo" aas-type="AspectizePropertyGrid"></div>
+                            <div aas-name="GridChamps" aas-type="AspectizePropertyGrid"></div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -211,6 +211,13 @@
                 <span class="fa fa-calendar"></span>
             </span>
         </div>
+    </div>
+
+    <!------------------------------------------------------- Bootstrap Select pour PropertyGrid ----------------------------------------------->
+    <div aas-control="MyBootstrapSelect">
+        <select id="Select1">
+            <option></option>
+        </select>
     </div>
 
     <!------------------------------------------------------- Modale confirmation temriner todo ----------------------------------------------->

@@ -1,4 +1,4 @@
-﻿/// <reference path="C:\www\\Aspectize.core\AspectizeIntellisense.js" />
+﻿/// <reference path="C:\www\\Aspectize.core\AspectizeIntellisenseLibrary.js" />
 
 Global.ClientTodosService = {
 
@@ -82,6 +82,9 @@ Global.ClientTodosService = {
         $('#' + gridId + '.aasPropertyGrid > .aasDynamicControl .aasValueZoneContainer input[type=\'text\']:not(.BootstrapDateTimePicker)').addClass('form-control');
         $('#' + gridId + '.aasPropertyGrid > .aasDynamicControl .aasValueZoneContainer input[type=\'number\']').addClass('form-control');
 
+        $('#' + gridId + ' select').selectpicker({
+            liveSearch: true
+        });
     },
 
 
@@ -148,6 +151,48 @@ Global.ClientTodosService = {
 
     },
 
+    //---------------------------------------------------------------------------------------------------
+    AddCaracteristic: function (nIdTodo, nIdGroupe) {
+
+        Aspectize.ExecuteCommand(aas.Services.Browser.BootStrapClientService.ShowModal(aas.ViewName.EditionCarac, false, false, true));
+
+        var em = Aspectize.EntityManagerFromContextDataName(this.MainData);
+        var todo = em.GetInstance('Todos', { TimosId: nIdTodo });
+        var groupe = em.GetInstance('GroupeChamps', { 'TimosId': nIdGroupe });
+        var caracteristics = todo.GetAssociated('RelationTodoCaracteristique', 'Caracteristiques').Filter('IdGroupePourFiltre === ' + nIdGroupe + ' && IsTemplate');
+        
+        if (caracteristics.length > 0) {
+            var caracTemplate = caracteristics[0];
+            if (caracTemplate) {
+                
+                var newCarac = em.CreateInstance('Caracteristiques', { 'TimosId': -99 });
+                newCarac.SetField('ElementType', caracTemplate.ElementType);
+                newCarac.SetField('IdGroupePourFiltre', caracTemplate.IdGroupePourFiltre);
+                var champs = caracTemplate.GetAssociated('RelationCaracChamp', 'ChampTimos');
+                for (var i = 0; i < champs.length; i++) {
+                    var champ = champs[i];
+                    em.AssociateInstance('RelationCaracChamp', newCarac, 'Caracteristiques', champ, 'ChampTimos');
+                    var valeur = em.CreateInstance('CaracValeurChamp');
+                    em.AssociateInstance('RelationCaracValeurChamp', newCarac, 'Caracteristiques', valeur, 'CaracValeurChamp');
+                }
+
+                Aspectize.ExecuteCommand(aas.Services.Browser.UIService.SetCurrent(aas.Path.MainData.Todos.RelationTodoCaracteristique.Caracteristiques, newCarac.TimosId));
+
+            }
+        }
+    },
+
+    //------------------------------------------------------ Bootstrap Select  --------------------------------------------
+    InitBootStrapSelect: function (elem) {
+        setTimeout(function () {
+            $(elem).selectpicker({
+                liveSearch: true,
+                maxOptions: 1,
+                size: '25'
+            });
+        }, 0);
+
+    },
 
     //------------------------------------------------------ TOASTR --------------------------------------------
     ToastAlert: function (titre, message, state) {

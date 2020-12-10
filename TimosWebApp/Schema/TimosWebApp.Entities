@@ -41,12 +41,13 @@
         <entityProperty name="CustomClass" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
       </properties>
     </entity>
-    <entity Id="6a0c1ec3-e175-4243-bebf-72637447b709" name="ValeursChamp" guid="523da491-43e7-413e-9d30-9a484baa1def" hasCustomValidators="false" hasTriggers="false">
+    <entity Id="6a0c1ec3-e175-4243-bebf-72637447b709" name="ValeursChamp" guid="523da491-43e7-413e-9d30-9a484baa1def" guidIdentifier="false" hasCustomValidators="false" hasTriggers="false">
       <properties>
         <entityProperty name="Index" type="Int32" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
         <entityProperty name="StoredValue" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
         <entityProperty name="DisplayedValue" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
         <entityProperty name="ChampTimosId" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="Id" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" identifier="Identifier" />
       </properties>
     </entity>
     <entity Id="0f2ba6b8-2ed7-4917-a1d2-6f2265942534" name="TodoValeurChamp" guid="4b2c4aff-86d7-4d19-ac07-c21e8fb0edb5" guidIdentifier="false" hasCustomValidators="false" hasTriggers="false">
@@ -97,16 +98,18 @@
         <entityProperty name="Expand" type="Boolean" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
         <entityProperty name="IdGroupePourFiltre" type="Int32" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
         <entityProperty name="ElementType" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="IsTemplate" type="Boolean" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
       </properties>
     </entity>
-    <entity Id="41978310-6a5d-4748-956e-cdcbf1da5f88" name="CaracValeurChamp" guid="f6beafe2-cf7e-491d-af99-cdb9b897af78" hasCustomValidators="false" hasTriggers="false">
+    <entity Id="41978310-6a5d-4748-956e-cdcbf1da5f88" name="CaracValeurChamp" guid="f6beafe2-cf7e-491d-af99-cdb9b897af78" guidIdentifier="false" hasCustomValidators="false" hasTriggers="false">
       <properties>
         <entityProperty name="ValeurChamp" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
         <entityProperty name="LibelleChamp" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
         <entityProperty name="OrdreChamp" type="Int32" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
-        <entityProperty name="ChampTimosId" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="ChampTimosId" type="Int32" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
         <entityProperty name="ElementType" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
         <entityProperty name="ElementId" type="Int32" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="Id" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" identifier="Identifier" />
       </properties>
     </entity>
   </entities>
@@ -203,7 +206,7 @@
     </relation>
     <relation Id="5635c6e5-82a1-49ed-afef-528996be5afc" name="RelationCaracValeursPossibles" guid="00000000-0000-0000-0000-000000000000" hasTriggers="false" hasCustomValidators="false">
       <entityReferenceClasses>
-        <relationReferencesEntityReferenceClasses Id="bbd502d6-689b-494d-a430-bc507042c2d4" role="Caracteristiques" cardinality="O__I">
+        <relationReferencesEntityReferenceClasses Id="bbd502d6-689b-494d-a430-bc507042c2d4" role="Caracteristiques" cardinality="O__N">
           <entityMoniker Id="36da5692-c34f-4c95-82cf-9afdf083209f" />
         </relationReferencesEntityReferenceClasses>
         <relationReferencesEntityReferenceClasses Id="faae425b-83b0-4e51-9781-c7694af6d60f" role="ValeursChamp" cardinality="O__N">
