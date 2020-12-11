@@ -18,7 +18,7 @@ namespace TimosWebApp.Services
         [Command(IsSaveCommand = true)]
         void SaveTodo(DataSet dataSet, int nIdTodo, string elementType, int elementId);
         [Command(IsSaveCommand = true)]
-        void SaveCaracteristique(DataSet dataSet, int nIdCarac, string elementType);
+        DataSet SaveCaracteristique(DataSet dataSet, int nIdCarac, string strTypeElement, int nIdTodo, int nIdElementParent, string strTypeElmentParent);
         DataSet EndTodo(int nIdTodo);
         DataSet UploadDocuments(UploadedFile[] uploadedFiles, int nIdTodo, int nIdDocument, string strLibelle, int nIdCategorie);
         void DeleteDocument(string strKeyFile);
@@ -440,7 +440,6 @@ namespace TimosWebApp.Services
                     throw new SmartException(1100, "Votre session a expiré, veuillez vous reconnecter");
                 }
                 result = serviceClientAspectize.EndTodo(nTimosSessionId, nIdTodo);
-
                 if (!result)
                     throw new SmartException(1020, result.MessageErreur);
 
@@ -480,40 +479,54 @@ namespace TimosWebApp.Services
             return em.Data;
         }
 
-        //------------------------------------------------------------------------------------------------------------
-
 
         //------------------------------------------------------------------------------------------------------------
-        public void SaveCaracteristique(DataSet dataSet, int nIdCarac, string elementType)
+        public DataSet SaveCaracteristique(DataSet dataSet, int nIdCarac, string strTypeElement, int nIdTodo, int nIdElementParent, string strTypeElmentParent)
         {
             if (!dataSet.HasChanges())
-                return;
+                return dataSet;
 
             AspectizeUser aspectizeUser = ExecutingContext.CurrentUser;
+            IEntityManager em = EntityManager.FromDataSet(dataSet);
 
             if (aspectizeUser.IsAuthenticated)
             {
-                if (dataSet.HasChanges())
+
+                int nTimosSessionId = (int)aspectizeUser[CUserTimosWebApp.c_champSessionId];
+
+                ITimosServiceForAspectize serviceClientAspectize = (ITimosServiceForAspectize)C2iFactory.GetNewObject(typeof(ITimosServiceForAspectize));
+                CResultAErreur result = serviceClientAspectize.GetSession(nTimosSessionId);
+                if (!result)
                 {
-                    int nTimosSessionId = (int)aspectizeUser[CUserTimosWebApp.c_champSessionId];
-                    IEntityManager em = EntityManager.FromDataSet(dataSet);
-
-                    ITimosServiceForAspectize serviceClientAspectize = (ITimosServiceForAspectize)C2iFactory.GetNewObject(typeof(ITimosServiceForAspectize));
-                    CResultAErreur result = serviceClientAspectize.GetSession(nTimosSessionId);
-                    if (!result)
-                    {
-                        throw new SmartException(1100, "Votre session a expiré, veuillez vous reconnecter");
-                    }
-                    //result = serviceClientAspectize.SaveTodo(nTimosSessionId, dataSet, nIdTodo, elementType, elementId);
-
-                    if (!result)
-                        throw new SmartException(1010, result.MessageErreur);
+                    throw new SmartException(1100, "Votre session a expiré, veuillez vous reconnecter");
                 }
+                result = serviceClientAspectize.SaveCaracteristique(nTimosSessionId, dataSet, nIdCarac, strTypeElement, nIdTodo, nIdElementParent, strTypeElmentParent);
+                if (!result)
+                    throw new SmartException(1010, result.MessageErreur);
+
+                DataSet dsRetour = result.Data as DataSet;
+                if (dsRetour != null)
+                {
+                    DataTable dtCaracteristiques = dsRetour.Tables[CCaracteristique.c_nomTable];
+                    if (dtCaracteristiques != null)
+                    {
+                        // Mise à jour de la Caracteristique
+
+
+                        // Mise à jour des valeurs de de champs
+                        DataTable dtValeurs = dsRetour.Tables[CCaracValeurChamp.c_nomTable];
+
+
+                    }
+                }
+
             }
             else
             {
                 throw new SmartException(1100, "Votre session a expiré, veuillez vous reconnecter");
             }
+            em.Data.AcceptChanges();
+            return em.Data;
         }
 
         //------------------------------------------------------------------------------------------------------------

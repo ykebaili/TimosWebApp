@@ -5,6 +5,7 @@ Global.ClientTodosService = {
     aasService: 'ClientTodosService',
     aasPublished: true,
     MainData: 'MainData',
+    IdNegatif: -999999,
 
     //-------------------------------------------------------------------------------------------------------
     FiltreTodos: function (filtreLabel, etatDemarre, etatTermine, etatRetard) {
@@ -36,34 +37,6 @@ Global.ClientTodosService = {
     },
 
     //-------------------------------------------------------------------------------------------------------
-    InitPropertyGridOld: function (gridId, edit) {
-
-        var colLabel = 'col-xs-12 col-md-4';
-        var colValue = 'col-xs-12 col-md-8';
-
-        if (edit) {
-            $('#' + gridId + '.aasPropertyGrid').addClass('form-horizontal');
-            $('#' + gridId + '.aasPropertyGrid > div.aasDynamicControl').addClass('form-group');
-            $('#' + gridId + '.aasPropertyGrid > .aasDynamicControl .aasLabelZone').addClass('control-label ' + colLabel);
-            $('#' + gridId + '.aasPropertyGrid > .aasDynamicControl textarea').addClass('form-control').wrap("<div class='" + colValue + "'></div>");
-            $('#' + gridId + '.aasPropertyGrid > .aasDynamicControl select').addClass('form-control').wrap("<div class='" + colValue + "'></div>");
-            $('#' + gridId + '.aasPropertyGrid > .aasDynamicControl input[type=\'text\']:not(.BootstrapDateTimePicker)').addClass('form-control').wrap("<div class='" + colValue + "'></div>");
-            $('#' + gridId + '.aasPropertyGrid > .aasDynamicControl input[type=\'number\']').addClass('form-control').wrap("<div class='" + colValue + "'></div>");
-            $('#' + gridId + '.aasPropertyGrid > .aasDynamicControl input[type="checkbox"]').wrap("<div class='" + colValue + "'><div class='checkbox'><label></label></div></div>");
-
-            $('#' + gridId + '.aasPropertyGrid > .aasDynamicControl .aasDate.aasValueZone').addClass(colValue);
-        } else {
-            $('.aasPropertyGrid').addClass('form-horizontal');
-            $('.aasPropertyGrid > div.aasDynamicControl').addClass('form-group');
-            $('.aasPropertyGrid > .aasDynamicControl .aasLabelZone').addClass('control-label ' + colLabel);
-            if (!$('.aasPropertyGrid > .aasDynamicControl .aasValueZone').parent().hasClass('form-control-static')) {
-                $('.aasPropertyGrid > .aasDynamicControl .aasValueZone').wrap("<div class='" + colValue + " form-control-static'></div>");
-            }
-        }
-
-    },
-
-    //-------------------------------------------------------------------------------------------------------
     InitPropertyGrid: function (gridId) {
 
         var colLabel = 'col-xs-12 col-md-4';
@@ -82,9 +55,8 @@ Global.ClientTodosService = {
         $('#' + gridId + '.aasPropertyGrid > .aasDynamicControl .aasValueZoneContainer input[type=\'text\']:not(.BootstrapDateTimePicker)').addClass('form-control');
         $('#' + gridId + '.aasPropertyGrid > .aasDynamicControl .aasValueZoneContainer input[type=\'number\']').addClass('form-control');
 
-        $('#' + gridId + ' select').selectpicker({
-            liveSearch: true
-        });
+
+
     },
 
 
@@ -165,15 +137,38 @@ Global.ClientTodosService = {
             var caracTemplate = caracteristics[0];
             if (caracTemplate) {
                 
-                var newCarac = em.CreateInstance('Caracteristiques', { 'TimosId': -99 });
+                var newCarac = em.CreateInstance('Caracteristiques', { 'TimosId': this.IdNegatif-- });
+                em.AssociateInstance('RelationTodoCaracteristique', todo, 'Todos', newCarac, 'Caracteristiques');
+
                 newCarac.SetField('ElementType', caracTemplate.ElementType);
                 newCarac.SetField('IdGroupePourFiltre', caracTemplate.IdGroupePourFiltre);
+                newCarac.SetField('IsTemplate', false);
+                newCarac.SetField('Titre', caracTemplate.Titre);
+
+                // Association de tous les Champs
                 var champs = caracTemplate.GetAssociated('RelationCaracChamp', 'ChampTimos');
                 for (var i = 0; i < champs.length; i++) {
                     var champ = champs[i];
                     em.AssociateInstance('RelationCaracChamp', newCarac, 'Caracteristiques', champ, 'ChampTimos');
-                    var valeur = em.CreateInstance('CaracValeurChamp');
-                    em.AssociateInstance('RelationCaracValeurChamp', newCarac, 'Caracteristiques', valeur, 'CaracValeurChamp');
+                }
+                // Association de toutes les valeurs possibles
+                var valPossibles = caracTemplate.GetAssociated('RelationCaracValeursPossibles', 'ValeursChamp');
+                for (var i = 0; i < valPossibles.length; i++) {
+                    var valPossible = valPossibles[i];
+                    em.AssociateInstance('RelationCaracValeursPossibles', newCarac, 'Caracteristiques', valPossible, 'ValeursChamp');
+                }
+                // Création et association de toutes les valeurs de champs
+                var valeurs = caracTemplate.GetAssociated('RelationCaracValeurChamp', 'CaracValeurChamp');
+                for (var i = 0; i < valeurs.length; i++) {
+                    var valeur = valeurs[i];
+                    var newValeur = em.CreateInstance('CaracValeurChamp', { 'Id': newCarac.TimosId + '-' + valeur.ChampTimosId });
+                    newValeur.SetField('LibelleChamp', valeur.LibelleChamp);
+                    newValeur.SetField('OrdreChamp', valeur.OrdreChamp);
+                    newValeur.SetField('ChampTimosId', valeur.ChampTimosId);
+                    newValeur.SetField('ElementType', valeur.ElementType);
+                    newValeur.SetField('ElementId', newCarac.TimosId);
+
+                    em.AssociateInstance('RelationCaracValeurChamp', newCarac, 'Caracteristiques', newValeur, 'CaracValeurChamp');
                 }
 
                 Aspectize.ExecuteCommand(aas.Services.Browser.UIService.SetCurrent(aas.Path.MainData.Todos.RelationTodoCaracteristique.Caracteristiques, newCarac.TimosId));
@@ -182,18 +177,23 @@ Global.ClientTodosService = {
         }
     },
 
-    //------------------------------------------------------ Bootstrap Select  --------------------------------------------
-    InitBootStrapSelect: function (elem) {
-        setTimeout(function () {
-            $(elem).selectpicker({
-                liveSearch: true,
-                maxOptions: 1,
-                size: '25'
-            });
-        }, 0);
+    //---------------------------------------------------------- Sauvegarde d'une Caracteristique ----------------------------------------
+    SaveCaracteristic: function (dataSet, nIdCarac, strTypeElement, nIdTodo, nIdElementParent, strTypeElmentParent) {
 
+        var cmd = Aspectize.PrepareCommand();
+
+        cmd.Attributes.aasShowWaiting = true;
+        cmd.Attributes.aasAsynchronousCall = true;
+        cmd.Attributes.aasMergeData = true;
+        cmd.Attributes.aasDataName = this.MainData;
+        cmd.OnComplete = function (result) {
+            if(nIdCarac < 0)
+                em.ClearInstance(nIdCarac);
+            Aspectize.ExecuteCommand(aas.Services.Browser.BootStrapClientService.CloseModal(aas.ViewName.EditionCarac));
+        }
+        cmd.Call(aas.Services.Server.TodosService.SaveCaracteristique(dataSet, nIdCarac, strTypeElement, nIdTodo, nIdElementParent, strTypeElmentParent));
     },
-
+    
     //------------------------------------------------------ TOASTR --------------------------------------------
     ToastAlert: function (titre, message, state) {
 
