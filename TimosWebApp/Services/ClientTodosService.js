@@ -39,8 +39,8 @@ Global.ClientTodosService = {
     //-------------------------------------------------------------------------------------------------------
     InitPropertyGrid: function (gridId) {
 
-        var colLabel = 'col-xs-12 col-md-4';
-        var colValue = 'col-xs-12 col-md-8';
+        var colLabel = 'col-xs-3 col-md-4';
+        var colValue = 'col-xs-9 col-md-8';
 
         gridId = jq(gridId);
 

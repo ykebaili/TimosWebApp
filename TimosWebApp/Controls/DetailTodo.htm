@@ -110,18 +110,20 @@
         </div>
     </div>
 
-    <!--------------------------------------------------- Controle affichage d'une caratéristique---------------------------------------->
+    <!--------------------------------------------------- Controle affichage d'une Caratéristique---------------------------------------->
     <div aas-control="Caracteristique">
         <div class="row item-caracteristique">
-            <div class="col-xs-8">
+            <div class="col-md-8 col-xs-12 titre-caracteristique">
                 <h4>{LibelleCarac}</h4>
-                <div aas-name="GridChampsCaracteristique" aas-type="AspectizePropertyGrid"></div>
             </div>
-            <div class="col-xs-2">
+            <div class="col-md-2 col-xs-6 bouton-caracteristique">
                 <button class="btn btn-primary" name="BoutonEditerCarac"><i class="fas fa-edit"></i> Editer</button>
             </div>
-            <div class="col-xs-2">
+            <div class="col-md-2 col-xs-6 bouton-caracteristique">
                 <button class="btn btn-danger" name="BoutonSupprimerCarac"><i class="fas fa-trash"></i> Supprimer</button>
+            </div>
+            <div class="col-xs-12">
+                <div aas-name="GridChampsCaracteristique" aas-type="AspectizePropertyGrid"></div>
             </div>
         </div>
     </div>

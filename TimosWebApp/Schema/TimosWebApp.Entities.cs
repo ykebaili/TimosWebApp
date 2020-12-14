@@ -815,7 +815,7 @@ namespace TimosWebApp
 		[RelationEnd(Type = typeof(ValeursChamp), Role = typeof(ValeursChamp), Multiplicity = Multiplicity.ZeroOrMany)]
 		public IEntity ValeursChamp;
 
-		[RelationEnd(Type = typeof(GroupeChamps), Role = typeof(GroupeChamps), Multiplicity = Multiplicity.ZeroOrOne)]
+		[RelationEnd(Type = typeof(GroupeChamps), Role = typeof(GroupeChamps), Multiplicity = Multiplicity.ZeroOrMany)]
 		public IEntity GroupeChamps;
 
 	}

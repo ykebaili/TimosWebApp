@@ -197,6 +197,7 @@ namespace TimosWebApp.Services
                                 int nIndex = (int)rowValPossbile[CChampValeursPossibles.c_champIndex];
                                 string strStoredValue = (string)rowValPossbile[CChampValeursPossibles.c_champValue];
                                 string strDisplayeddValue = (string)rowValPossbile[CChampValeursPossibles.c_champDisplay];
+                                int nIdGroupeAssociee = (int)rowValPossbile[CChampValeursPossibles.c_champIdGroupe];
                                 int nIdCaracAssociee = (int)rowValPossbile[CChampValeursPossibles.c_champIdCaracteristique];
 
                                 ChampTimos champ = em.GetInstance<ChampTimos>(strChampTimosId);
@@ -213,10 +214,10 @@ namespace TimosWebApp.Services
                                         valPossible.StoredValue = strStoredValue;
                                         valPossible.DisplayedValue = strDisplayeddValue;
                                     }
-                                    GroupeChamps groupeAssocie = champ.GetAssociatedInstance<GroupeChamps, RelationGroupeChampsChampsTimos>();
+                                    GroupeChamps groupeAssocie = em.GetInstance<GroupeChamps>(nIdGroupeAssociee);
                                     if (groupeAssocie != null)
                                         em.AssociateInstance<ValeursPossibles>(groupeAssocie, valPossible);
-
+                                        
                                     Caracteristiques caracAssociee = em.GetInstance<Caracteristiques>(nIdCaracAssociee);
                                     if (caracAssociee != null)
                                         em.AssociateInstance<RelationCaracValeursPossibles>(caracAssociee, valPossible);

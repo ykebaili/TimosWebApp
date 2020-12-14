@@ -119,7 +119,7 @@
         <relationReferencesEntityReferenceClasses Id="75be4149-3930-4661-8da6-36522d9212c1" role="ValeursChamp" cardinality="O__N">
           <entityMoniker Id="6a0c1ec3-e175-4243-bebf-72637447b709" />
         </relationReferencesEntityReferenceClasses>
-        <relationReferencesEntityReferenceClasses Id="553f42fe-837f-4929-a817-3a4e837df44d" role="GroupeChamps" cardinality="O__I">
+        <relationReferencesEntityReferenceClasses Id="553f42fe-837f-4929-a817-3a4e837df44d" role="GroupeChamps" cardinality="O__N">
           <entityMoniker Id="35b2f47a-897c-4654-818e-7265fac6760e" />
         </relationReferencesEntityReferenceClasses>
       </entityReferenceClasses>

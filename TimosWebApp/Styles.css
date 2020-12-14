@@ -325,5 +325,14 @@ img.logo{
 }
 .item-caracteristique{
     margin-top: 8px;
+}
+.titre-caracteristique{
+    background-color: #f2f4f7;
     padding-top: 8px;
+    padding-bottom: 7px;
+}
+.bouton-caracteristique {
+    background-color: #f2f4f7;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
