@@ -502,6 +502,8 @@ namespace TimosWebApp.Services
                     throw new SmartException(1100, "Votre session a expiré, veuillez vous reconnecter");
                 }
                 result = serviceClientAspectize.SaveCaracteristique(nTimosSessionId, dataSet, nIdCarac, strTypeElement, nIdTodo, nIdElementParent, strTypeElmentParent);
+                Context.Log(InfoType.Information, "SaveCaracteristique OK. Id Carac = " + nIdCarac);
+
                 if (!result)
                     throw new SmartException(1010, result.MessageErreur);
 
@@ -512,7 +514,7 @@ namespace TimosWebApp.Services
                     if (dtCaracteristiques != null)
                     {
                         // Mise à jour de la Caracteristique
-
+                        Context.Log(InfoType.Information, "SaveCaracteristique - Id = " + nIdCarac);
 
                         // Mise à jour des valeurs de de champs
                         DataTable dtValeurs = dsRetour.Tables[CCaracValeurChamp.c_nomTable];
