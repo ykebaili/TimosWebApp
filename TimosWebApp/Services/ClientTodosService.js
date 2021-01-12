@@ -136,14 +136,21 @@ Global.ClientTodosService = {
         if (caracteristics.length > 0) {
             var caracTemplate = caracteristics[0];
             if (caracTemplate) {
-                
-                var newCarac = em.CreateInstance('Caracteristiques', { 'TimosId': this.IdNegatif-- });
-                em.AssociateInstance('RelationTodoCaracteristique', todo, 'Todos', newCarac, 'Caracteristiques');
 
-                newCarac.SetField('ElementType', caracTemplate.ElementType);
-                newCarac.SetField('IdGroupePourFiltre', caracTemplate.IdGroupePourFiltre);
+                var nIdNegatif = this.IdNegatif--;
+                var nIdGroupe = caracTemplate.IdGroupePourFiltre;
+                var strTypeElement = caracTemplate.ElementType;
+                var lastPoint = strTypeElement.lastIndexOf('.');
+                var idProvisoir = strTypeElement.substring(lastPoint + 1, strTypeElement.length - 1) + nIdNegatif;
+
+                var newCarac = em.CreateInstance('Caracteristiques', { 'Id': idProvisoir });
+                em.AssociateInstance('RelationTodoCaracteristique', todo, 'Todos', newCarac, 'Caracteristiques');
+                newCarac.SetField('TimosId',  nIdNegatif);
+                newCarac.SetField('ElementType', strTypeElement);
+                newCarac.SetField('IdGroupePourFiltre', nIdGroupe);
                 newCarac.SetField('IsTemplate', false);
                 newCarac.SetField('Titre', caracTemplate.Titre);
+                newCarac.SetField('IdMetaType', caracTemplate.IdMetaType);
 
                 // Association de tous les Champs
                 var champs = caracTemplate.GetAssociated('RelationCaracChamp', 'ChampTimos');
@@ -161,37 +168,39 @@ Global.ClientTodosService = {
                 var valeurs = caracTemplate.GetAssociated('RelationCaracValeurChamp', 'CaracValeurChamp');
                 for (var i = 0; i < valeurs.length; i++) {
                     var valeur = valeurs[i];
-                    var newValeur = em.CreateInstance('CaracValeurChamp', { 'Id': newCarac.TimosId + '-' + valeur.ChampTimosId });
+                    var newValeur = em.CreateInstance('CaracValeurChamp', { 'Id': newCarac.Id + '-' + valeur.ChampTimosId });
                     newValeur.SetField('LibelleChamp', valeur.LibelleChamp);
                     newValeur.SetField('OrdreChamp', valeur.OrdreChamp);
                     newValeur.SetField('ChampTimosId', valeur.ChampTimosId);
                     newValeur.SetField('ElementType', valeur.ElementType);
                     newValeur.SetField('ElementId', newCarac.TimosId);
+                    newValeur.SetField('ValeurChamp', '');
 
                     em.AssociateInstance('RelationCaracValeurChamp', newCarac, 'Caracteristiques', newValeur, 'CaracValeurChamp');
                 }
 
-                Aspectize.ExecuteCommand(aas.Services.Browser.UIService.SetCurrent(aas.Path.MainData.Todos.RelationTodoCaracteristique.Caracteristiques, newCarac.TimosId));
-
+                Aspectize.ExecuteCommand(aas.Services.Browser.UIService.SetCurrent(aas.Path.MainData.Todos.RelationTodoCaracteristique.Caracteristiques, newCarac.Id));
             }
         }
     },
 
     //---------------------------------------------------------- Sauvegarde d'une Caracteristique ----------------------------------------
-    SaveCaracteristic: function (dataSet, nIdCarac, strTypeElement, nIdTodo, nIdElementParent, strTypeElmentParent) {
+    SaveCaracteristic: function (dataSet, nIdCarac, strTypeElement, nIdMetaType, nIdTodo, nIdElementParent, strTypeElmentParent) {
 
+        var em = Aspectize.EntityManagerFromContextDataName(this.MainData);
         var cmd = Aspectize.PrepareCommand();
-
         cmd.Attributes.aasShowWaiting = true;
         cmd.Attributes.aasAsynchronousCall = true;
         cmd.Attributes.aasMergeData = true;
         cmd.Attributes.aasDataName = this.MainData;
         cmd.OnComplete = function (result) {
-            if(nIdCarac < 0)
-                em.ClearInstance(nIdCarac);
+            if (nIdCarac < 0) {
+                //em.ClearInstance('Caracteristiques', { TimosId: nIdCarac });
+            }
             Aspectize.ExecuteCommand(aas.Services.Browser.BootStrapClientService.CloseModal(aas.ViewName.EditionCarac));
+            
         }
-        cmd.Call(aas.Services.Server.TodosService.SaveCaracteristique(dataSet, nIdCarac, strTypeElement, nIdTodo, nIdElementParent, strTypeElmentParent));
+        cmd.Call(aas.Services.Server.TodosService.SaveCaracteristique(dataSet, nIdCarac, strTypeElement, nIdMetaType, nIdTodo, nIdElementParent, strTypeElmentParent));
     },
     
     //------------------------------------------------------ TOASTR --------------------------------------------

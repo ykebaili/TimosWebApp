@@ -83,7 +83,7 @@ vCaracteristiques.GridChampsCaracteristique.EnumValuesTableName.BindData(vCaract
 vCaracteristiques.GridChampsCaracteristique.EnumValuesTableOptionTextColumn.BindData("DisplayedValue");
 vCaracteristiques.GridChampsCaracteristique.EnumValuesTableOptionValueColumn.BindData("StoredValue");
 vCaracteristiques.GridChampsCaracteristique.EnumValuesTableTypeColumn.BindData("ChampTimosId");
-vCaracteristiques.GridChampsCaracteristique.OnEndRender.BindCommand(aas.Services.Browser.ClientTodosService.InitPropertyGrid(aas.Expression('Caracteristique:' + vCaracteristiques.ParentData.TimosId + '-GridChampsCaracteristique')));
+vCaracteristiques.GridChampsCaracteristique.OnEndRender.BindCommand(aas.Services.Browser.ClientTodosService.InitPropertyGrid(aas.Expression('Caracteristique:' + vCaracteristiques.ParentData.Id + '-GridChampsCaracteristique')));
 //*/
 
 // Configuration du controle d'édition d'une Caractéristique en modal
@@ -96,10 +96,10 @@ vEditionCarac.BtnSave.click.BindCommand(aas.Services.Browser.ClientTodosService.
     aas.Data.MainData,
     vEditionCarac.ParentData.TimosId,
     vEditionCarac.ParentData.ElementType,
+    vEditionCarac.ParentData.IdMetaType,
     vEditionCarac.ParentData.RelationTodoCaracteristique.Todos.TimosId,
     vEditionCarac.ParentData.RelationTodoCaracteristique.Todos.ElementId,
     vEditionCarac.ParentData.RelationTodoCaracteristique.Todos.ElementType));
-vEditionCarac.BtnSave.click.BindCommand(aas.Services.Browser.BootStrapClientService.CloseModal(aas.ViewName.EditionCarac));
 // Configuration de la PropertyGrid en mode édition
 vEditionCarac.GridChamps.BindList(vEditionCarac.ParentData.RelationCaracValeurChamp.CaracValeurChamp, "ValeurChamp", "LibelleChamp", "OrdreChamp");
 vEditionCarac.GridChamps.TypeTableName.BindData(vEditionCarac.ParentPath.RelationCaracChamp.ChampTimos);

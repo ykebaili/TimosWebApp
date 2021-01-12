@@ -676,6 +676,8 @@ namespace TimosWebApp
 			public const string IdGroupePourFiltre = "IdGroupePourFiltre";
 			public const string ElementType = "ElementType";
 			public const string IsTemplate = "IsTemplate";
+			public const string IdMetaType = "IdMetaType";
+			public const string Id = "Id";
 		}
 
 		void IDataWrapper.InitData(DataRow data, string namePrefix)
@@ -683,7 +685,7 @@ namespace TimosWebApp
 			base.InitData(data, null);
 		}
 
-		[Data(IsPrimaryKey = true)]
+		[Data]
 		public int TimosId
 		{
 			get { return getValue<int>("TimosId"); }
@@ -730,6 +732,20 @@ namespace TimosWebApp
 		{
 			get { return getValue<bool>("IsTemplate"); }
 			set { setValue<bool>("IsTemplate", value); }
+		}
+
+		[Data]
+		public int IdMetaType
+		{
+			get { return getValue<int>("IdMetaType"); }
+			set { setValue<int>("IdMetaType", value); }
+		}
+
+		[Data(IsPrimaryKey = true)]
+		public string Id
+		{
+			get { return getValue<string>("Id"); }
+			set { setValue<string>("Id", value); }
 		}
 
 	}

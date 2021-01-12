@@ -18,7 +18,7 @@ namespace TimosWebApp.Services
         [Command(IsSaveCommand = true)]
         void SaveTodo(DataSet dataSet, int nIdTodo, string elementType, int elementId);
         [Command(IsSaveCommand = true)]
-        DataSet SaveCaracteristique(DataSet dataSet, int nIdCarac, string strTypeElement, int nIdTodo, int nIdElementParent, string strTypeElmentParent);
+        DataSet SaveCaracteristique(DataSet dataSet, int nIdCarac, string strTypeElement, int nIdMetaType, int nIdTodo, int nIdElementParent, string strTypeElmentParent);
         DataSet EndTodo(int nIdTodo);
         DataSet UploadDocuments(UploadedFile[] uploadedFiles, int nIdTodo, int nIdDocument, string strLibelle, int nIdCategorie);
         void DeleteDocument(string strKeyFile);
@@ -105,17 +105,23 @@ namespace TimosWebApp.Services
                             DataTable tableCaracteristiques = ds.Tables[CCaracteristique.c_nomTable];
                             foreach (DataRow rowCarac in tableCaracteristiques.Rows)
                             {
+                                int nIdElement = (int)rowCarac[CCaracteristique.c_champTimosId]; // Id de l'element Timos (Caractristique, Site, Dossier...)
+                                string strTypeElement = (string)rowCarac[CCaracteristique.c_champElementType]; // Type de l'élément Timos
                                 string strTitre = (string)rowCarac[CCaracteristique.c_champTitre];
-                                int nIdCarac = (int)rowCarac[CCaracteristique.c_champTimosId];
-                                if(em.GetInstance<Caracteristiques>(nIdCarac) == null)
+                                int nIdGroupe = (int)rowCarac[CCaracteristique.c_champIdGroupeChamps];
+                                string strIdCarac = (string)rowCarac[CCaracteristique.c_champId];
+
+                                if (em.GetInstance<Caracteristiques>(strIdCarac) == null)
                                 {
                                     var caracteristique = em.CreateInstance<Caracteristiques>();
-                                    caracteristique.TimosId = nIdCarac;
-                                    caracteristique.ElementType = (string)rowCarac[CCaracteristique.c_champElementType];
+                                    caracteristique.Id = strIdCarac;
+                                    caracteristique.TimosId = nIdElement;
+                                    caracteristique.ElementType = strTypeElement;
                                     caracteristique.Titre = strTitre;
                                     caracteristique.OrdreAffichage = (int)rowCarac[CCaracteristique.c_champOrdreAffichage];
-                                    caracteristique.IdGroupePourFiltre = (int)rowCarac[CCaracteristique.c_champIdGroupeChamps];
+                                    caracteristique.IdGroupePourFiltre = nIdGroupe;
                                     caracteristique.IsTemplate = (bool)rowCarac[CCaracteristique.c_champIsTemplate];
+                                    caracteristique.IdMetaType = (int)rowCarac[CCaracteristique.c_champIdMetaType];
 
                                     em.AssociateInstance<RelationTodoCaracteristique>(todo, caracteristique);
                                 }
@@ -137,7 +143,7 @@ namespace TimosWebApp.Services
                                 bool bIsSelect = (bool)rowChamp[CChampTimosWebApp.c_champIsChoixParmis];
                                 bool bMultiline = (bool)rowChamp[CChampTimosWebApp.c_champIsMultiline];
                                 int nIdGroupeAssocie = (int)rowChamp[CChampTimosWebApp.c_champIdGroupeChamps];
-                                int nIdCaracteristique = (int)rowChamp[CChampTimosWebApp.c_champIdCaracteristique];
+                                string strIdCaracAssociee = (string)rowChamp[CChampTimosWebApp.c_champIdCaracteristique];
 
                                 if (bIsSelect)
                                 {
@@ -184,7 +190,7 @@ namespace TimosWebApp.Services
                                 if(groupeAssocie != null && champTimos.GetAssociatedInstance<GroupeChamps, RelationGroupeChampsChampsTimos>() != groupeAssocie)
                                     em.AssociateInstance<RelationGroupeChampsChampsTimos>(groupeAssocie, champTimos);
 
-                                Caracteristiques caracAssociee = em.GetInstance<Caracteristiques>(nIdCaracteristique);
+                                Caracteristiques caracAssociee = em.GetInstance<Caracteristiques>(strIdCaracAssociee);
                                 if(caracAssociee != null && champTimos.GetAssociatedInstance<Caracteristiques, RelationCaracChamp>() != caracAssociee)
                                     em.AssociateInstance<RelationCaracChamp>(caracAssociee, champTimos);
                             }
@@ -197,8 +203,8 @@ namespace TimosWebApp.Services
                                 int nIndex = (int)rowValPossbile[CChampValeursPossibles.c_champIndex];
                                 string strStoredValue = (string)rowValPossbile[CChampValeursPossibles.c_champValue];
                                 string strDisplayeddValue = (string)rowValPossbile[CChampValeursPossibles.c_champDisplay];
-                                int nIdGroupeAssociee = (int)rowValPossbile[CChampValeursPossibles.c_champIdGroupe];
-                                int nIdCaracAssociee = (int)rowValPossbile[CChampValeursPossibles.c_champIdCaracteristique];
+                                int nIdGroupeAssocie = (int)rowValPossbile[CChampValeursPossibles.c_champIdGroupe];
+                                string strIdCaracAssociee = (string)rowValPossbile[CChampValeursPossibles.c_champIdCaracteristique];
 
                                 ChampTimos champ = em.GetInstance<ChampTimos>(strChampTimosId);
                                 if (champ != null)
@@ -214,11 +220,11 @@ namespace TimosWebApp.Services
                                         valPossible.StoredValue = strStoredValue;
                                         valPossible.DisplayedValue = strDisplayeddValue;
                                     }
-                                    GroupeChamps groupeAssocie = em.GetInstance<GroupeChamps>(nIdGroupeAssociee);
+                                    GroupeChamps groupeAssocie = em.GetInstance<GroupeChamps>(nIdGroupeAssocie);
                                     if (groupeAssocie != null)
                                         em.AssociateInstance<ValeursPossibles>(groupeAssocie, valPossible);
                                         
-                                    Caracteristiques caracAssociee = em.GetInstance<Caracteristiques>(nIdCaracAssociee);
+                                    Caracteristiques caracAssociee = em.GetInstance<Caracteristiques>(strIdCaracAssociee);
                                     if (caracAssociee != null)
                                         em.AssociateInstance<RelationCaracValeursPossibles>(caracAssociee, valPossible);
 
@@ -285,10 +291,10 @@ namespace TimosWebApp.Services
                                 valChampTimos.ElementId = (int)rowVal[CCaracValeurChamp.c_champElementId];
                                 int nIdChampTimosAssocie = (int)rowVal[CCaracValeurChamp.c_champId];
                                 string valeurChamp = (string)rowVal[CCaracValeurChamp.c_champValeur];
-                                int nIdCaracAssociee = (int)rowVal[CCaracValeurChamp.c_champIdCaracteristique];
+                                string strIdCaracAssociee = (string)rowVal[CCaracValeurChamp.c_champIdCaracteristique];
 
                                 valChampTimos.ChampTimosId = nIdChampTimosAssocie;
-                                valChampTimos.Id = nIdCaracAssociee.ToString() + "-" + nIdChampTimosAssocie.ToString();
+                                valChampTimos.Id = strIdCaracAssociee + "-" + nIdChampTimosAssocie.ToString();
 
                                 ChampTimos champ = em.GetInstance<ChampTimos>(nIdChampTimosAssocie);
 
@@ -317,7 +323,7 @@ namespace TimosWebApp.Services
 
                                 if (champ != null)
                                 {
-                                    Caracteristiques caracAssociee = em.GetInstance<Caracteristiques>(nIdCaracAssociee);
+                                    Caracteristiques caracAssociee = em.GetInstance<Caracteristiques>(strIdCaracAssociee);
                                     if (caracAssociee != null)
                                     {
                                         em.AssociateInstance<RelationCaracValeurChamp>(caracAssociee, valChampTimos);
@@ -482,7 +488,7 @@ namespace TimosWebApp.Services
 
 
         //------------------------------------------------------------------------------------------------------------
-        public DataSet SaveCaracteristique(DataSet dataSet, int nIdCarac, string strTypeElement, int nIdTodo, int nIdElementParent, string strTypeElmentParent)
+        public DataSet SaveCaracteristique(DataSet dataSet, int nIdCarac, string strTypeElement, int nIdMetaType, int nIdTodo, int nIdElementParent, string strTypeElmentParent)
         {
             if (!dataSet.HasChanges())
                 return dataSet;
@@ -501,7 +507,7 @@ namespace TimosWebApp.Services
                 {
                     throw new SmartException(1100, "Votre session a expiré, veuillez vous reconnecter");
                 }
-                result = serviceClientAspectize.SaveCaracteristique(nTimosSessionId, dataSet, nIdCarac, strTypeElement, nIdTodo, nIdElementParent, strTypeElmentParent);
+                result = serviceClientAspectize.SaveCaracteristique(nTimosSessionId, dataSet, nIdCarac, strTypeElement, nIdMetaType, nIdTodo, nIdElementParent, strTypeElmentParent);
                 Context.Log(InfoType.Information, "SaveCaracteristique OK. Id Carac = " + nIdCarac);
 
                 if (!result)
@@ -529,7 +535,9 @@ namespace TimosWebApp.Services
                 throw new SmartException(1100, "Votre session a expiré, veuillez vous reconnecter");
             }
             em.Data.AcceptChanges();
-            return em.Data;
+            dataSet.AcceptChanges();
+            //return em.Data;
+            return dataSet;
         }
 
         //------------------------------------------------------------------------------------------------------------
