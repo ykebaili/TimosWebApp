@@ -14,12 +14,12 @@ namespace TimosWebApp.Services
     public interface ITodosService
     {
         DataSet GetTodoDetails(int nIdTodo);
-
         [Command(IsSaveCommand = true)]
         void SaveTodo(DataSet dataSet, int nIdTodo, string elementType, int elementId);
-        [Command(IsSaveCommand = true)]
-        DataSet SaveCaracteristique(DataSet dataSet, int nIdCarac, string strTypeElement, int nIdMetaType, int nIdTodo, int nIdElementParent, string strTypeElmentParent);
         DataSet EndTodo(int nIdTodo);
+        void DeleteCaracteristique(int nIdCarac, string strTypeElement);
+        [Command(IsSaveCommand = true)]
+        DataSet SaveCaracteristique(DataSet dataSet, int nIdCarac, string strTypeElement, int nIdTodo);
         DataSet UploadDocuments(UploadedFile[] uploadedFiles, int nIdTodo, int nIdDocument, string strLibelle, int nIdCategorie);
         void DeleteDocument(string strKeyFile);
         byte[] DownloadDocument(string strKeyFile, string strFileName);
@@ -35,15 +35,15 @@ namespace TimosWebApp.Services
         public DataSet GetTodoDetails(int nIdTodo)
         {
             AspectizeUser aspectizeUser = ExecutingContext.CurrentUser;
+            IEntityManager em = EntityManager.FromDataSet(DataSetHelper.Create());
 
             if (aspectizeUser.IsAuthenticated)
             {
                 int nTimosSessionId = (int)aspectizeUser[CUserTimosWebApp.c_champSessionId];
-                IEntityManager em = EntityManager.FromDataSet(DataSetHelper.Create());
 
                 ITimosServiceForAspectize serviceClientAspectize = (ITimosServiceForAspectize)C2iFactory.GetNewObject(typeof(ITimosServiceForAspectize));
                 CResultAErreur result = serviceClientAspectize.GetSession(nTimosSessionId);
-                if(!result)
+                if (!result)
                 {
                     throw new SmartException(1100, "Votre session a expiré, veuillez vous reconnecter");
                 }
@@ -53,333 +53,10 @@ namespace TimosWebApp.Services
                 if (result && result.Data != null)
                 {
                     DataSet ds = result.Data as DataSet;
-                    if (ds != null && ds.Tables.Contains(CTodoTimosWebApp.c_nomTable) && ds.Tables.Contains(CChampTimosWebApp.c_nomTable))
-                    {
-                        DataTable tableTodos = ds.Tables[CTodoTimosWebApp.c_nomTable];
-                        if (tableTodos.Rows.Count > 0)
-                        {
-                            // la première row contient les données du todo demandé
-                            DataRow rowTodo = tableTodos.Rows[0];
-                            var todo = em.CreateInstance<Todos>();
-                            todo.TimosId = (int)rowTodo[CTodoTimosWebApp.c_champId];
-                            todo.Label = (string)rowTodo[CTodoTimosWebApp.c_champLibelle];
-                            todo.StartDate = (DateTime)rowTodo[CTodoTimosWebApp.c_champDateDebut];
-                            todo.Instructions = (string)rowTodo[CTodoTimosWebApp.c_champInstructions];
-                            todo.ElementType = (string)rowTodo[CTodoTimosWebApp.c_champTypeElementEdite];
-                            todo.ElementId = (int)rowTodo[CTodoTimosWebApp.c_champIdElementEdite];
-                            todo.ElementDescription = (string)rowTodo[CTodoTimosWebApp.c_champElementDescription];
-                            todo.DureeStandard = (int)rowTodo[CTodoTimosWebApp.c_champDureeStandard];
-                            int nEtat = (int)rowTodo[CTodoTimosWebApp.c_champEtatTodo];
-                            todo.EtatTodo = (EtatTodo)nEtat;
-                            if (rowTodo[CTodoTimosWebApp.c_champDateFin] == DBNull.Value)
-                                todo.EndDate = null;
-                            else
-                                todo.EndDate = (DateTime)rowTodo[CTodoTimosWebApp.c_champDateFin];
+                    FillEntitiesFromDataSet(ds, em);
 
-
-                            // Création des groupes de champs
-                            DataTable tableGroupes = ds.Tables[CGroupeChamps.c_nomTable];
-                            bool bExpand = true;
-                            foreach (DataRow rowGroupe in tableGroupes.Rows)
-                            {
-                                string strTitre = (string)rowGroupe[CGroupeChamps.c_champTitre];
-                                if (strTitre.Contains("Document"))
-                                    continue;
-
-                                int nIdGroupe = (int)rowGroupe[CGroupeChamps.c_champId];
-                                if (em.GetInstance<GroupeChamps>(nIdGroupe) == null)
-                                {
-                                    var groupeChamps = em.CreateInstance<GroupeChamps>();
-                                    groupeChamps.TimosId = nIdGroupe;
-                                    groupeChamps.Titre = strTitre;
-                                    groupeChamps.OrdreAffichage = (int)rowGroupe[CGroupeChamps.c_champOrdreAffichage];
-                                    groupeChamps.InfosSecondaires = (bool)rowGroupe[CGroupeChamps.c_champIsInfosSecondaires];
-                                    groupeChamps.Expand = bExpand;
-                                    bExpand = false;
-
-                                    em.AssociateInstance<RelationTodoGroupeChamps>(todo, groupeChamps);
-                                }
-                            }
-
-                            // Création des caractéristiques
-                            DataTable tableCaracteristiques = ds.Tables[CCaracteristique.c_nomTable];
-                            foreach (DataRow rowCarac in tableCaracteristiques.Rows)
-                            {
-                                int nIdElement = (int)rowCarac[CCaracteristique.c_champTimosId]; // Id de l'element Timos (Caractristique, Site, Dossier...)
-                                string strTypeElement = (string)rowCarac[CCaracteristique.c_champElementType]; // Type de l'élément Timos
-                                string strTitre = (string)rowCarac[CCaracteristique.c_champTitre];
-                                int nIdGroupe = (int)rowCarac[CCaracteristique.c_champIdGroupeChamps];
-                                string strIdCarac = (string)rowCarac[CCaracteristique.c_champId];
-
-                                if (em.GetInstance<Caracteristiques>(strIdCarac) == null)
-                                {
-                                    var caracteristique = em.CreateInstance<Caracteristiques>();
-                                    caracteristique.Id = strIdCarac;
-                                    caracteristique.TimosId = nIdElement;
-                                    caracteristique.ElementType = strTypeElement;
-                                    caracteristique.Titre = strTitre;
-                                    caracteristique.OrdreAffichage = (int)rowCarac[CCaracteristique.c_champOrdreAffichage];
-                                    caracteristique.IdGroupePourFiltre = nIdGroupe;
-                                    caracteristique.IsTemplate = (bool)rowCarac[CCaracteristique.c_champIsTemplate];
-                                    caracteristique.IdMetaType = (int)rowCarac[CCaracteristique.c_champIdMetaType];
-
-                                    em.AssociateInstance<RelationTodoCaracteristique>(todo, caracteristique);
-                                }
-                            }
-
-                            // Définition des champs
-                            DataTable tableChampsTimos = ds.Tables[CChampTimosWebApp.c_nomTable];
-                            foreach (DataRow rowChamp in tableChampsTimos.Rows)
-                            {
-                                int nIdChamp = (int)rowChamp[CChampTimosWebApp.c_champId];
-                                var champTimos = em.GetInstance<ChampTimos>(nIdChamp);
-                                if(champTimos == null)
-                                    champTimos = em.CreateInstance<ChampTimos>();
-                                champTimos.TimosId = nIdChamp;
-                                champTimos.Nom = (string)rowChamp[CChampTimosWebApp.c_champNom];
-                                champTimos.DisplayOrder = (int)rowChamp[CChampTimosWebApp.c_champOrdreAffichage];
-                                champTimos.TypeDonneChamp = (TypeDonnee)rowChamp[CChampTimosWebApp.c_champTypeDonne];
-                                champTimos.LibelleConvivial = (string)rowChamp[CChampTimosWebApp.c_champLibelleConvivial];
-                                bool bIsSelect = (bool)rowChamp[CChampTimosWebApp.c_champIsChoixParmis];
-                                bool bMultiline = (bool)rowChamp[CChampTimosWebApp.c_champIsMultiline];
-                                int nIdGroupeAssocie = (int)rowChamp[CChampTimosWebApp.c_champIdGroupeChamps];
-                                string strIdCaracAssociee = (string)rowChamp[CChampTimosWebApp.c_champIdCaracteristique];
-
-                                if (bIsSelect)
-                                {
-                                    champTimos.IsSelect = true;
-                                    champTimos.AspectizeFieldType = champTimos.TimosId.ToString();
-                                }
-                                else
-                                {
-                                    switch (champTimos.TypeDonneChamp)
-                                    {
-                                        case TypeDonnee.TypeEntier:
-                                            champTimos.AspectizeFieldType = "String";
-                                            champTimos.AspectizeControlType = "Html.Number";
-                                            break;
-                                        case TypeDonnee.TypeDecimal:
-                                            champTimos.AspectizeFieldType = "String";
-                                            champTimos.AspectizeControlType = "";
-                                            break;
-                                        case TypeDonnee.TypeString:
-                                            champTimos.AspectizeFieldType = "String";
-                                            champTimos.AspectizeControlType = bMultiline ? "Html.MultilineTextBox" : "";
-                                            break;
-                                        case TypeDonnee.TypeDate:
-                                            champTimos.AspectizeFieldType = "Date";
-                                            champTimos.AspectizeControlType = "MonControleDate";
-                                            champTimos.FormatDate = "dd/MM/yyyy";
-                                            break;
-                                        case TypeDonnee.TypeBool:
-                                            champTimos.AspectizeFieldType = "Boolean";
-                                            champTimos.AspectizeControlType = "";
-                                            break;
-                                        case TypeDonnee.ObjetTimos:
-                                            champTimos.AspectizeFieldType = "String";
-                                            champTimos.AspectizeControlType = "";
-                                            break;
-                                        default:
-                                            break;
-                                    }
-
-                                }
-
-                                // Le champ appartient à un Groupe ou une Caracteristique
-                                GroupeChamps groupeAssocie = em.GetInstance<GroupeChamps>(nIdGroupeAssocie);
-                                if(groupeAssocie != null && champTimos.GetAssociatedInstance<GroupeChamps, RelationGroupeChampsChampsTimos>() != groupeAssocie)
-                                    em.AssociateInstance<RelationGroupeChampsChampsTimos>(groupeAssocie, champTimos);
-
-                                Caracteristiques caracAssociee = em.GetInstance<Caracteristiques>(strIdCaracAssociee);
-                                if(caracAssociee != null && champTimos.GetAssociatedInstance<Caracteristiques, RelationCaracChamp>() != caracAssociee)
-                                    em.AssociateInstance<RelationCaracChamp>(caracAssociee, champTimos);
-                            }
-
-                            // Gestion des valeurs possibles de champs
-                            DataTable tableValeursPossibles = ds.Tables[CChampValeursPossibles.c_nomTable];
-                            foreach (DataRow rowValPossbile in tableValeursPossibles.Rows)
-                            {
-                                string strChampTimosId = rowValPossbile[CChampValeursPossibles.c_champId].ToString();
-                                int nIndex = (int)rowValPossbile[CChampValeursPossibles.c_champIndex];
-                                string strStoredValue = (string)rowValPossbile[CChampValeursPossibles.c_champValue];
-                                string strDisplayeddValue = (string)rowValPossbile[CChampValeursPossibles.c_champDisplay];
-                                int nIdGroupeAssocie = (int)rowValPossbile[CChampValeursPossibles.c_champIdGroupe];
-                                string strIdCaracAssociee = (string)rowValPossbile[CChampValeursPossibles.c_champIdCaracteristique];
-
-                                ChampTimos champ = em.GetInstance<ChampTimos>(strChampTimosId);
-                                if (champ != null)
-                                {
-                                    string strId = strChampTimosId + "-" + strStoredValue;
-                                    ValeursChamp valPossible = em.GetInstance<ValeursChamp>(strId);
-                                    if (valPossible == null)
-                                    {
-                                        valPossible = em.CreateInstance<ValeursChamp>();
-                                        valPossible.Id = strId;
-                                        valPossible.ChampTimosId = strChampTimosId;
-                                        valPossible.Index = nIndex;
-                                        valPossible.StoredValue = strStoredValue;
-                                        valPossible.DisplayedValue = strDisplayeddValue;
-                                    }
-                                    GroupeChamps groupeAssocie = em.GetInstance<GroupeChamps>(nIdGroupeAssocie);
-                                    if (groupeAssocie != null)
-                                        em.AssociateInstance<ValeursPossibles>(groupeAssocie, valPossible);
-                                        
-                                    Caracteristiques caracAssociee = em.GetInstance<Caracteristiques>(strIdCaracAssociee);
-                                    if (caracAssociee != null)
-                                        em.AssociateInstance<RelationCaracValeursPossibles>(caracAssociee, valPossible);
-
-                                }
-                            }
-
-                            // Récupère les valeurs de champs associées au Todo par groupe de champs
-                            DataTable tableTodoValeursChamps = ds.Tables[CTodoValeurChamp.c_nomTable];
-                            foreach (DataRow rowVal in tableTodoValeursChamps.Rows)
-                            {
-                                int nIdTodoValeurChamp = (int)rowVal[CTodoValeurChamp.c_champId];
-                                var valChampTimos = em.GetInstance<TodoValeurChamp>(nIdTodoValeurChamp);
-                                if(valChampTimos == null)
-                                    valChampTimos = em.CreateInstance<TodoValeurChamp>();
-                                valChampTimos.ChampTimosId = nIdTodoValeurChamp;
-                                valChampTimos.LibelleChamp = (string)rowVal[CTodoValeurChamp.c_champLibelle];
-                                valChampTimos.OrdreChamp = (int)rowVal[CTodoValeurChamp.c_champOrdreAffichage];
-                                valChampTimos.ElementType = (string)rowVal[CTodoValeurChamp.c_champElementType];
-                                valChampTimos.ElementId = (int)rowVal[CTodoValeurChamp.c_champElementId];
-
-                                string valeurChamp = (string)rowVal[CTodoValeurChamp.c_champValeur];
-                                if (valeurChamp != "")
-                                {
-                                    var champTimos = em.GetInstance<ChampTimos>(valChampTimos.ChampTimosId);
-                                    if (champTimos.IsSelect)
-                                    {
-                                        bool bFound = false;
-                                        var valPossibles = em.GetAllInstances<ValeursChamp>();
-                                        foreach (var valPossible in valPossibles)
-                                        {
-                                            if (valPossible.StoredValue == valeurChamp)
-                                            {
-                                                valeurChamp = valPossible.StoredValue;
-                                                bFound = true;
-                                                break;
-                                            }
-                                        }
-                                        if (!bFound)
-                                            valeurChamp = "ND";
-                                        //throw new SmartException("Problème de valeurs possibles sur le champ id = " + valTimos.ChampTimosId + ", valeurChamp = " + valeurChamp + ", n'est pas dans la liste des valeurs possibles. ");
-                                    }
-                                }
-                                valChampTimos.ValeurChamp = valeurChamp;
-
-                                int nIdGroupeAssocie = (int)rowVal[CTodoValeurChamp.c_champIdGroupeChamps];
-
-                                ChampTimos champ = em.GetInstance<ChampTimos>(valChampTimos.ChampTimosId);
-                                if (champ != null)
-                                {
-                                    GroupeChamps groupeAssocie = em.GetInstance<GroupeChamps>(nIdGroupeAssocie);
-                                    if (groupeAssocie != null)
-                                        em.AssociateInstance<RelationTodoValeurChamp>(groupeAssocie, valChampTimos);
-                                }
-                            }
-
-                            // Récupère les valeurs de champs associées aux Caractéristiques
-                            DataTable tableCaracValeursChamps = ds.Tables[CCaracValeurChamp.c_nomTable];
-                            foreach (DataRow rowVal in tableCaracValeursChamps.Rows)
-                            {
-                                var valChampTimos = em.CreateInstance<CaracValeurChamp>();
-                                valChampTimos.LibelleChamp = (string)rowVal[CCaracValeurChamp.c_champLibelle];
-                                valChampTimos.OrdreChamp = (int)rowVal[CCaracValeurChamp.c_champOrdreAffichage];
-                                valChampTimos.ElementType = (string)rowVal[CCaracValeurChamp.c_champElementType];
-                                valChampTimos.ElementId = (int)rowVal[CCaracValeurChamp.c_champElementId];
-                                int nIdChampTimosAssocie = (int)rowVal[CCaracValeurChamp.c_champId];
-                                string valeurChamp = (string)rowVal[CCaracValeurChamp.c_champValeur];
-                                string strIdCaracAssociee = (string)rowVal[CCaracValeurChamp.c_champIdCaracteristique];
-
-                                valChampTimos.ChampTimosId = nIdChampTimosAssocie;
-                                valChampTimos.Id = strIdCaracAssociee + "-" + nIdChampTimosAssocie.ToString();
-
-                                ChampTimos champ = em.GetInstance<ChampTimos>(nIdChampTimosAssocie);
-
-                                if (valeurChamp != "")
-                                {
-                                    if (champ != null && champ.IsSelect)
-                                    {
-                                        bool bFound = false;
-                                        var valPossibles = em.GetAllInstances<ValeursChamp>();
-                                        foreach (var valPossible in valPossibles)
-                                        {
-                                            if (valPossible.StoredValue == valeurChamp)
-                                            {
-                                                valeurChamp = valPossible.StoredValue;
-                                                bFound = true;
-                                                break;
-                                            }
-                                        }
-                                        if (!bFound)
-                                            valeurChamp = "ND";
-                                        //throw new SmartException("Problème de valeurs possibles sur le champ id = " + valTimos.ChampTimosId + ", valeurChamp = " + valeurChamp + ", n'est pas dans la liste des valeurs possibles. ");
-                                    }
-                                }
-                                valChampTimos.ValeurChamp = valeurChamp;
-
-
-                                if (champ != null)
-                                {
-                                    Caracteristiques caracAssociee = em.GetInstance<Caracteristiques>(strIdCaracAssociee);
-                                    if (caracAssociee != null)
-                                    {
-                                        em.AssociateInstance<RelationCaracValeurChamp>(caracAssociee, valChampTimos);
-                                    }
-
-                                }
-                            }
-
-                            // Gestion des documents attendus sur todo
-                            DataTable tableDocuementsAttendus = ds.Tables[CDocumentAttendu.c_nomTable];
-                            foreach (DataRow rowDoc in tableDocuementsAttendus.Rows)
-                            {
-                                var doc = em.CreateInstance<DocumentsAttendus>();
-
-                                doc.TimosId = (int)rowDoc[CDocumentAttendu.c_champId];
-                                doc.Libelle = (string)rowDoc[CDocumentAttendu.c_champLibelle];
-                                doc.IdCategorie = (int)rowDoc[CDocumentAttendu.c_champIdCategorie];
-                                doc.NombreMin = (int)rowDoc[CDocumentAttendu.c_champNombreMin];
-                                if (rowDoc[CDocumentAttendu.c_champDateLastUpload] == DBNull.Value)
-                                    doc.DateLastUpload = null;
-                                else
-                                    doc.DateLastUpload = (DateTime)rowDoc[CDocumentAttendu.c_champDateLastUpload];
-
-                                em.AssociateInstance<RelationTodoDocument>(todo, doc);
-
-                                // Traitement des fichiers joints
-                                DataTable tableFichiers = ds.Tables[CFichierAttache.c_nomTable];
-                                foreach (DataRow rowFichier in tableFichiers.Rows)
-                                {
-                                    int nIdDoc = (int)rowFichier[CFichierAttache.c_champIdDocumentAttendu];
-                                    if (nIdDoc == doc.TimosId)
-                                    {
-                                        var fichier = em.CreateInstance<FichiersAttaches>();
-                                        fichier.TimosKey = (string)rowFichier[CFichierAttache.c_champKey];
-                                        fichier.NomFichier = (string)rowFichier[CFichierAttache.c_champNomFichier];
-                                        fichier.Commentaire = (string)rowFichier[CFichierAttache.c_champCommentaire];
-                                        fichier.DateUpload = (DateTime)rowFichier[CFichierAttache.c_champDateUpload];
-                                        fichier.DateDocument = (DateTime)rowFichier[CFichierAttache.c_champDateDocument];
-                                        fichier.DocumentId = nIdDoc;
-                                        int nIndex = fichier.NomFichier.LastIndexOf(".");
-                                        string strExtension = "";
-                                        if (nIndex > 0)
-                                            strExtension = fichier.NomFichier.Substring(nIndex + 1);
-                                        else
-                                            strExtension = "bin";
-                                        fichier.Extension = strExtension.ToLower(); ;
-
-                                        em.AssociateInstance<RelationFichiers>(doc, fichier);
-                                    }
-                                }
-                            }
-
-                            em.Data.AcceptChanges();
-                            return em.Data;
-                        }
-                    }
+                    em.Data.AcceptChanges();
+                    return em.Data;
                 }
             }
             else
@@ -389,6 +66,7 @@ namespace TimosWebApp.Services
             return null;
         }
 
+           
         //-----------------------------------------------------------------------------------------
         public void SaveTodo(DataSet dataSet, int nIdTodo, string elementType, int elementId)
         {
@@ -450,45 +128,20 @@ namespace TimosWebApp.Services
                 if (!result)
                     throw new SmartException(1020, result.MessageErreur);
 
-                DataSet ds = result.Data as DataSet;
-                if (ds != null && ds.Tables.Contains(CTodoTimosWebApp.c_nomTable))
-                {
-                    DataTable tableTodos = ds.Tables[CTodoTimosWebApp.c_nomTable];
-                    if (tableTodos.Rows.Count > 0)
-                    {
-                        // la première row contient les données du todo demandé
-                        DataRow rowTodo = tableTodos.Rows[0];
-                        var todo = em.CreateInstance<Todos>();
-                        todo.TimosId = (int)rowTodo[CTodoTimosWebApp.c_champId];
-                        todo.Label = (string)rowTodo[CTodoTimosWebApp.c_champLibelle];
-                        todo.StartDate = (DateTime)rowTodo[CTodoTimosWebApp.c_champDateDebut];
-                        todo.Instructions = (string)rowTodo[CTodoTimosWebApp.c_champInstructions];
-                        todo.ElementType = (string)rowTodo[CTodoTimosWebApp.c_champTypeElementEdite];
-                        todo.ElementId = (int)rowTodo[CTodoTimosWebApp.c_champIdElementEdite];
-                        todo.ElementDescription = (string)rowTodo[CTodoTimosWebApp.c_champElementDescription];
-                        todo.DureeStandard = (int)rowTodo[CTodoTimosWebApp.c_champDureeStandard];
-                        int nEtat = (int)rowTodo[CTodoTimosWebApp.c_champEtatTodo];
-                        todo.EtatTodo = (EtatTodo)nEtat;
-                        if (rowTodo[CTodoTimosWebApp.c_champDateFin] == DBNull.Value)
-                            todo.EndDate = null;
-                        else
-                            todo.EndDate = (DateTime)rowTodo[CTodoTimosWebApp.c_champDateFin];
-
-                    }
-                }
+                DataSet dsRetour = result.Data as DataSet;
+                FillEntitiesFromDataSet(dsRetour, em);
+                em.Data.AcceptChanges();
+                return em.Data;
             }
             else
             {
                 throw new SmartException(1100, "Votre session a expiré, veuillez vous reconnecter");
             }
-
-            em.Data.AcceptChanges();
-            return em.Data;
         }
 
 
         //------------------------------------------------------------------------------------------------------------
-        public DataSet SaveCaracteristique(DataSet dataSet, int nIdCarac, string strTypeElement, int nIdMetaType, int nIdTodo, int nIdElementParent, string strTypeElmentParent)
+        public DataSet SaveCaracteristique(DataSet dataSet, int nIdCarac, string strTypeElement, int nIdTodo)
         {
             if (!dataSet.HasChanges())
                 return dataSet;
@@ -507,37 +160,46 @@ namespace TimosWebApp.Services
                 {
                     throw new SmartException(1100, "Votre session a expiré, veuillez vous reconnecter");
                 }
-                result = serviceClientAspectize.SaveCaracteristique(nTimosSessionId, dataSet, nIdCarac, strTypeElement, nIdMetaType, nIdTodo, nIdElementParent, strTypeElmentParent);
-                Context.Log(InfoType.Information, "SaveCaracteristique OK. Id Carac = " + nIdCarac);
-
+                result = serviceClientAspectize.SaveCaracteristique(nTimosSessionId, dataSet, nIdCarac, strTypeElement, nIdTodo);
                 if (!result)
                     throw new SmartException(1010, result.MessageErreur);
 
                 DataSet dsRetour = result.Data as DataSet;
-                if (dsRetour != null)
-                {
-                    DataTable dtCaracteristiques = dsRetour.Tables[CCaracteristique.c_nomTable];
-                    if (dtCaracteristiques != null)
-                    {
-                        // Mise à jour de la Caracteristique
-                        Context.Log(InfoType.Information, "SaveCaracteristique - Id = " + nIdCarac);
-
-                        // Mise à jour des valeurs de de champs
-                        DataTable dtValeurs = dsRetour.Tables[CCaracValeurChamp.c_nomTable];
-
-
-                    }
-                }
-
+                FillEntitiesFromDataSet(dsRetour, em);
+                em.Data.AcceptChanges();
+                return em.Data;
             }
             else
             {
                 throw new SmartException(1100, "Votre session a expiré, veuillez vous reconnecter");
             }
-            em.Data.AcceptChanges();
+
             dataSet.AcceptChanges();
-            //return em.Data;
             return dataSet;
+        }
+
+        //------------------------------------------------------------------------------------------------------------
+        public void DeleteCaracteristique(int nIdCarac, string strTypeElement)
+        {
+            AspectizeUser aspectizeUser = ExecutingContext.CurrentUser;
+
+            if (aspectizeUser.IsAuthenticated)
+            {
+                int nTimosSessionId = (int)aspectizeUser[CUserTimosWebApp.c_champSessionId];
+                ITimosServiceForAspectize serviceClientAspectize = (ITimosServiceForAspectize)C2iFactory.GetNewObject(typeof(ITimosServiceForAspectize));
+                CResultAErreur result = serviceClientAspectize.GetSession(nTimosSessionId);
+                if (!result)
+                {
+                    throw new SmartException(1100, "Votre session a expiré, veuillez vous reconnecter");
+                }
+                result = serviceClientAspectize.DeleteCaracteristique(nTimosSessionId, nIdCarac, strTypeElement);
+                if (!result)
+                    throw new SmartException(1010, result.MessageErreur);
+            }
+            else
+            {
+                throw new SmartException(1100, "Votre session a expiré, veuillez vous reconnecter");
+            }
         }
 
         //------------------------------------------------------------------------------------------------------------
@@ -687,6 +349,372 @@ namespace TimosWebApp.Services
 
             return null;
         }
+
+        //-----------------------------------------------------------------------------------------
+        private void FillEntitiesFromDataSet(DataSet ds, IEntityManager em)
+        {
+            if (ds == null || em == null)
+                return;
+
+            // Création des Todos
+            if (ds.Tables.Contains(CTodoTimosWebApp.c_nomTable))
+            {
+                DataTable tableTodos = ds.Tables[CTodoTimosWebApp.c_nomTable];
+                if (tableTodos.Rows.Count > 0)
+                {
+                    // la première row contient les données du todo demandé
+                    DataRow rowTodo = tableTodos.Rows[0];
+                    int nIdTodo = (int)rowTodo[CTodoTimosWebApp.c_champId];
+                    var todo = em.GetInstance<Todos>(nIdTodo);
+                    if (todo == null)
+                        todo = em.CreateInstance<Todos>();
+                    todo.TimosId = nIdTodo;
+                    todo.Label = (string)rowTodo[CTodoTimosWebApp.c_champLibelle];
+                    todo.StartDate = (DateTime)rowTodo[CTodoTimosWebApp.c_champDateDebut];
+                    todo.Instructions = (string)rowTodo[CTodoTimosWebApp.c_champInstructions];
+                    todo.ElementType = (string)rowTodo[CTodoTimosWebApp.c_champTypeElementEdite];
+                    todo.ElementId = (int)rowTodo[CTodoTimosWebApp.c_champIdElementEdite];
+                    todo.ElementDescription = (string)rowTodo[CTodoTimosWebApp.c_champElementDescription];
+                    todo.DureeStandard = (int)rowTodo[CTodoTimosWebApp.c_champDureeStandard];
+                    int nEtat = (int)rowTodo[CTodoTimosWebApp.c_champEtatTodo];
+                    todo.EtatTodo = (EtatTodo)nEtat;
+                    if (rowTodo[CTodoTimosWebApp.c_champDateFin] == DBNull.Value)
+                        todo.EndDate = null;
+                    else
+                        todo.EndDate = (DateTime)rowTodo[CTodoTimosWebApp.c_champDateFin];
+
+                    // Création des groupes de champs
+                    if (ds.Tables.Contains(CGroupeChamps.c_nomTable))
+                    {
+                        DataTable tableGroupes = ds.Tables[CGroupeChamps.c_nomTable];
+                        bool bExpand = true;
+                        foreach (DataRow rowGroupe in tableGroupes.Rows)
+                        {
+                            string strTitre = (string)rowGroupe[CGroupeChamps.c_champTitre];
+                            if (strTitre.Contains("Document"))
+                                continue;
+
+                            int nIdGroupe = (int)rowGroupe[CGroupeChamps.c_champId];
+                            if (em.GetInstance<GroupeChamps>(nIdGroupe) == null)
+                            {
+                                var groupeChamps = em.CreateInstance<GroupeChamps>();
+                                groupeChamps.TimosId = nIdGroupe;
+                                groupeChamps.Titre = strTitre;
+                                groupeChamps.OrdreAffichage = (int)rowGroupe[CGroupeChamps.c_champOrdreAffichage];
+                                groupeChamps.InfosSecondaires = (bool)rowGroupe[CGroupeChamps.c_champIsInfosSecondaires];
+                                groupeChamps.Expand = bExpand;
+                                groupeChamps.CanAddCaracteristiques = (bool)rowGroupe[CGroupeChamps.c_champCanAddCaracteristiques];
+                                bExpand = false;
+
+                                em.AssociateInstance<RelationTodoGroupeChamps>(todo, groupeChamps);
+                            }
+                        }
+                    }
+
+                    // Création des caractéristiques
+                    if (ds.Tables.Contains(CCaracteristique.c_nomTable))
+                    {
+                        DataTable tableCaracteristiques = ds.Tables[CCaracteristique.c_nomTable];
+                        foreach (DataRow rowCarac in tableCaracteristiques.Rows)
+                        {
+                            int nIdElement = (int)rowCarac[CCaracteristique.c_champTimosId]; // Id de l'element Timos (Caractristique, Site, Dossier...)
+                            string strTypeElement = (string)rowCarac[CCaracteristique.c_champElementType]; // Type de l'élément Timos
+                            string strTitre = (string)rowCarac[CCaracteristique.c_champTitre];
+                            int nIdGroupe = (int)rowCarac[CCaracteristique.c_champIdGroupeChamps];
+                            string strIdCarac = (string)rowCarac[CCaracteristique.c_champId];
+
+                            if (em.GetInstance<Caracteristiques>(strIdCarac) == null)
+                            {
+                                var caracteristique = em.CreateInstance<Caracteristiques>();
+                                caracteristique.Id = strIdCarac;
+                                caracteristique.TimosId = nIdElement;
+                                caracteristique.ElementType = strTypeElement;
+                                caracteristique.Titre = strTitre;
+                                caracteristique.OrdreAffichage = (int)rowCarac[CCaracteristique.c_champOrdreAffichage];
+                                caracteristique.IdGroupePourFiltre = nIdGroupe;
+                                caracteristique.IsTemplate = (bool)rowCarac[CCaracteristique.c_champIsTemplate];
+                                caracteristique.IdMetaType = (int)rowCarac[CCaracteristique.c_champIdMetaType];
+                                caracteristique.ParentElementType = (string)rowCarac[CCaracteristique.c_champParentElementType];
+                                caracteristique.ParentElementId = (int)rowCarac[CCaracteristique.c_champParentElementId];
+
+                                em.AssociateInstance<RelationTodoCaracteristique>(todo, caracteristique);
+                            }
+                        }
+                    }
+
+                    // Gestion des documents attendus sur todo
+                    if (ds.Tables.Contains(CDocumentAttendu.c_nomTable))
+                    {
+                        DataTable tableDocuementsAttendus = ds.Tables[CDocumentAttendu.c_nomTable];
+                        foreach (DataRow rowDoc in tableDocuementsAttendus.Rows)
+                        {
+                            var doc = em.CreateInstance<DocumentsAttendus>();
+
+                            doc.TimosId = (int)rowDoc[CDocumentAttendu.c_champId];
+                            doc.Libelle = (string)rowDoc[CDocumentAttendu.c_champLibelle];
+                            doc.IdCategorie = (int)rowDoc[CDocumentAttendu.c_champIdCategorie];
+                            doc.NombreMin = (int)rowDoc[CDocumentAttendu.c_champNombreMin];
+                            if (rowDoc[CDocumentAttendu.c_champDateLastUpload] == DBNull.Value)
+                                doc.DateLastUpload = null;
+                            else
+                                doc.DateLastUpload = (DateTime)rowDoc[CDocumentAttendu.c_champDateLastUpload];
+
+                            em.AssociateInstance<RelationTodoDocument>(todo, doc);
+
+                            // Traitement des fichiers joints
+                            if (ds.Tables.Contains(CFichierAttache.c_nomTable))
+                            {
+                                DataTable tableFichiers = ds.Tables[CFichierAttache.c_nomTable];
+                                foreach (DataRow rowFichier in tableFichiers.Rows)
+                                {
+                                    int nIdDoc = (int)rowFichier[CFichierAttache.c_champIdDocumentAttendu];
+                                    if (nIdDoc == doc.TimosId)
+                                    {
+                                        var fichier = em.CreateInstance<FichiersAttaches>();
+                                        fichier.TimosKey = (string)rowFichier[CFichierAttache.c_champKey];
+                                        fichier.NomFichier = (string)rowFichier[CFichierAttache.c_champNomFichier];
+                                        fichier.Commentaire = (string)rowFichier[CFichierAttache.c_champCommentaire];
+                                        fichier.DateUpload = (DateTime)rowFichier[CFichierAttache.c_champDateUpload];
+                                        fichier.DateDocument = (DateTime)rowFichier[CFichierAttache.c_champDateDocument];
+                                        fichier.DocumentId = nIdDoc;
+                                        int nIndex = fichier.NomFichier.LastIndexOf(".");
+                                        string strExtension = "";
+                                        if (nIndex > 0)
+                                            strExtension = fichier.NomFichier.Substring(nIndex + 1);
+                                        else
+                                            strExtension = "bin";
+                                        fichier.Extension = strExtension.ToLower(); ;
+
+                                        em.AssociateInstance<RelationFichiers>(doc, fichier);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+
+            // Définition des champs
+            if (ds.Tables.Contains(CChampTimosWebApp.c_nomTable))
+            {
+                DataTable tableChampsTimos = ds.Tables[CChampTimosWebApp.c_nomTable];
+                foreach (DataRow rowChamp in tableChampsTimos.Rows)
+                {
+                    int nIdChamp = (int)rowChamp[CChampTimosWebApp.c_champId];
+                    var champTimos = em.GetInstance<ChampTimos>(nIdChamp);
+                    if (champTimos == null)
+                        champTimos = em.CreateInstance<ChampTimos>();
+                    champTimos.TimosId = nIdChamp;
+                    champTimos.Nom = (string)rowChamp[CChampTimosWebApp.c_champNom];
+                    champTimos.DisplayOrder = (int)rowChamp[CChampTimosWebApp.c_champOrdreAffichage];
+                    champTimos.TypeDonneChamp = (TypeDonnee)rowChamp[CChampTimosWebApp.c_champTypeDonne];
+                    champTimos.LibelleConvivial = (string)rowChamp[CChampTimosWebApp.c_champLibelleConvivial];
+                    bool bIsSelect = (bool)rowChamp[CChampTimosWebApp.c_champIsChoixParmis];
+                    bool bMultiline = (bool)rowChamp[CChampTimosWebApp.c_champIsMultiline];
+                    int nIdGroupeAssocie = (int)rowChamp[CChampTimosWebApp.c_champIdGroupeChamps];
+                    string strIdCaracAssociee = (string)rowChamp[CChampTimosWebApp.c_champIdCaracteristique];
+
+                    if (bIsSelect)
+                    {
+                        champTimos.IsSelect = true;
+                        champTimos.AspectizeFieldType = champTimos.TimosId.ToString();
+                    }
+                    else
+                    {
+                        switch (champTimos.TypeDonneChamp)
+                        {
+                            case TypeDonnee.TypeEntier:
+                                champTimos.AspectizeFieldType = "String";
+                                champTimos.AspectizeControlType = "Html.Number";
+                                break;
+                            case TypeDonnee.TypeDecimal:
+                                champTimos.AspectizeFieldType = "String";
+                                champTimos.AspectizeControlType = "";
+                                break;
+                            case TypeDonnee.TypeString:
+                                champTimos.AspectizeFieldType = "String";
+                                champTimos.AspectizeControlType = bMultiline ? "Html.MultilineTextBox" : "";
+                                break;
+                            case TypeDonnee.TypeDate:
+                                champTimos.AspectizeFieldType = "Date";
+                                champTimos.AspectizeControlType = "MonControleDate";
+                                champTimos.FormatDate = "dd/MM/yyyy";
+                                break;
+                            case TypeDonnee.TypeBool:
+                                champTimos.AspectizeFieldType = "Boolean";
+                                champTimos.AspectizeControlType = "";
+                                break;
+                            case TypeDonnee.ObjetTimos:
+                                champTimos.AspectizeFieldType = "String";
+                                champTimos.AspectizeControlType = "";
+                                break;
+                            default:
+                                break;
+                        }
+
+                    }
+
+                    // Le champ appartient à un Groupe ou une Caracteristique
+                    GroupeChamps groupeAssocie = em.GetInstance<GroupeChamps>(nIdGroupeAssocie);
+                    if (groupeAssocie != null && champTimos.GetAssociatedInstance<GroupeChamps, RelationGroupeChampsChampsTimos>() != groupeAssocie)
+                        em.AssociateInstance<RelationGroupeChampsChampsTimos>(groupeAssocie, champTimos);
+
+                    Caracteristiques caracAssociee = em.GetInstance<Caracteristiques>(strIdCaracAssociee);
+                    if (caracAssociee != null && champTimos.GetAssociatedInstance<Caracteristiques, RelationCaracChamp>() != caracAssociee)
+                        em.AssociateInstance<RelationCaracChamp>(caracAssociee, champTimos);
+                }
+            }
+
+
+            // Gestion des valeurs possibles de champs
+            if (ds.Tables.Contains(CChampValeursPossibles.c_nomTable))
+            {
+                DataTable tableValeursPossibles = ds.Tables[CChampValeursPossibles.c_nomTable];
+                foreach (DataRow rowValPossbile in tableValeursPossibles.Rows)
+                {
+                    string strChampTimosId = rowValPossbile[CChampValeursPossibles.c_champId].ToString();
+                    int nIndex = (int)rowValPossbile[CChampValeursPossibles.c_champIndex];
+                    string strStoredValue = (string)rowValPossbile[CChampValeursPossibles.c_champValue];
+                    string strDisplayeddValue = (string)rowValPossbile[CChampValeursPossibles.c_champDisplay];
+                    int nIdGroupeAssocie = (int)rowValPossbile[CChampValeursPossibles.c_champIdGroupe];
+                    string strIdCaracAssociee = (string)rowValPossbile[CChampValeursPossibles.c_champIdCaracteristique];
+
+                    ChampTimos champ = em.GetInstance<ChampTimos>(strChampTimosId);
+                    if (champ != null)
+                    {
+                        string strId = strChampTimosId + "-" + strStoredValue;
+                        ValeursChamp valPossible = em.GetInstance<ValeursChamp>(strId);
+                        if (valPossible == null)
+                        {
+                            valPossible = em.CreateInstance<ValeursChamp>();
+                            valPossible.Id = strId;
+                            valPossible.ChampTimosId = strChampTimosId;
+                            valPossible.Index = nIndex;
+                            valPossible.StoredValue = strStoredValue;
+                            valPossible.DisplayedValue = strDisplayeddValue;
+                        }
+                        GroupeChamps groupeAssocie = em.GetInstance<GroupeChamps>(nIdGroupeAssocie);
+                        if (groupeAssocie != null)
+                            em.AssociateInstance<ValeursPossibles>(groupeAssocie, valPossible);
+
+                        Caracteristiques caracAssociee = em.GetInstance<Caracteristiques>(strIdCaracAssociee);
+                        if (caracAssociee != null)
+                            em.AssociateInstance<RelationCaracValeursPossibles>(caracAssociee, valPossible);
+
+                    }
+                }
+            }
+
+            // Récupère les valeurs de champs associées au Todo par groupe de champs
+            if (ds.Tables.Contains(CTodoValeurChamp.c_nomTable))
+            {
+                DataTable tableTodoValeursChamps = ds.Tables[CTodoValeurChamp.c_nomTable];
+                foreach (DataRow rowVal in tableTodoValeursChamps.Rows)
+                {
+                    int nIdTodoValeurChamp = (int)rowVal[CTodoValeurChamp.c_champId];
+                    var valChampTimos = em.GetInstance<TodoValeurChamp>(nIdTodoValeurChamp);
+                    if (valChampTimos == null)
+                        valChampTimos = em.CreateInstance<TodoValeurChamp>();
+                    valChampTimos.ChampTimosId = nIdTodoValeurChamp;
+                    valChampTimos.LibelleChamp = (string)rowVal[CTodoValeurChamp.c_champLibelle];
+                    valChampTimos.OrdreChamp = (int)rowVal[CTodoValeurChamp.c_champOrdreAffichage];
+                    valChampTimos.ElementType = (string)rowVal[CTodoValeurChamp.c_champElementType];
+                    valChampTimos.ElementId = (int)rowVal[CTodoValeurChamp.c_champElementId];
+
+                    string valeurChamp = (string)rowVal[CTodoValeurChamp.c_champValeur];
+                    if (valeurChamp != "")
+                    {
+                        var champTimos = em.GetInstance<ChampTimos>(valChampTimos.ChampTimosId);
+                        if (champTimos.IsSelect)
+                        {
+                            bool bFound = false;
+                            var valPossibles = em.GetAllInstances<ValeursChamp>();
+                            foreach (var valPossible in valPossibles)
+                            {
+                                if (valPossible.StoredValue == valeurChamp)
+                                {
+                                    valeurChamp = valPossible.StoredValue;
+                                    bFound = true;
+                                    break;
+                                }
+                            }
+                            if (!bFound)
+                                valeurChamp = "ND";
+                            //throw new SmartException("Problème de valeurs possibles sur le champ id = " + valTimos.ChampTimosId + ", valeurChamp = " + valeurChamp + ", n'est pas dans la liste des valeurs possibles. ");
+                        }
+                    }
+                    valChampTimos.ValeurChamp = valeurChamp;
+                    int nIdGroupeAssocie = (int)rowVal[CTodoValeurChamp.c_champIdGroupeChamps];
+                    ChampTimos champ = em.GetInstance<ChampTimos>(valChampTimos.ChampTimosId);
+                    if (champ != null)
+                    {
+                        GroupeChamps groupeAssocie = em.GetInstance<GroupeChamps>(nIdGroupeAssocie);
+                        if (groupeAssocie != null)
+                            em.AssociateInstance<RelationTodoValeurChamp>(groupeAssocie, valChampTimos);
+                    }
+                }
+            }
+
+            // Récupère les valeurs de champs associées aux Caractéristiques
+            if (ds.Tables.Contains(CCaracValeurChamp.c_nomTable))
+            {
+                DataTable tableCaracValeursChamps = ds.Tables[CCaracValeurChamp.c_nomTable];
+                foreach (DataRow rowVal in tableCaracValeursChamps.Rows)
+                {
+                    string valeurChamp = (string)rowVal[CCaracValeurChamp.c_champValeur];
+                    string strIdCaracAssociee = (string)rowVal[CCaracValeurChamp.c_champIdCaracteristique];
+                    int nIdChampTimosAssocie = (int)rowVal[CCaracValeurChamp.c_champId];
+
+                    string strIdCompose = strIdCaracAssociee + "-" + nIdChampTimosAssocie.ToString();
+                    CaracValeurChamp valChampTimos = em.GetInstance<CaracValeurChamp>(strIdCompose);
+                    if (valChampTimos == null)
+                    {
+                        valChampTimos = em.CreateInstance<CaracValeurChamp>();
+                        valChampTimos.Id = strIdCompose;
+                    }
+                    valChampTimos.ChampTimosId = nIdChampTimosAssocie;
+                    valChampTimos.LibelleChamp = (string)rowVal[CCaracValeurChamp.c_champLibelle];
+                    valChampTimos.OrdreChamp = (int)rowVal[CCaracValeurChamp.c_champOrdreAffichage];
+                    valChampTimos.ElementType = (string)rowVal[CCaracValeurChamp.c_champElementType];
+                    valChampTimos.ElementId = (int)rowVal[CCaracValeurChamp.c_champElementId];
+
+                    ChampTimos champ = em.GetInstance<ChampTimos>(nIdChampTimosAssocie);
+
+                    if (valeurChamp != "")
+                    {
+                        if (champ != null && champ.IsSelect)
+                        {
+                            bool bFound = false;
+                            var valPossibles = em.GetAllInstances<ValeursChamp>();
+                            foreach (var valPossible in valPossibles)
+                            {
+                                if (valPossible.StoredValue == valeurChamp)
+                                {
+                                    valeurChamp = valPossible.StoredValue;
+                                    bFound = true;
+                                    break;
+                                }
+                            }
+                            if (!bFound)
+                                valeurChamp = "ND";
+                            //throw new SmartException("Problème de valeurs possibles sur le champ id = " + valTimos.ChampTimosId + ", valeurChamp = " + valeurChamp + ", n'est pas dans la liste des valeurs possibles. ");
+                        }
+                    }
+                    valChampTimos.ValeurChamp = valeurChamp;
+                    if (champ != null)
+                    {
+                        Caracteristiques caracAssociee = em.GetInstance<Caracteristiques>(strIdCaracAssociee);
+                        if (caracAssociee != null)
+                        {
+                            em.AssociateInstance<RelationCaracValeurChamp>(caracAssociee, valChampTimos);
+                        }
+
+                    }
+                }
+            }
+        }
+
 
         //--------------------------------------------------------------------------------------------------
         // POUR DEBUG UNIQUEMENT

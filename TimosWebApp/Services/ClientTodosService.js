@@ -141,7 +141,7 @@ Global.ClientTodosService = {
                 var nIdGroupe = caracTemplate.IdGroupePourFiltre;
                 var strTypeElement = caracTemplate.ElementType;
                 var lastPoint = strTypeElement.lastIndexOf('.');
-                var idProvisoir = strTypeElement.substring(lastPoint + 1, strTypeElement.length - 1) + nIdNegatif;
+                var idProvisoir = strTypeElement.substring(lastPoint + 1) + nIdNegatif;
 
                 var newCarac = em.CreateInstance('Caracteristiques', { 'Id': idProvisoir });
                 em.AssociateInstance('RelationTodoCaracteristique', todo, 'Todos', newCarac, 'Caracteristiques');
@@ -151,6 +151,8 @@ Global.ClientTodosService = {
                 newCarac.SetField('IsTemplate', false);
                 newCarac.SetField('Titre', caracTemplate.Titre);
                 newCarac.SetField('IdMetaType', caracTemplate.IdMetaType);
+                newCarac.SetField('ParentElementType', caracTemplate.ParentElementType);
+                newCarac.SetField('ParentElementId', caracTemplate.ParentElementId);
 
                 // Association de tous les Champs
                 var champs = caracTemplate.GetAssociated('RelationCaracChamp', 'ChampTimos');
@@ -185,7 +187,7 @@ Global.ClientTodosService = {
     },
 
     //---------------------------------------------------------- Sauvegarde d'une Caracteristique ----------------------------------------
-    SaveCaracteristic: function (dataSet, nIdCarac, strTypeElement, nIdMetaType, nIdTodo, nIdElementParent, strTypeElmentParent) {
+    SaveCaracteristic: function (dataSet, nIdCarac, strTypeElement, nIdTodo) {
 
         var em = Aspectize.EntityManagerFromContextDataName(this.MainData);
         var cmd = Aspectize.PrepareCommand();
@@ -195,14 +197,51 @@ Global.ClientTodosService = {
         cmd.Attributes.aasDataName = this.MainData;
         cmd.OnComplete = function (result) {
             if (nIdCarac < 0) {
-                //em.ClearInstance('Caracteristiques', { TimosId: nIdCarac });
+                var lastPoint = strTypeElement.lastIndexOf('.');
+                var idProvisoir = strTypeElement.substring(lastPoint + 1) + nIdCarac;
+                var caracAsupprimer = em.GetInstance('Caracteristiques', { Id: idProvisoir });
+                if (caracAsupprimer) {
+                    var valeursAsupprimer = caracAsupprimer.GetAssociated('RelationCaracValeurChamp', 'CaracValeurChamp');
+                    for (var i = 0; i < valeursAsupprimer.length; i++) {
+                        var valeur = valeursAsupprimer[i];
+                        em.ClearInstance('CaracValeurChamp', {'Id' : valeur.Id})
+                    }
+                    em.ClearInstance('Caracteristiques', { 'Id' : idProvisoir });
+                }
             }
             Aspectize.ExecuteCommand(aas.Services.Browser.BootStrapClientService.CloseModal(aas.ViewName.EditionCarac));
             
         }
-        cmd.Call(aas.Services.Server.TodosService.SaveCaracteristique(dataSet, nIdCarac, strTypeElement, nIdMetaType, nIdTodo, nIdElementParent, strTypeElmentParent));
+        cmd.Call(aas.Services.Server.TodosService.SaveCaracteristique(dataSet, nIdCarac, strTypeElement, nIdTodo));
     },
     
+    //-----------------------------------------------------  Supprime une Caracterisique --------------------------------------------
+    DeleteCaracteristc: function(nIdCarac, strTypeElement){
+
+        var em = Aspectize.EntityManagerFromContextDataName(this.MainData);
+        var cmd = Aspectize.PrepareCommand();
+        cmd.Attributes.aasShowWaiting = true;
+        cmd.Attributes.aasAsynchronousCall = true;
+        cmd.Attributes.aasMergeData = true;
+        cmd.Attributes.aasDataName = this.MainData;
+        cmd.OnComplete = function (result) {
+
+            var lastPoint = strTypeElement.lastIndexOf('.');
+            var idProvisoir = strTypeElement.substring(lastPoint + 1) + nIdCarac;
+            var caracAsupprimer = em.GetInstance('Caracteristiques', { Id: idProvisoir });
+            if (caracAsupprimer) {
+                var valeursAsupprimer = caracAsupprimer.GetAssociated('RelationCaracValeurChamp', 'CaracValeurChamp');
+                for (var i = 0; i < valeursAsupprimer.length; i++) {
+                    var valeur = valeursAsupprimer[i];
+                    em.ClearInstance('CaracValeurChamp', { 'Id': valeur.Id })
+                }
+                em.ClearInstance('Caracteristiques', { 'Id': idProvisoir });
+            }
+
+        }
+        cmd.Call(aas.Services.Server.TodosService.DeleteCaracteristique(nIdCarac, strTypeElement));
+    },
+
     //------------------------------------------------------ TOASTR --------------------------------------------
     ToastAlert: function (titre, message, state) {
 

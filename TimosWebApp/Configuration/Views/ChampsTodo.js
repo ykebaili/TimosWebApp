@@ -9,11 +9,11 @@ vTabsGroupesChamps.IdGroupe.BindData(vTabsGroupesChamps.ParentData.TimosId);
 var vGroupeChamps = Aspectize.CreateRepeatedView("GroupeChamps", aas.Controls.GroupeChamps, aas.Zones.ChampsTodo.PanelGroupesChamps, aas.Data.MainData.Todos.RelationTodoGroupeChamps.GroupeChamps, "", aas.Expression('!InfosSecondaires'));
 vGroupeChamps.TitreGroupe.BindData(vGroupeChamps.ParentData.Titre);
 vGroupeChamps.IdGroupe.BindData(vGroupeChamps.ParentData.TimosId);
+vGroupeChamps.IsActiveIn.BindData(aas.Expression(IIF(vGroupeChamps.ParentData.Expand, 'active in', '')));
 vGroupeChamps.BoutonEditionTodo.click.BindCommand(aas.Services.Browser.BootStrapClientService.ShowModal(aas.ViewName.EditionTodo, true, false, true));
 vGroupeChamps.BoutonAjouterCarac.click.BindCommand(aas.Services.Browser.ClientTodosService.AddCaracteristic(aas.Data.MainData.Todos.TimosId, vGroupeChamps.ParentData.TimosId));
+vGroupeChamps.DisplayBtnAddCarac.BindData(aas.Expression(IIF(vGroupeChamps.ParentData.CanAddCaracteristiques, '', 'hidden')));
 //vGroupeChamps.BoutonEditionTodo.click.BindCommand(aas.Services.Browser.SystemServices.Alert(vGroupeChamps.ParentData.RelationTodoGroupeChamps.Todos.Label));
-//vGroupeChamps.CollapseGroupe.click.BindCommand(aas.Services.Browser.ClientTodosService.ExpandGroup(vGroupeChamps.ParentData.TimosId));
-vGroupeChamps.IsActiveIn.BindData(aas.Expression(IIF(vGroupeChamps.ParentData.Expand, 'active in', '')));
 //vGroupeChamps.FaCaretClass.BindData(aas.Expression(IIF(vGroupeChamps.ParentData.Expand, 'fa-caret-down', 'fa-caret-right')));
 //vGroupeChamps.SectionTitreGroupe.BindData(aas.Expression(IIF(vGroupeChamps.ParentData.Expand, 'section-titre-expanded', 'section-titre-collapsed')));
 
@@ -69,6 +69,7 @@ var vCaracteristiques = Aspectize.CreateRepeatedView("Caracteristique", aas.Cont
 //*/
 vCaracteristiques.LibelleCarac.BindData(vCaracteristiques.ParentData.Titre);
 vCaracteristiques.BoutonEditerCarac.click.BindCommand(aas.Services.Browser.BootStrapClientService.ShowModal(aas.ViewName.EditionCarac, true, false, true));
+vCaracteristiques.BoutonSupprimerCarac.click.BindCommand(aas.Services.Browser.ClientTodosService.DeleteCaracteristc(vCaracteristiques.ParentData.TimosId, vCaracteristiques.ParentData.ElementType));
 
 /// Initialisation de la property grid
 vCaracteristiques.GridChampsCaracteristique.BindList(vCaracteristiques.ParentData.RelationCaracValeurChamp.CaracValeurChamp, "ValeurChamp", "LibelleChamp", "OrdreChamp");
@@ -96,10 +97,8 @@ vEditionCarac.BtnSave.click.BindCommand(aas.Services.Browser.ClientTodosService.
     aas.Data.MainData,
     vEditionCarac.ParentData.TimosId,
     vEditionCarac.ParentData.ElementType,
-    vEditionCarac.ParentData.IdMetaType,
-    vEditionCarac.ParentData.RelationTodoCaracteristique.Todos.TimosId,
-    vEditionCarac.ParentData.RelationTodoCaracteristique.Todos.ElementId,
-    vEditionCarac.ParentData.RelationTodoCaracteristique.Todos.ElementType));
+    vEditionCarac.ParentData.RelationTodoCaracteristique.Todos.TimosId));
+
 // Configuration de la PropertyGrid en mode édition
 vEditionCarac.GridChamps.BindList(vEditionCarac.ParentData.RelationCaracValeurChamp.CaracValeurChamp, "ValeurChamp", "LibelleChamp", "OrdreChamp");
 vEditionCarac.GridChamps.TypeTableName.BindData(vEditionCarac.ParentPath.RelationCaracChamp.ChampTimos);

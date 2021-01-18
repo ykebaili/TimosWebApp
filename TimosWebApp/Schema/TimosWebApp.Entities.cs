@@ -620,6 +620,7 @@ namespace TimosWebApp
 			public const string TimosId = "TimosId";
 			public const string Expand = "Expand";
 			public const string InfosSecondaires = "InfosSecondaires";
+			public const string CanAddCaracteristiques = "CanAddCaracteristiques";
 		}
 
 		void IDataWrapper.InitData(DataRow data, string namePrefix)
@@ -662,6 +663,13 @@ namespace TimosWebApp
 			set { setValue<bool>("InfosSecondaires", value); }
 		}
 
+		[Data(DefaultValue = false)]
+		public bool CanAddCaracteristiques
+		{
+			get { return getValue<bool>("CanAddCaracteristiques"); }
+			set { setValue<bool>("CanAddCaracteristiques", value); }
+		}
+
 	}
 
 	[DataDefinition]
@@ -678,6 +686,8 @@ namespace TimosWebApp
 			public const string IsTemplate = "IsTemplate";
 			public const string IdMetaType = "IdMetaType";
 			public const string Id = "Id";
+			public const string ParentElementType = "ParentElementType";
+			public const string ParentElementId = "ParentElementId";
 		}
 
 		void IDataWrapper.InitData(DataRow data, string namePrefix)
@@ -746,6 +756,20 @@ namespace TimosWebApp
 		{
 			get { return getValue<string>("Id"); }
 			set { setValue<string>("Id", value); }
+		}
+
+		[Data]
+		public string ParentElementType
+		{
+			get { return getValue<string>("ParentElementType"); }
+			set { setValue<string>("ParentElementType", value); }
+		}
+
+		[Data]
+		public int ParentElementId
+		{
+			get { return getValue<int>("ParentElementId"); }
+			set { setValue<int>("ParentElementId", value); }
 		}
 
 	}

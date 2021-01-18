@@ -88,6 +88,7 @@
         <entityProperty name="TimosId" type="Int32" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" identifier="Identifier" />
         <entityProperty name="Expand" type="Boolean" defaultValue="false" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
         <entityProperty name="InfosSecondaires" type="Boolean" defaultValue="false" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="CanAddCaracteristiques" type="Boolean" defaultValue="false" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
       </properties>
     </entity>
     <entity Id="36da5692-c34f-4c95-82cf-9afdf083209f" name="Caracteristiques" guid="605400be-7106-4580-8c8d-dd0591cb1a80" guidIdentifier="false" hasCustomValidators="false" hasTriggers="false">
@@ -101,6 +102,8 @@
         <entityProperty name="IsTemplate" type="Boolean" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
         <entityProperty name="IdMetaType" type="Int32" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
         <entityProperty name="Id" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" identifier="Identifier" />
+        <entityProperty name="ParentElementType" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="ParentElementId" type="Int32" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
       </properties>
     </entity>
     <entity Id="41978310-6a5d-4748-956e-cdcbf1da5f88" name="CaracValeurChamp" guid="f6beafe2-cf7e-491d-af99-cdb9b897af78" guidIdentifier="false" hasCustomValidators="false" hasTriggers="false">
