@@ -314,7 +314,12 @@ img.logo{
 .form-group{
     margin-bottom: 2px;
 }
-
+.form-control-static:not(.aasBoolean){
+    border: 2px solid #fff;
+    border-radius: 4px;
+    padding-left: 12px;
+    background-color: #f2f4f7;
+}
 /* Property Grid Caractéristiques */
 .section-caracteristiques .aasRepeaterItem{
     border: solid 1px #ec1c24;

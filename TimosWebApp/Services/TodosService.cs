@@ -510,6 +510,7 @@ namespace TimosWebApp.Services
                     champTimos.DisplayOrder = (int)rowChamp[CChampTimosWebApp.c_champOrdreAffichage];
                     champTimos.TypeDonneChamp = (TypeDonnee)rowChamp[CChampTimosWebApp.c_champTypeDonne];
                     champTimos.LibelleConvivial = (string)rowChamp[CChampTimosWebApp.c_champLibelleConvivial];
+                    champTimos.Editable = (bool)rowChamp[CChampTimosWebApp.c_champIsEditable];
                     bool bIsSelect = (bool)rowChamp[CChampTimosWebApp.c_champIsChoixParmis];
                     bool bMultiline = (bool)rowChamp[CChampTimosWebApp.c_champIsMultiline];
                     int nIdGroupeAssocie = (int)rowChamp[CChampTimosWebApp.c_champIdGroupeChamps];

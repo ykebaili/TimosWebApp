@@ -55,7 +55,7 @@ Global.ClientTodosService = {
         $('#' + gridId + '.aasPropertyGrid > .aasDynamicControl .aasValueZoneContainer input[type=\'text\']:not(.BootstrapDateTimePicker)').addClass('form-control');
         $('#' + gridId + '.aasPropertyGrid > .aasDynamicControl .aasValueZoneContainer input[type=\'number\']').addClass('form-control');
 
-
+        
 
     },
 
@@ -195,10 +195,28 @@ Global.ClientTodosService = {
         cmd.Attributes.aasAsynchronousCall = true;
         cmd.Attributes.aasMergeData = true;
         cmd.Attributes.aasDataName = this.MainData;
+
+        var lastPoint = strTypeElement.lastIndexOf('.');
+        var idProvisoir = strTypeElement.substring(lastPoint + 1) + nIdCarac;
+
+        if (nIdCarac < 0) {
+            var caracAnettoyer = em.GetInstance('Caracteristiques', { Id: idProvisoir });
+            if (caracAnettoyer) {
+                var valeursPossibles = caracAnettoyer.GetAssociated('RelationCaracValeursPossibles', 'ValeursChamp');
+                for (var i = 0; i < valeursPossibles.length; i++) {
+                    var valPossible = valeursPossibles[i];
+                    em.ClearAssociation('RelationCaracValeursPossibles', caracAnettoyer, 'Caracteristiques', valPossible, 'ValeursChamp');
+                }
+                var champsTimos = caracAnettoyer.GetAssociated('RelationCaracChamp', 'ChampTimos');
+                for (var i = 0; i < champsTimos.length; i++) {
+                    var champTimos = champsTimos[i];
+                    em.ClearAssociation('RelationCaracChamp', caracAnettoyer, 'Caracteristiques', champTimos, 'ChampTimos');
+                }
+            }
+        }
+
         cmd.OnComplete = function (result) {
             if (nIdCarac < 0) {
-                var lastPoint = strTypeElement.lastIndexOf('.');
-                var idProvisoir = strTypeElement.substring(lastPoint + 1) + nIdCarac;
                 var caracAsupprimer = em.GetInstance('Caracteristiques', { Id: idProvisoir });
                 if (caracAsupprimer) {
                     var valeursAsupprimer = caracAsupprimer.GetAssociated('RelationCaracValeurChamp', 'CaracValeurChamp');
