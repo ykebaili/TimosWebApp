@@ -5,7 +5,7 @@ Global.ClientTodosService = {
     aasService: 'ClientTodosService',
     aasPublished: true,
     MainData: 'MainData',
-    IdNegatif: -999999,
+    IdNegatif: -10000,
 
     //-------------------------------------------------------------------------------------------------------
     FiltreTodos: function (filtreLabel, etatDemarre, etatTermine, etatRetard) {
@@ -55,7 +55,9 @@ Global.ClientTodosService = {
         $('#' + gridId + '.aasPropertyGrid > .aasDynamicControl .aasValueZoneContainer input[type=\'text\']:not(.BootstrapDateTimePicker)').addClass('form-control');
         $('#' + gridId + '.aasPropertyGrid > .aasDynamicControl .aasValueZoneContainer input[type=\'number\']').addClass('form-control');
 
-        
+        $('#' + gridId + ' select').selectpicker({
+            liveSearch: true
+        });
 
     },
 
@@ -126,9 +128,11 @@ Global.ClientTodosService = {
     //---------------------------------------------------------------------------------------------------
     AddCaracteristic: function (nIdTodo, nIdGroupe) {
 
-        Aspectize.ExecuteCommand(aas.Services.Browser.BootStrapClientService.ShowModal(aas.ViewName.EditionCarac, false, false, true));
-
         var em = Aspectize.EntityManagerFromContextDataName(this.MainData);
+
+        Aspectize.ExecuteCommand(aas.Services.Browser.DataRecorder.Start(em.GetDataSet()));
+        //Aspectize.ExecuteCommand(aas.Services.Browser.BootStrapClientService.ShowModal(aas.ViewName.EditionCarac, false, false, true));
+
         var todo = em.GetInstance('Todos', { TimosId: nIdTodo });
         var groupe = em.GetInstance('GroupeChamps', { 'TimosId': nIdGroupe });
         var caracteristics = todo.GetAssociated('RelationTodoCaracteristique', 'Caracteristiques').Filter('IdGroupePourFiltre === ' + nIdGroupe + ' && IsTemplate');
@@ -142,9 +146,10 @@ Global.ClientTodosService = {
                 var strTypeElement = caracTemplate.ElementType;
                 var lastPoint = strTypeElement.lastIndexOf('.');
                 var idProvisoir = strTypeElement.substring(lastPoint + 1) + nIdNegatif;
+                idProvisoir = idProvisoir.replace('-', 'N');
 
                 var newCarac = em.CreateInstance('Caracteristiques', { 'Id': idProvisoir });
-                em.AssociateInstance('RelationTodoCaracteristique', todo, 'Todos', newCarac, 'Caracteristiques');
+                
                 newCarac.SetField('TimosId',  nIdNegatif);
                 newCarac.SetField('ElementType', strTypeElement);
                 newCarac.SetField('IdGroupePourFiltre', nIdGroupe);
@@ -170,18 +175,19 @@ Global.ClientTodosService = {
                 var valeurs = caracTemplate.GetAssociated('RelationCaracValeurChamp', 'CaracValeurChamp');
                 for (var i = 0; i < valeurs.length; i++) {
                     var valeur = valeurs[i];
-                    var newValeur = em.CreateInstance('CaracValeurChamp', { 'Id': newCarac.Id + '-' + valeur.ChampTimosId });
+                    var newValeur = em.CreateInstance('CaracValeurChamp', { 'Id': newCarac.Id + valeur.ChampTimosId });
                     newValeur.SetField('LibelleChamp', valeur.LibelleChamp);
                     newValeur.SetField('OrdreChamp', valeur.OrdreChamp);
                     newValeur.SetField('ChampTimosId', valeur.ChampTimosId);
                     newValeur.SetField('ElementType', valeur.ElementType);
                     newValeur.SetField('ElementId', newCarac.TimosId);
-                    newValeur.SetField('ValeurChamp', '');
+                    newValeur.SetField('ValeurChamp', valeur.ValeurChamp);
 
                     em.AssociateInstance('RelationCaracValeurChamp', newCarac, 'Caracteristiques', newValeur, 'CaracValeurChamp');
                 }
-
+                em.AssociateInstance('RelationTodoCaracteristique', todo, 'Todos', newCarac, 'Caracteristiques');
                 Aspectize.ExecuteCommand(aas.Services.Browser.UIService.SetCurrent(aas.Path.MainData.Todos.RelationTodoCaracteristique.Caracteristiques, newCarac.Id));
+                Aspectize.ExecuteCommand(aas.Services.Browser.BootStrapClientService.ShowModal(aas.ViewName.EditionCarac, false, false, true));
             }
         }
     },
@@ -198,6 +204,7 @@ Global.ClientTodosService = {
 
         var lastPoint = strTypeElement.lastIndexOf('.');
         var idProvisoir = strTypeElement.substring(lastPoint + 1) + nIdCarac;
+        idProvisoir = idProvisoir.replace('-', 'N');
 
         if (nIdCarac < 0) {
             var caracAnettoyer = em.GetInstance('Caracteristiques', { Id: idProvisoir });

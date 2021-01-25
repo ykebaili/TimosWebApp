@@ -69,6 +69,7 @@ var vCaracteristiques = Aspectize.CreateRepeatedView("Caracteristique", aas.Cont
 //*/
 vCaracteristiques.LibelleCarac.BindData(vCaracteristiques.ParentData.Titre);
 vCaracteristiques.BoutonEditerCarac.click.BindCommand(aas.Services.Browser.BootStrapClientService.ShowModal(aas.ViewName.EditionCarac, true, false, true));
+vCaracteristiques.BoutonEditerCarac.click.BindCommand(aas.Services.Browser.DataRecorder.Start(aas.Data.MainData));
 vCaracteristiques.BoutonSupprimerCarac.click.BindCommand(aas.Services.Browser.ClientTodosService.DeleteCaracteristc(vCaracteristiques.ParentData.TimosId, vCaracteristiques.ParentData.ElementType));
 
 /// Initialisation de la property grid
@@ -89,7 +90,7 @@ vCaracteristiques.GridChampsCaracteristique.OnEndRender.BindCommand(aas.Services
 
 // Configuration du controle d'édition d'une Caractéristique en modal
 var vEditionCarac = Aspectize.CreateView("EditionCarac", aas.Controls.EditionChamps, "", false, aas.Data.MainData.Todos.RelationTodoCaracteristique.Caracteristiques);
-vEditionCarac.OnActivated.BindCommand(aas.Services.Browser.DataRecorder.Start(aas.Data.MainData));
+//vEditionCarac.OnActivated.BindCommand(aas.Services.Browser.DataRecorder.Start(aas.Data.MainData));
 vEditionCarac.LabelElementEdite.BindData(aas.Data.MainData.Todos.Label); // Ce binding fonctionne bien
 vEditionCarac.BtnCancel.click.BindCommand(aas.Services.Browser.BootStrapClientService.CloseModal(aas.ViewName.EditionCarac));
 vEditionCarac.BtnCancel.click.BindCommand(aas.Services.Browser.DataRecorder.CancelRowChanges(aas.Data.MainData));

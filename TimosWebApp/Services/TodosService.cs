@@ -667,7 +667,7 @@ namespace TimosWebApp.Services
                     string strIdCaracAssociee = (string)rowVal[CCaracValeurChamp.c_champIdCaracteristique];
                     int nIdChampTimosAssocie = (int)rowVal[CCaracValeurChamp.c_champId];
 
-                    string strIdCompose = strIdCaracAssociee + "-" + nIdChampTimosAssocie.ToString();
+                    string strIdCompose = strIdCaracAssociee + nIdChampTimosAssocie.ToString();
                     CaracValeurChamp valChampTimos = em.GetInstance<CaracValeurChamp>(strIdCompose);
                     if (valChampTimos == null)
                     {
