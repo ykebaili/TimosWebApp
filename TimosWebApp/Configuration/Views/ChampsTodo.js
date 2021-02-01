@@ -71,7 +71,7 @@ vCaracteristiques.LibelleCarac.BindData(vCaracteristiques.ParentData.Titre);
 vCaracteristiques.BoutonEditerCarac.click.BindCommand(aas.Services.Browser.BootStrapClientService.ShowModal(aas.ViewName.EditionCarac, true, false, true));
 vCaracteristiques.BoutonEditerCarac.click.BindCommand(aas.Services.Browser.DataRecorder.Start(aas.Data.MainData));
 vCaracteristiques.BoutonSupprimerCarac.click.BindCommand(aas.Services.Browser.ClientTodosService.DeleteCaracteristc(vCaracteristiques.ParentData.TimosId, vCaracteristiques.ParentData.ElementType));
-
+//vCaracteristiques.DisplayBtnDeleteCarac.BindData(aas.Expression(IIF(aas.ViewName.GroupeChamps.DisplayBtnAddCarac + ' == hidden', 'hidden', '')));
 /// Initialisation de la property grid
 vCaracteristiques.GridChampsCaracteristique.BindList(vCaracteristiques.ParentData.RelationCaracValeurChamp.CaracValeurChamp, "ValeurChamp", "LibelleChamp", "OrdreChamp");
 vCaracteristiques.GridChampsCaracteristique.TypeTableName.BindData(vCaracteristiques.ParentPath.RelationCaracChamp.ChampTimos);

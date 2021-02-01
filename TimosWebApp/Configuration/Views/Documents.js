@@ -2,8 +2,12 @@
 var vDocumentsAttendus = Aspectize.CreateView("DocumentsAttendusTodo", aas.Controls.DocumentsAttendus, "DetailTodoTabs.1:Documents", false, aas.Data.MainData.Todos);
 
 // Détails d'un document attendu
-var vDocumentAttendu = Aspectize.CreateRepeatedView("DocumentAttendu", aas.Controls.DocumentAttendu, aas.Zones.DocumentsAttendusTodo.PanelDocumentsAttendus, aas.Data.MainData.Todos.RelationTodoDocument.DocumentsAttendus); // possible de trier et filtrer
+var vDocumentAttendu = Aspectize.CreateRepeatedView("DocumentAttendu", 
+    aas.Controls.DocumentAttendu, aas.Zones.DocumentsAttendusTodo.PanelDocumentsAttendus,
+    aas.Data.MainData.Todos.RelationTodoDocument.DocumentsAttendus, '', 
+    aas.Expression('TimosId > 0'));
 vDocumentAttendu.LibelleDocument.BindData(vDocumentAttendu.ParentData.Libelle);
+
 // Gestion de l'upload de fichiers
 vDocumentAttendu.BoutonUploadFichier.click.BindCommand(aas.Services.Browser.ClientTodosService.UploadDocument(vDocumentAttendu.ParentData.TimosId, aas.ViewName.DocumentAttendu.UploaderDocument));
 vDocumentAttendu.UploaderDocument.MultipleFiles.BindData(true);
