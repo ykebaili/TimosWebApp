@@ -35,14 +35,14 @@
     <div aas-control="name:'TimosLink', isControlPart:true, properties:{ColumnClass:'', BtnClasse:'btn-default', IconButton:'hidden'}">
         <div aas-section="header">{HeaderText}</div>
         <div aas-section="data">
-            <a title="{ToolTip}" aas-href="{Href}" target="_blank" class="btn btn-sm {BtnClasse}" style="color:#fff;"><i class="{IconButton}"></i>&nbsp;{Text}</a>
+            <a title="{ToolTip}" aas-href="{Href}" target="_blank" class="btn btn-sm {BtnClasse}" style="color:#fff;"><i class="{IconButton}"></i> <span class="bouton-libelle">{Text}</span></a>
         </div>
     </div>
 
     <div aas-control="name:'TimosButton', isControlPart:true, events:['Click'], properties:{ColumnClass:'', BtnClasse:'btn-default', IconButton:'hidden'}">
         <div aas-section="header">{HeaderText}</div>
         <div aas-section="data">
-            <a title="{ToolTip}" onclick="return Aspectize.GridColumnClicked (event, this);" class="btn btn-sm {BtnClasse}" style="color:#fff;"><i class="{IconButton}"></i>&nbsp;{Text}</a>
+            <a title="{ToolTip}" onclick="return Aspectize.GridColumnClicked (event, this);" class="btn btn-sm {BtnClasse}" style="color:#fff;"><i class="{IconButton}"></i> <span class="bouton-libelle">{Text}</span></a>
         </div>
     </div>
 

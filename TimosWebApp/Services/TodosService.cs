@@ -595,6 +595,12 @@ namespace TimosWebApp.Services
                             valPossible.StoredValue = strStoredValue;
                             valPossible.DisplayedValue = strDisplayeddValue;
                         }
+                        /*/
+                        ChampTimos champDejaAssocie = valPossible.GetAssociatedInstance<ChampTimos, RelationChampValeursPossibles>();
+                        if(champDejaAssocie == null || champDejaAssocie.TimosId != champ.TimosId)
+                            em.AssociateInstance<RelationChampValeursPossibles>(champ, valPossible);
+                        //*/
+                        //*/ Assoication de la cvaleur possible au Groupe et/ou Caracteristique
                         GroupeChamps groupeAssocie = em.GetInstance<GroupeChamps>(nIdGroupeAssocie);
                         if (groupeAssocie != null)
                             em.AssociateInstance<ValeursPossibles>(groupeAssocie, valPossible);
@@ -602,7 +608,7 @@ namespace TimosWebApp.Services
                         Caracteristiques caracAssociee = em.GetInstance<Caracteristiques>(strIdCaracAssociee);
                         if (caracAssociee != null)
                             em.AssociateInstance<RelationCaracValeursPossibles>(caracAssociee, valPossible);
-
+                        //*/
                     }
                 }
             }

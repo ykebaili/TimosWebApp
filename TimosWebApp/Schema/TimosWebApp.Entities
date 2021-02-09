@@ -201,7 +201,7 @@
     </relation>
     <relation Id="5ef813ed-f3b8-4b89-9ba2-2bca505e0c69" name="RelationCaracValeurChamp" guid="00000000-0000-0000-0000-000000000000" hasTriggers="false" hasCustomValidators="false">
       <entityReferenceClasses>
-        <relationReferencesEntityReferenceClasses Id="ef77d0db-5439-4e1e-8353-dbea7bf38462" role="Caracteristiques" cardinality="O__N">
+        <relationReferencesEntityReferenceClasses Id="ef77d0db-5439-4e1e-8353-dbea7bf38462" role="Caracteristiques" cardinality="O__I">
           <entityMoniker Id="36da5692-c34f-4c95-82cf-9afdf083209f" />
         </relationReferencesEntityReferenceClasses>
         <relationReferencesEntityReferenceClasses Id="6710df40-737e-4c13-ac4a-9fcf8bf241fe" role="CaracValeurChamp" cardinality="O__N">
@@ -215,6 +215,16 @@
           <entityMoniker Id="36da5692-c34f-4c95-82cf-9afdf083209f" />
         </relationReferencesEntityReferenceClasses>
         <relationReferencesEntityReferenceClasses Id="faae425b-83b0-4e51-9781-c7694af6d60f" role="ValeursChamp" cardinality="O__N">
+          <entityMoniker Id="6a0c1ec3-e175-4243-bebf-72637447b709" />
+        </relationReferencesEntityReferenceClasses>
+      </entityReferenceClasses>
+    </relation>
+    <relation Id="3b3cb560-7cbb-4565-9d2d-55b80743ac9f" name="RelationChampValeursPossibles" guid="00000000-0000-0000-0000-000000000000" hasTriggers="false" hasCustomValidators="false">
+      <entityReferenceClasses>
+        <relationReferencesEntityReferenceClasses Id="a9cca885-4582-4175-85bd-52e6f1a495ec" role="ChampTimos" cardinality="O__I">
+          <entityMoniker Id="289e1e37-c821-4ff6-9464-4c5474b1d657" />
+        </relationReferencesEntityReferenceClasses>
+        <relationReferencesEntityReferenceClasses Id="0557dba3-0d4f-4eaf-8830-f801b421f49f" role="ValeursChamp" cardinality="O__N">
           <entityMoniker Id="6a0c1ec3-e175-4243-bebf-72637447b709" />
         </relationReferencesEntityReferenceClasses>
       </entityReferenceClasses>

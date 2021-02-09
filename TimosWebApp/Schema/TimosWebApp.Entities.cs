@@ -39,6 +39,7 @@ namespace TimosWebApp
 			public const string RelationCaracChamp = "RelationCaracChamp";
 			public const string RelationCaracValeurChamp = "RelationCaracValeurChamp";
 			public const string RelationCaracValeursPossibles = "RelationCaracValeursPossibles";
+			public const string RelationChampValeursPossibles = "RelationChampValeursPossibles";
 		}
 	}
 
@@ -980,7 +981,7 @@ namespace TimosWebApp
 			base.InitData(data, null);
 		}
 
-		[RelationEnd(Type = typeof(Caracteristiques), Role = typeof(Caracteristiques), Multiplicity = Multiplicity.ZeroOrMany)]
+		[RelationEnd(Type = typeof(Caracteristiques), Role = typeof(Caracteristiques), Multiplicity = Multiplicity.ZeroOrOne)]
 		public IEntity Caracteristiques;
 
 		[RelationEnd(Type = typeof(CaracValeurChamp), Role = typeof(CaracValeurChamp), Multiplicity = Multiplicity.ZeroOrMany)]
@@ -998,6 +999,22 @@ namespace TimosWebApp
 
 		[RelationEnd(Type = typeof(Caracteristiques), Role = typeof(Caracteristiques), Multiplicity = Multiplicity.ZeroOrMany)]
 		public IEntity Caracteristiques;
+
+		[RelationEnd(Type = typeof(ValeursChamp), Role = typeof(ValeursChamp), Multiplicity = Multiplicity.ZeroOrMany)]
+		public IEntity ValeursChamp;
+
+	}
+
+	[DataDefinition]
+	public class RelationChampValeursPossibles : DataWrapper, IDataWrapper, IRelation
+	{
+		void IDataWrapper.InitData(DataRow data, string namePrefix)
+		{
+			base.InitData(data, null);
+		}
+
+		[RelationEnd(Type = typeof(ChampTimos), Role = typeof(ChampTimos), Multiplicity = Multiplicity.ZeroOrOne)]
+		public IEntity ChampTimos;
 
 		[RelationEnd(Type = typeof(ValeursChamp), Role = typeof(ValeursChamp), Multiplicity = Multiplicity.ZeroOrMany)]
 		public IEntity ValeursChamp;

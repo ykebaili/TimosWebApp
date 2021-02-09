@@ -255,17 +255,25 @@ img.logo{
     content: "\f05a"; /* fa-info-circle */
 }
 
-.gcActionSupprimer, .gcActionVisualiser {
-    width: 100px;
+/* Affichage des documents */
+.bouton-niveau1{
+    margin-top: 10px;
 }
 
-/* Masquer l'onglet Documents si pas de documents présents
-.aasTabDocumentsAttendusTodo{
-    display:none !important;
+.gcActionSupprimer, .gcActionVisualiser {
+    width: 100%;
+    text-align: right;
 }
-.display-documents .aasTabDocumentsAttendusTodo {
-    display:block !important;
-}*/
+
+@media (max-width: 480px) {
+    .bouton-libelle {
+        display: none;
+    }
+
+    .gcNomFichier {
+        max-width: 230px;
+    }
+}
 
 /* Groupes de champs */
 .titre-groupe{
