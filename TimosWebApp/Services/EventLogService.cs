@@ -18,7 +18,7 @@ namespace TimosWebApp.Services
 
             using (StreamWriter sw = File.AppendText("c:\\partage\\TimosWebAppLog.txt"))
             {
-                sw.Write("\r\nLog Entry : ");
+                sw.WriteLine("\r\nLog Entry : " + traceInfo.InfoTypeName);
                 sw.WriteLine("Date : " + traceInfo.Received.ToString("dd/MM/yyyy HH:mm:ss"));
                 sw.WriteLine("Service name : " + traceInfo.ServiceName);
                 sw.WriteLine("Level : " + traceInfo.Level);

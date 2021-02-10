@@ -356,6 +356,7 @@ namespace TimosWebApp.Services
             if (ds == null || em == null)
                 return;
 
+
             // Création des Todos
             if (ds.Tables.Contains(CTodoTimosWebApp.c_nomTable))
             {
@@ -391,7 +392,7 @@ namespace TimosWebApp.Services
                         foreach (DataRow rowGroupe in tableGroupes.Rows)
                         {
                             string strTitre = (string)rowGroupe[CGroupeChamps.c_champTitre];
-                            if (strTitre.Contains("Document"))
+                            if (strTitre.ToUpper().Contains("DOCUMENT"))
                                 continue;
 
                             int nIdGroupe = (int)rowGroupe[CGroupeChamps.c_champId];
@@ -406,7 +407,15 @@ namespace TimosWebApp.Services
                                 groupeChamps.CanAddCaracteristiques = (bool)rowGroupe[CGroupeChamps.c_champCanAddCaracteristiques];
                                 bExpand = false;
 
-                                em.AssociateInstance<RelationTodoGroupeChamps>(todo, groupeChamps);
+                                try
+                                {
+                                    em.AssociateInstance<RelationTodoGroupeChamps>(todo, groupeChamps);
+                                }
+                                catch (Exception ex)
+                                {
+                                    Context.Log(ex, InfoType.Error, "Erreur d'association Todos <-> GroupeChamps" + Environment.NewLine + ex.Message);
+                                }
+
                             }
                         }
                     }
@@ -437,7 +446,15 @@ namespace TimosWebApp.Services
                                 caracteristique.ParentElementType = (string)rowCarac[CCaracteristique.c_champParentElementType];
                                 caracteristique.ParentElementId = (int)rowCarac[CCaracteristique.c_champParentElementId];
 
-                                em.AssociateInstance<RelationTodoCaracteristique>(todo, caracteristique);
+                                try
+                                {
+                                    em.AssociateInstance<RelationTodoCaracteristique>(todo, caracteristique);
+                                }
+                                catch (Exception ex)
+                                {
+                                    Context.Log(ex, InfoType.Error, "Erreur d'association Todos <-> Caracteristiques" + Environment.NewLine + ex.Message);
+                                }
+
                             }
                         }
                     }
@@ -459,7 +476,14 @@ namespace TimosWebApp.Services
                             else
                                 doc.DateLastUpload = (DateTime)rowDoc[CDocumentAttendu.c_champDateLastUpload];
 
-                            em.AssociateInstance<RelationTodoDocument>(todo, doc);
+                            try
+                            {
+                                em.AssociateInstance<RelationTodoDocument>(todo, doc);
+                            }
+                            catch (Exception ex)
+                            {
+                                Context.Log(ex, InfoType.Error, "Erreur d'association Todos <-> DocumentsAttendus" + Environment.NewLine + ex.Message);
+                            }
 
                             // Traitement des fichiers joints
                             if (ds.Tables.Contains(CFichierAttache.c_nomTable))
@@ -485,7 +509,15 @@ namespace TimosWebApp.Services
                                             strExtension = "bin";
                                         fichier.Extension = strExtension.ToLower(); ;
 
-                                        em.AssociateInstance<RelationFichiers>(doc, fichier);
+                                        try
+                                        {
+                                            em.AssociateInstance<RelationFichiers>(doc, fichier);
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            Context.Log(ex, InfoType.Error, "Erreur d'association DocumentsAttendus <-> FichiersAttaches" + Environment.NewLine + ex.Message);
+                                        }
+
                                     }
                                 }
                             }
@@ -556,14 +588,30 @@ namespace TimosWebApp.Services
 
                     }
 
-                    // Le champ appartient à un Groupe ou une Caracteristique
-                    GroupeChamps groupeAssocie = em.GetInstance<GroupeChamps>(nIdGroupeAssocie);
-                    if (groupeAssocie != null && champTimos.GetAssociatedInstance<GroupeChamps, RelationGroupeChampsChampsTimos>() != groupeAssocie)
-                        em.AssociateInstance<RelationGroupeChampsChampsTimos>(groupeAssocie, champTimos);
 
-                    Caracteristiques caracAssociee = em.GetInstance<Caracteristiques>(strIdCaracAssociee);
-                    if (caracAssociee != null && champTimos.GetAssociatedInstance<Caracteristiques, RelationCaracChamp>() != caracAssociee)
-                        em.AssociateInstance<RelationCaracChamp>(caracAssociee, champTimos);
+                    try
+                    {
+                        // Le champ appartient à un Groupe ou une Caracteristique
+                        GroupeChamps groupeAssocie = em.GetInstance<GroupeChamps>(nIdGroupeAssocie);
+                        if (groupeAssocie != null && champTimos.GetAssociatedInstance<GroupeChamps, RelationGroupeChampsChampsTimos>() != groupeAssocie)
+                            em.AssociateInstance<RelationGroupeChampsChampsTimos>(groupeAssocie, champTimos);
+                    }
+                    catch (Exception ex)
+                    {
+                        Context.Log(ex, InfoType.Error, "Erreur d'association GroupeChamps <-> ChampTimos" + Environment.NewLine + ex.Message);
+                    }
+                    try
+                    {
+                        Caracteristiques caracAssociee = em.GetInstance<Caracteristiques>(strIdCaracAssociee);
+                        if (caracAssociee != null && champTimos.GetAssociatedInstance<Caracteristiques, RelationCaracChamp>() != caracAssociee)
+                            em.AssociateInstance<RelationCaracChamp>(caracAssociee, champTimos);
+
+                    }
+                    catch (Exception ex)
+                    {
+                        Context.Log(ex, InfoType.Error, "Erreur d'association Caracteristiques <-> ChampTimos" + Environment.NewLine + ex.Message);
+                    }
+                    
                 }
             }
 
@@ -601,13 +649,27 @@ namespace TimosWebApp.Services
                             em.AssociateInstance<RelationChampValeursPossibles>(champ, valPossible);
                         //*/
                         //*/ Assoication de la cvaleur possible au Groupe et/ou Caracteristique
-                        GroupeChamps groupeAssocie = em.GetInstance<GroupeChamps>(nIdGroupeAssocie);
-                        if (groupeAssocie != null)
-                            em.AssociateInstance<ValeursPossibles>(groupeAssocie, valPossible);
+                        try
+                        {
+                            GroupeChamps groupeAssocie = em.GetInstance<GroupeChamps>(nIdGroupeAssocie);
+                            if (groupeAssocie != null)
+                                em.AssociateInstance<ValeursPossibles>(groupeAssocie, valPossible);
+                        }
 
-                        Caracteristiques caracAssociee = em.GetInstance<Caracteristiques>(strIdCaracAssociee);
-                        if (caracAssociee != null)
-                            em.AssociateInstance<RelationCaracValeursPossibles>(caracAssociee, valPossible);
+                        catch (Exception ex)
+                        {
+                            Context.Log(ex, InfoType.Error, "Erreur d'association GroupeChamps <-> ValeursChamp" + Environment.NewLine + ex.Message);
+                        }
+                        try
+                        {
+                            Caracteristiques caracAssociee = em.GetInstance<Caracteristiques>(strIdCaracAssociee);
+                            if (caracAssociee != null)
+                                em.AssociateInstance<RelationCaracValeursPossibles>(caracAssociee, valPossible);
+                        }
+                        catch (Exception ex)
+                        {
+                            Context.Log(ex, InfoType.Error, "Erreur d'association Caracteristiques <-> ValeursChamps" + Environment.NewLine + ex.Message);
+                        }
                         //*/
                     }
                 }
@@ -656,9 +718,16 @@ namespace TimosWebApp.Services
                     ChampTimos champ = em.GetInstance<ChampTimos>(valChampTimos.ChampTimosId);
                     if (champ != null)
                     {
-                        GroupeChamps groupeAssocie = em.GetInstance<GroupeChamps>(nIdGroupeAssocie);
-                        if (groupeAssocie != null)
-                            em.AssociateInstance<RelationTodoValeurChamp>(groupeAssocie, valChampTimos);
+                        try
+                        {
+                            GroupeChamps groupeAssocie = em.GetInstance<GroupeChamps>(nIdGroupeAssocie);
+                            if (groupeAssocie != null)
+                                em.AssociateInstance<RelationTodoValeurChamp>(groupeAssocie, valChampTimos);
+                        }
+                        catch (Exception ex)
+                        {
+                            Context.Log(ex, InfoType.Error, "Erreur d'association GroupeChamps <-> TodoValeurChamp" + Environment.NewLine + ex.Message);
+                        }
                     }
                 }
             }
@@ -711,10 +780,17 @@ namespace TimosWebApp.Services
                     valChampTimos.ValeurChamp = valeurChamp;
                     if (champ != null)
                     {
+                        try
+                        { 
                         Caracteristiques caracAssociee = em.GetInstance<Caracteristiques>(strIdCaracAssociee);
                         if (caracAssociee != null)
                         {
                             em.AssociateInstance<RelationCaracValeurChamp>(caracAssociee, valChampTimos);
+                        }
+                        }
+                        catch (Exception ex)
+                        {
+                            Context.Log(ex, InfoType.Error, "Erreur d'association Caracteristiques <-> CaracValeurChamp" + Environment.NewLine + ex.Message);
                         }
 
                     }
