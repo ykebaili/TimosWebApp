@@ -39,7 +39,6 @@ namespace TimosWebApp
 			public const string RelationCaracChamp = "RelationCaracChamp";
 			public const string RelationCaracValeurChamp = "RelationCaracValeurChamp";
 			public const string RelationCaracValeursPossibles = "RelationCaracValeursPossibles";
-			public const string RelationChampValeursPossibles = "RelationChampValeursPossibles";
 		}
 	}
 
@@ -428,6 +427,7 @@ namespace TimosWebApp
 			public const string ChampTimosId = "ChampTimosId";
 			public const string ElementType = "ElementType";
 			public const string ElementId = "ElementId";
+			public const string Id = "Id";
 		}
 
 		void IDataWrapper.InitData(DataRow data, string namePrefix)
@@ -456,7 +456,7 @@ namespace TimosWebApp
 			set { setValue<int>("OrdreChamp", value); }
 		}
 
-		[Data(IsPrimaryKey = true)]
+		[Data]
 		public int ChampTimosId
 		{
 			get { return getValue<int>("ChampTimosId"); }
@@ -475,6 +475,13 @@ namespace TimosWebApp
 		{
 			get { return getValue<int>("ElementId"); }
 			set { setValue<int>("ElementId", value); }
+		}
+
+		[Data(IsPrimaryKey = true)]
+		public string Id
+		{
+			get { return getValue<string>("Id"); }
+			set { setValue<string>("Id", value); }
 		}
 
 	}
@@ -888,7 +895,7 @@ namespace TimosWebApp
 		[RelationEnd(Type = typeof(TodoValeurChamp), Role = typeof(TodoValeurChamp), Multiplicity = Multiplicity.ZeroOrMany)]
 		public IEntity TodoValeurChamp;
 
-		[RelationEnd(Type = typeof(GroupeChamps), Role = typeof(GroupeChamps), Multiplicity = Multiplicity.ZeroOrMany)]
+		[RelationEnd(Type = typeof(GroupeChamps), Role = typeof(GroupeChamps), Multiplicity = Multiplicity.ZeroOrOne)]
 		public IEntity GroupeChamps;
 
 	}
@@ -999,22 +1006,6 @@ namespace TimosWebApp
 
 		[RelationEnd(Type = typeof(Caracteristiques), Role = typeof(Caracteristiques), Multiplicity = Multiplicity.ZeroOrMany)]
 		public IEntity Caracteristiques;
-
-		[RelationEnd(Type = typeof(ValeursChamp), Role = typeof(ValeursChamp), Multiplicity = Multiplicity.ZeroOrMany)]
-		public IEntity ValeursChamp;
-
-	}
-
-	[DataDefinition]
-	public class RelationChampValeursPossibles : DataWrapper, IDataWrapper, IRelation
-	{
-		void IDataWrapper.InitData(DataRow data, string namePrefix)
-		{
-			base.InitData(data, null);
-		}
-
-		[RelationEnd(Type = typeof(ChampTimos), Role = typeof(ChampTimos), Multiplicity = Multiplicity.ZeroOrOne)]
-		public IEntity ChampTimos;
 
 		[RelationEnd(Type = typeof(ValeursChamp), Role = typeof(ValeursChamp), Multiplicity = Multiplicity.ZeroOrMany)]
 		public IEntity ValeursChamp;

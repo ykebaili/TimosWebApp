@@ -81,11 +81,7 @@ vCaracteristiques.GridChampsCaracteristique.TypeTableControlTypeColumn.BindData(
 vCaracteristiques.GridChampsCaracteristique.TypeTableFormatColumn.BindData(aas.Path.MainData.ChampTimos.FormatDate);
 vCaracteristiques.GridChampsCaracteristique.TypeTableEditModeColumn.BindData(aas.Path.MainData.ChampTimos.Editable);
 vCaracteristiques.GridChampsCaracteristique.TypeTableClassColumn.BindData(aas.Path.MainData.ChampTimos.CustomClass);
-
 vCaracteristiques.GridChampsCaracteristique.EnumValuesTableName.BindData(vCaracteristiques.ParentPath.RelationCaracValeursPossibles.ValeursChamp);
-//vCaracteristiques.GridChampsCaracteristique.EnumValuesTableName.BindData(vCaracteristiques.ParentPath.RelationCaracChamp.ChampTimos.RelationChampValeursPossibles.ValeursChamp);
-//vCaracteristiques.GridChampsCaracteristique.EnumValuesTableName.BindData("ValeursChamp");
-
 vCaracteristiques.GridChampsCaracteristique.EnumValuesTableOptionTextColumn.BindData("DisplayedValue");
 vCaracteristiques.GridChampsCaracteristique.EnumValuesTableOptionValueColumn.BindData("StoredValue");
 vCaracteristiques.GridChampsCaracteristique.EnumValuesTableTypeColumn.BindData("ChampTimosId");

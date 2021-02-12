@@ -681,40 +681,29 @@ namespace TimosWebApp.Services
                 DataTable tableTodoValeursChamps = ds.Tables[CTodoValeurChamp.c_nomTable];
                 foreach (DataRow rowVal in tableTodoValeursChamps.Rows)
                 {
-                    int nIdTodoValeurChamp = (int)rowVal[CTodoValeurChamp.c_champId];
-                    var valChampTimos = em.GetInstance<TodoValeurChamp>(nIdTodoValeurChamp);
+                    int nIdGroupeAssocie = (int)rowVal[CTodoValeurChamp.c_champIdGroupeChamps];
+                    int nIdChampTimosAssocie = (int)rowVal[CTodoValeurChamp.c_champId];
+                    string strIdCompose = nIdGroupeAssocie.ToString() + nIdChampTimosAssocie.ToString();
+
+                    var valChampTimos = em.GetInstance<TodoValeurChamp>(strIdCompose);
                     if (valChampTimos == null)
+                    {
                         valChampTimos = em.CreateInstance<TodoValeurChamp>();
-                    valChampTimos.ChampTimosId = nIdTodoValeurChamp;
+                        valChampTimos.Id = strIdCompose;
+                    }
+                    valChampTimos.ChampTimosId = nIdChampTimosAssocie;
                     valChampTimos.LibelleChamp = (string)rowVal[CTodoValeurChamp.c_champLibelle];
                     valChampTimos.OrdreChamp = (int)rowVal[CTodoValeurChamp.c_champOrdreAffichage];
                     valChampTimos.ElementType = (string)rowVal[CTodoValeurChamp.c_champElementType];
                     valChampTimos.ElementId = (int)rowVal[CTodoValeurChamp.c_champElementId];
 
-                    string valeurChamp = (string)rowVal[CTodoValeurChamp.c_champValeur];
-                    if (valeurChamp != "")
-                    {
-                        var champTimos = em.GetInstance<ChampTimos>(valChampTimos.ChampTimosId);
-                        if (champTimos.IsSelect)
-                        {
-                            bool bFound = false;
-                            var valPossibles = em.GetAllInstances<ValeursChamp>();
-                            foreach (var valPossible in valPossibles)
-                            {
-                                if (valPossible.StoredValue == valeurChamp)
-                                {
-                                    valeurChamp = valPossible.StoredValue;
-                                    bFound = true;
-                                    break;
-                                }
-                            }
-                            if (!bFound)
-                                valeurChamp = "ND";
-                            //throw new SmartException("Problème de valeurs possibles sur le champ id = " + valTimos.ChampTimosId + ", valeurChamp = " + valeurChamp + ", n'est pas dans la liste des valeurs possibles. ");
-                        }
-                    }
-                    valChampTimos.ValeurChamp = valeurChamp;
-                    int nIdGroupeAssocie = (int)rowVal[CTodoValeurChamp.c_champIdGroupeChamps];
+                    string strValeurChamp = "";
+                    object valeur = rowVal[CTodoValeurChamp.c_champValeur];
+                    if (valeur != DBNull.Value)
+                        strValeurChamp = valeur.ToString();
+
+                    valChampTimos.ValeurChamp = strValeurChamp;
+                    
                     ChampTimos champ = em.GetInstance<ChampTimos>(valChampTimos.ChampTimosId);
                     if (champ != null)
                     {
@@ -754,30 +743,10 @@ namespace TimosWebApp.Services
                     valChampTimos.OrdreChamp = (int)rowVal[CCaracValeurChamp.c_champOrdreAffichage];
                     valChampTimos.ElementType = (string)rowVal[CCaracValeurChamp.c_champElementType];
                     valChampTimos.ElementId = (int)rowVal[CCaracValeurChamp.c_champElementId];
+                    valChampTimos.ValeurChamp = valeurChamp;
 
                     ChampTimos champ = em.GetInstance<ChampTimos>(nIdChampTimosAssocie);
 
-                    if (valeurChamp != "")
-                    {
-                        if (champ != null && champ.IsSelect)
-                        {
-                            bool bFound = false;
-                            var valPossibles = em.GetAllInstances<ValeursChamp>();
-                            foreach (var valPossible in valPossibles)
-                            {
-                                if (valPossible.StoredValue == valeurChamp)
-                                {
-                                    valeurChamp = valPossible.StoredValue;
-                                    bFound = true;
-                                    break;
-                                }
-                            }
-                            if (!bFound)
-                                valeurChamp = "ND";
-                            //throw new SmartException("Problème de valeurs possibles sur le champ id = " + valTimos.ChampTimosId + ", valeurChamp = " + valeurChamp + ", n'est pas dans la liste des valeurs possibles. ");
-                        }
-                    }
-                    valChampTimos.ValeurChamp = valeurChamp;
                     if (champ != null)
                     {
                         try
