@@ -405,6 +405,7 @@ namespace TimosWebApp.Services
                                 groupeChamps.InfosSecondaires = (bool)rowGroupe[CGroupeChamps.c_champIsInfosSecondaires];
                                 groupeChamps.Expand = bExpand;
                                 groupeChamps.CanAddCaracteristiques = (bool)rowGroupe[CGroupeChamps.c_champCanAddCaracteristiques];
+                                groupeChamps.TitreCaracteristiques = (string)rowGroupe[CGroupeChamps.c_champTitreCaracteristiques];
                                 bExpand = false;
 
                                 try
@@ -543,6 +544,7 @@ namespace TimosWebApp.Services
                     champTimos.TypeDonneChamp = (TypeDonnee)rowChamp[CChampTimosWebApp.c_champTypeDonne];
                     champTimos.LibelleConvivial = (string)rowChamp[CChampTimosWebApp.c_champLibelleConvivial];
                     champTimos.Editable = (bool)rowChamp[CChampTimosWebApp.c_champIsEditable];
+                    champTimos.CustomClass = (string)rowChamp[CChampTimosWebApp.c_champCustomClass];
                     bool bIsSelect = (bool)rowChamp[CChampTimosWebApp.c_champIsChoixParmis];
                     bool bMultiline = (bool)rowChamp[CChampTimosWebApp.c_champIsMultiline];
                     int nIdGroupeAssocie = (int)rowChamp[CChampTimosWebApp.c_champIdGroupeChamps];

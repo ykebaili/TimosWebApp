@@ -25,6 +25,7 @@ namespace TimosWebApp
 			public const string GroupeChamps = "GroupeChamps";
 			public const string Caracteristiques = "Caracteristiques";
 			public const string CaracValeurChamp = "CaracValeurChamp";
+			public const string Action = "Action";
 		}
 
 		public static partial class Relations
@@ -39,6 +40,7 @@ namespace TimosWebApp
 			public const string RelationCaracChamp = "RelationCaracChamp";
 			public const string RelationCaracValeurChamp = "RelationCaracValeurChamp";
 			public const string RelationCaracValeursPossibles = "RelationCaracValeursPossibles";
+			public const string RelationTodoActions = "RelationTodoActions";
 		}
 	}
 
@@ -629,6 +631,7 @@ namespace TimosWebApp
 			public const string Expand = "Expand";
 			public const string InfosSecondaires = "InfosSecondaires";
 			public const string CanAddCaracteristiques = "CanAddCaracteristiques";
+			public const string TitreCaracteristiques = "TitreCaracteristiques";
 		}
 
 		void IDataWrapper.InitData(DataRow data, string namePrefix)
@@ -676,6 +679,13 @@ namespace TimosWebApp
 		{
 			get { return getValue<bool>("CanAddCaracteristiques"); }
 			set { setValue<bool>("CanAddCaracteristiques", value); }
+		}
+
+		[Data]
+		public string TitreCaracteristiques
+		{
+			get { return getValue<string>("TitreCaracteristiques"); }
+			set { setValue<string>("TitreCaracteristiques", value); }
 		}
 
 	}
@@ -853,6 +863,44 @@ namespace TimosWebApp
 	}
 
 	[DataDefinition]
+	public class Action : Entity, IDataWrapper
+	{
+		public static partial class Fields
+		{
+			public const string Id = "Id";
+			public const string Libelle = "Libelle";
+			public const string Instructions = "Instructions";
+		}
+
+		void IDataWrapper.InitData(DataRow data, string namePrefix)
+		{
+			base.InitData(data, null);
+		}
+
+		[Data(IsPrimaryKey = true)]
+		public int Id
+		{
+			get { return getValue<int>("Id"); }
+			set { setValue<int>("Id", value); }
+		}
+
+		[Data]
+		public string Libelle
+		{
+			get { return getValue<string>("Libelle"); }
+			set { setValue<string>("Libelle", value); }
+		}
+
+		[Data]
+		public string Instructions
+		{
+			get { return getValue<string>("Instructions"); }
+			set { setValue<string>("Instructions", value); }
+		}
+
+	}
+
+	[DataDefinition]
 	public class ValeursPossibles : DataWrapper, IDataWrapper, IRelation
 	{
 		void IDataWrapper.InitData(DataRow data, string namePrefix)
@@ -1009,6 +1057,22 @@ namespace TimosWebApp
 
 		[RelationEnd(Type = typeof(ValeursChamp), Role = typeof(ValeursChamp), Multiplicity = Multiplicity.ZeroOrMany)]
 		public IEntity ValeursChamp;
+
+	}
+
+	[DataDefinition]
+	public class RelationTodoActions : DataWrapper, IDataWrapper, IRelation
+	{
+		void IDataWrapper.InitData(DataRow data, string namePrefix)
+		{
+			base.InitData(data, null);
+		}
+
+		[RelationEnd(Type = typeof(Todos), Role = typeof(Todos), Multiplicity = Multiplicity.ZeroOrOne)]
+		public IEntity Todos;
+
+		[RelationEnd(Type = typeof(Action), Role = typeof(Action), Multiplicity = Multiplicity.ZeroOrMany)]
+		public IEntity Action;
 
 	}
 

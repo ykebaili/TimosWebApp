@@ -328,6 +328,14 @@ img.logo{
     padding-left: 12px;
     background-color: #f2f4f7;
 }
+.sous-titre-champ{
+	background-color: aliceblue;
+}
+.sous-titre-champ .form-control-static{
+	border: 0px;
+	background-color: transparent;
+} 
+
 /* Property Grid Caractéristiques */
 .section-caracteristiques .aasRepeaterItem{
     border: solid 1px #ec1c24;

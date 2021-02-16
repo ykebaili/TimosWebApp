@@ -8,6 +8,7 @@ vTabsGroupesChamps.IdGroupe.BindData(vTabsGroupesChamps.ParentData.TimosId);
 // Binding des groupes de champs
 var vGroupeChamps = Aspectize.CreateRepeatedView("GroupeChamps", aas.Controls.GroupeChamps, aas.Zones.ChampsTodo.PanelGroupesChamps, aas.Data.MainData.Todos.RelationTodoGroupeChamps.GroupeChamps, "", aas.Expression('!InfosSecondaires'));
 vGroupeChamps.TitreGroupe.BindData(vGroupeChamps.ParentData.Titre);
+vGroupeChamps.TitreCaracterisiques.BindData(vGroupeChamps.ParentData.TitreCaracteristiques);
 vGroupeChamps.IdGroupe.BindData(vGroupeChamps.ParentData.TimosId);
 vGroupeChamps.IsActiveIn.BindData(aas.Expression(IIF(vGroupeChamps.ParentData.Expand, 'active in', '')));
 vGroupeChamps.BoutonEditionTodo.click.BindCommand(aas.Services.Browser.BootStrapClientService.ShowModal(aas.ViewName.EditionTodo, true, false, true));

@@ -86,6 +86,7 @@
             <div class="row section-caracteristiques">
                 <div class="col-xs-12">
                     <hr />
+                    <h3 style="padding: 10px;">{TitreCaracterisiques}</h3>
                     <button class="btn btn-success {DisplayBtnAddCarac}" name="BoutonAjouterCarac"><i class="fas fa-plus"></i> Ajouter</button>
                     <div aas-name="RepeaterPanelCaracteristiques" aas-type="AspectizeRepeaterPanel"></div>
                 </div>
@@ -267,6 +268,13 @@
             </div>
         </div>
     </div>
+
+    <!------------------------------------------------------- Modale execution Action ----------------------------------------------->
+    <div aas-control="name: 'ExecutionAction', IsModal:true">
+        <input name="Saisie1" type="text" />
+        <select name="Select1"></select>
+    </div>
+
 
 </body>
 </html>
