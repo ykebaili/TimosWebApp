@@ -190,6 +190,10 @@ Global.ClientTodosService = {
                 Aspectize.ExecuteCommand(aas.Services.Browser.BootStrapClientService.ShowModal(aas.ViewName.EditionCarac, false, false, true));
             }
         }
+        else {
+            Aspectize.ExecuteCommand(aas.Services.Browser.DataRecorder.CancelRowChanges(em.GetDataSet()));
+            Aspectize.ExecuteCommand(aas.Services.Browser.ClientTodosService.ToastAlert('Opération non autorisée', 'Ajout impossible de :  ' + groupe.TitreCaracteristiques, 'error'));
+        }
     },
 
     //---------------------------------------------------------- Sauvegarde d'une Caracteristique ----------------------------------------
