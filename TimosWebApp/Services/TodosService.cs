@@ -26,6 +26,8 @@ namespace TimosWebApp.Services
         bool TestAppelServeur();
         string TestAppelServeurAvecParmatres(string alpha, string beta);
 
+        Dictionary<string, object>[] GetDatasList(string term);
+
 
     }
 
@@ -524,6 +526,30 @@ namespace TimosWebApp.Services
                             }
                         }
                     }
+                    if(ds.Tables.Contains(CActionWeb.c_nomTable))
+                    {
+                        DataTable tableActions = ds.Tables[CActionWeb.c_nomTable];
+                        foreach (DataRow row in tableActions.Rows)
+                        {
+                            int nIdAction = (int)row[CActionWeb.c_champId];
+                            if (em.GetInstance<Action>(nIdAction) == null)
+                            {
+                                Action action = em.CreateInstance<Action>();
+                                action.Id = nIdAction;
+                                action.Libelle = (string)row[CActionWeb.c_champLibelle];
+
+                                try
+                                {
+                                    em.AssociateInstance<RelationTodoActions>(todo, action);
+                                }
+                                catch (Exception ex)
+                                {
+                                    Context.Log(ex, InfoType.Error, "Erreur d'association Todos <-> Action" + Environment.NewLine + ex.Message);
+                                }
+                            }
+                        }
+
+                    }
                 }
             }
 
@@ -770,6 +796,8 @@ namespace TimosWebApp.Services
         }
 
 
+
+
         //--------------------------------------------------------------------------------------------------
         // POUR DEBUG UNIQUEMENT
         public bool TestAppelServeur()
@@ -780,6 +808,19 @@ namespace TimosWebApp.Services
         public string TestAppelServeurAvecParmatres(string alpha, string beta)
         {
             return "Paramètre alpha = " + alpha + Environment.NewLine + "Paramètre beta = " + beta;
+        }
+
+        //--------------------------------------------------------------------------------------------------
+        public Dictionary<string, object>[] GetDatasList(string term)
+        {
+            var result = new List<Dictionary<string, object>>();
+
+            result.Add(new Dictionary<string, object>() { { "label", "toto" }, {"value", 1 } });
+            result.Add(new Dictionary<string, object>() { { "label", "tata" }, {"value", 2 } });
+            result.Add(new Dictionary<string, object>() { { "label", "tutu" }, {"value", 3 } });
+            
+
+            return result.ToArray();
         }
     }
 

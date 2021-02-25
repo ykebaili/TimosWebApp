@@ -19,6 +19,8 @@
             </div>
             <div class="col-sm-2 col-xs-12">
                 <button class="btn btn-success {DisplayBtnTerminer}" name="BoutonTerminerTodo"><i class="fas fa-check"></i> Terminer</button>
+                <select class="form-control" name="SelectAction"></select>
+                <input class="form-control" name="AutoCompleteText1" type="text" aas-type="JQueryAutoComplete.JQueryAutoComplete" />
             </div>
         </div>
 
@@ -233,7 +235,7 @@
                     </div>
                     <div class="modal-body">
                         <div class="alert alert-warning">
-                            <p>Êtes-vous sûr(e) de vouloir valider définitivement ce todo ?</p>
+                            <p>Êtes-vous sûr de vouloir valider définitivement ce todo ?</p>
                             <p><strong>{LabelToDo}</strong></p>
                         </div>
                     </div>
@@ -256,7 +258,7 @@
                     </div>
                     <div class="modal-body">
                         <div class="alert alert-warning">
-                            <p>Êtes-vous sûr(e) de vouloir supprimer définitivement ce fichier ?</p>
+                            <p>Êtes-vous sûr de vouloir supprimer définitivement ce fichier ?</p>
                             <p><strong>{NomFichier}</strong></p>
                         </div>
                     </div>
@@ -271,10 +273,37 @@
 
     <!------------------------------------------------------- Modale execution Action ----------------------------------------------->
     <div aas-control="name: 'ExecutionAction', IsModal:true">
-        <input name="Saisie1" type="text" />
-        <select name="Select1"></select>
+        <div class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title text-center">{LibelleAction}</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>{InstructionsAction}</p>
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                <label class="control-label col-xs-6" for="ExecutionAction-VarText1">{NomVarText1}</label>
+                                <input class="form-control col-xs-6" name="VarText1" type="text" />
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-xs-6" for="ExecutionAction-VarText2">{NomVarText2}</label>
+                                <input class="form-control col-xs-6" name="VarText2" type="text" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button name="BtnCancel" class="btn btn-default">Annuler</button>
+                        <button name="BtnSave" class="btn btn-success">Enregistrer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
     </div>
 
 
+    
 </body>
 </html>

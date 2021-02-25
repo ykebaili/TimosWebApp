@@ -870,6 +870,10 @@ namespace TimosWebApp
 			public const string Id = "Id";
 			public const string Libelle = "Libelle";
 			public const string Instructions = "Instructions";
+			public const string VarText1 = "VarText1";
+			public const string VarText2 = "VarText2";
+			public const string VarInt1 = "VarInt1";
+			public const string VarInt2 = "VarInt2";
 		}
 
 		void IDataWrapper.InitData(DataRow data, string namePrefix)
@@ -896,6 +900,34 @@ namespace TimosWebApp
 		{
 			get { return getValue<string>("Instructions"); }
 			set { setValue<string>("Instructions", value); }
+		}
+
+		[Data]
+		public string VarText1
+		{
+			get { return getValue<string>("VarText1"); }
+			set { setValue<string>("VarText1", value); }
+		}
+
+		[Data]
+		public string VarText2
+		{
+			get { return getValue<string>("VarText2"); }
+			set { setValue<string>("VarText2", value); }
+		}
+
+		[Data]
+		public string VarInt1
+		{
+			get { return getValue<string>("VarInt1"); }
+			set { setValue<string>("VarInt1", value); }
+		}
+
+		[Data]
+		public string VarInt2
+		{
+			get { return getValue<string>("VarInt2"); }
+			set { setValue<string>("VarInt2", value); }
 		}
 
 	}

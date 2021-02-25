@@ -40,6 +40,15 @@ vDetailTodo.DisplayBtnTerminer.BindData(aas.Expression(IIF(vDetailTodo.ParentDat
 //vDetailTodo.BoutonTerminerTodo.click.BindCommand(aas.Services.Server.TodosService.EndTodo(vDetailTodo.ParentData.TimosId), "", true, true);
 //vDetailTodo.BoutonTerminerTodo.click.BindCommand(aas.Services.Browser.ClientTodosService.ToastAlert("todo terminé"));
 vDetailTodo.BoutonTerminerTodo.click.BindCommand(aas.Services.Browser.BootStrapClientService.ShowModal(aas.ViewName.ConfirmationEndTodo, true, true, false));
+vDetailTodo.SelectAction.BindList(vDetailTodo.ParentData.RelationTodoActions.Action, 'Id', 'Libelle', 'Libelle');
+vDetailTodo.SelectAction.NullValueDisplay.BindData('Action à lancer');
+vDetailTodo.SelectAction.DefaultIndex.BindData(0);
+vDetailTodo.SelectAction.SelectedValueChanged.BindCommand(aas.Services.Browser.TestingServices.Alert(vDetailTodo.SelectAction.CurrentDisplay));
+
+vDetailTodo.AutoCompleteText1.OnNeedData.BindCommand(aas.Services.Server.TodosService.GetDatasList(''));
+vDetailTodo.AutoCompleteText1.OnItemSelected.BindCommand(aas.Services.Browser.ClientTodosService.SelectDataFromList(''));
+vDetailTodo.AutoCompleteText1.Custom.BindData(false);
+vDetailTodo.AutoCompleteText1.FillSelected.BindData(false);
 
 // Modale de confirmation de fin de todo
 var vConfirmationEndTodo = Aspectize.CreateView("ConfirmationEndTodo", aas.Controls.ConfirmationEndTodo, "", false, aas.Data.MainData.Todos);

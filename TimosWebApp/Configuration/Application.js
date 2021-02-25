@@ -1,7 +1,7 @@
 
 var app = newApplication();
 
-app.Directories = "Bootstrap, BootstrapDateTimePicker, DbLogException";
+app.Directories = "Bootstrap, BootstrapDateTimePicker, DbLogException, JQueryAutoComplete";
 app.LogServiceName = "EventLogService";
 app.LogEnabled = true;
 app.SecurityEnabled = true;

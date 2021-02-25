@@ -56,7 +56,8 @@ Global.ClientTodosService = {
         $('#' + gridId + '.aasPropertyGrid > .aasDynamicControl .aasValueZoneContainer input[type=\'number\']').addClass('form-control');
 
         $('#' + gridId + ' select').selectpicker({
-            liveSearch: true
+            liveSearch: true,
+            size: 10
         });
 
     },
@@ -332,6 +333,15 @@ Global.ClientTodosService = {
             Aspectize.ExecuteCommand(aas.Services.Browser.ClientTodosService.ToastAlert('Appel serveur OK', result));
         }
         cmd.Call(aas.Services.Server.TodosService.TestAppelServeurAvecParmatres(alpha, beta));
+    },
+
+    SelectDataFromList: function (aasEventArg) {
+
+        if(aasEventArg && aasEventArg.Item){
+            var item = aasEventArg.Item;
+            alert(item.label);
+        }
+        
     }
 
 };

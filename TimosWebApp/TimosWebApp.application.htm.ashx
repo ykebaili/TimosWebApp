@@ -41,8 +41,8 @@
 
 <!-- Ressources locales -->
 <script src="~Bootstrap/jquery/jquery-1.9.1.min.js"></script>
-<link rel='stylesheet' type='text/css' href='~Bootstrap/jquery/jquery-ui.css' />
-<script src="~Bootstrap/jquery/jquery-ui.min.js"></script>
+<link rel='stylesheet' type='text/css' href='~Bootstrap/jquery/jQuery-ui-1.10.0.css' />
+<script src="~Bootstrap/jquery/jQuery-ui-1.10.0.js"></script>
 
 <link href="~Bootstrap/bootstrap-3.3.7/css/bootstrap.min.css" rel="stylesheet">
 <script src="~Bootstrap/bootstrap-3.3.7/js/bootstrap.min.js"></script>
