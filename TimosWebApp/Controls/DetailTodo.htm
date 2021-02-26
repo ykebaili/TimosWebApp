@@ -20,7 +20,6 @@
             <div class="col-sm-2 col-xs-12">
                 <button class="btn btn-success {DisplayBtnTerminer}" name="BoutonTerminerTodo"><i class="fas fa-check"></i> Terminer</button>
                 <select class="form-control" name="SelectAction"></select>
-                <input class="form-control" name="AutoCompleteText1" type="text" aas-type="JQueryAutoComplete.JQueryAutoComplete" />
             </div>
         </div>
 
@@ -195,8 +194,16 @@
                     </div>
                     <div class="modal-body">
                         <h3>{LabelElementEdite}</h3>
+                        <div class="form-horizontal {DisplayAutoComplete}">
+                            <div class="form-group">
+                                <label class="control-label col-xs-6 col-md-4" for="EditionChamps-AutoCompleteValeurChamp">{LibelleChampAutoComplete}</label>
+                                <div class="col-xs-6 col-md-8">
+                                    <input class="form-control" name="AutoCompleteValeurChamp" type="text" aas-type="JQueryAutoComplete.JQueryAutoComplete" />
+                                </div>
+                            </div>
+                        </div>
                         <div class="form-horizontal">
-                            <div aas-name="GridChamps" aas-type="AspectizePropertyGrid"></div>
+                          <div aas-name="GridChamps" aas-type="AspectizePropertyGrid"></div>
                         </div>
                     </div>
                     <div class="modal-footer">

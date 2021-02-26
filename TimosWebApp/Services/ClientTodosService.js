@@ -318,7 +318,7 @@ Global.ClientTodosService = {
             // Executé au retour de l'appel serveur si tout est OK (pas d'excetpion)
             Aspectize.ExecuteCommand(aas.Services.Browser.ClientTodosService.ToastAlert("Appel serveur OK", "Resultat : \n" + result));
         }
-        cmd.Call(aas.Services.Server.TodosService.TestAppelServeur());
+        cmd.Call(aas.Services.Server.AdministrationService.TestAppelServeur());
     },
 
     //-------------------------------------------------------------------------------------------------------
@@ -332,9 +332,10 @@ Global.ClientTodosService = {
             // Executé au retour de l'appel serveur si tout est OK (pas d'excetpion)
             Aspectize.ExecuteCommand(aas.Services.Browser.ClientTodosService.ToastAlert('Appel serveur OK', result));
         }
-        cmd.Call(aas.Services.Server.TodosService.TestAppelServeurAvecParmatres(alpha, beta));
+        cmd.Call(aas.Services.Server.AdministrationService.TestAppelServeurAvecParmatres(alpha, beta));
     },
 
+    //-------------------------------------------------------------------------------------------------------
     SelectDataFromList: function (aasEventArg) {
 
         if(aasEventArg && aasEventArg.Item){

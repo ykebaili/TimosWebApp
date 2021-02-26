@@ -11,7 +11,7 @@ vGroupeChamps.TitreGroupe.BindData(vGroupeChamps.ParentData.Titre);
 vGroupeChamps.TitreCaracterisiques.BindData(vGroupeChamps.ParentData.TitreCaracteristiques);
 vGroupeChamps.IdGroupe.BindData(vGroupeChamps.ParentData.TimosId);
 vGroupeChamps.IsActiveIn.BindData(aas.Expression(IIF(vGroupeChamps.ParentData.Expand, 'active in', '')));
-vGroupeChamps.BoutonEditionTodo.click.BindCommand(aas.Services.Browser.BootStrapClientService.ShowModal(aas.ViewName.EditionTodo, true, false, true));
+vGroupeChamps.BoutonEditionTodo.click.BindCommand(aas.Services.Browser.BootStrapClientService.ShowModal(aas.ViewName.EditionTodo, false, false, true));
 vGroupeChamps.BoutonAjouterCarac.click.BindCommand(aas.Services.Browser.ClientTodosService.AddCaracteristic(aas.Data.MainData.Todos.TimosId, vGroupeChamps.ParentData.TimosId));
 vGroupeChamps.DisplayBtnAddCarac.BindData(aas.Expression(IIF(vGroupeChamps.ParentData.CanAddCaracteristiques, '', 'hidden')));
 //vGroupeChamps.BoutonEditionTodo.click.BindCommand(aas.Services.Browser.SystemServices.Alert(vGroupeChamps.ParentData.RelationTodoGroupeChamps.Todos.Label));
@@ -47,7 +47,7 @@ vEditionTodo.BtnSave.click.BindCommand(aas.Services.Server.TodosService.SaveTodo
     vEditionTodo.ParentData.RelationTodoGroupeChamps.Todos.ElementId), "", false, true);
 vEditionTodo.BtnSave.click.BindCommand(aas.Services.Browser.BootStrapClientService.CloseModal(aas.ViewName.EditionTodo));
 // Configuration de la PropertyGrid en mode édition
-vEditionTodo.GridChamps.BindList(vGroupeChamps.ParentData.RelationTodoValeurChamp.TodoValeurChamp, "ValeurChamp", "LibelleChamp", "OrdreChamp");
+vEditionTodo.GridChamps.BindList(vGroupeChamps.ParentData.RelationTodoValeurChamp.TodoValeurChamp, "ValeurChamp", "LibelleChamp", "OrdreChamp", aas.Expression('!UseAutoComplete'));
 vEditionTodo.GridChamps.TypeTableName.BindData(vGroupeChamps.ParentPath.RelationGroupeChampsChampsTimos.ChampTimos);
 vEditionTodo.GridChamps.TypeTableNameColumn.BindData("LibelleConvivial");
 vEditionTodo.GridChamps.TypeTableTypeColumn.BindData("AspectizeFieldType");
@@ -61,6 +61,13 @@ vEditionTodo.GridChamps.EnumValuesTableOptionValueColumn.BindData("StoredValue")
 vEditionTodo.GridChamps.EnumValuesTableTypeColumn.BindData("ChampTimosId");
 vEditionTodo.GridChamps.EditMode.BindData(true);
 vEditionTodo.GridChamps.OnEndRender.BindCommand(aas.Services.Browser.ClientTodosService.InitPropertyGrid(aas.ViewName.EditionTodo.GridChamps));
+// Auto complete
+vEditionTodo.AutoCompleteValeurChamp.OnNeedData.BindCommand(aas.Services.Server.TodosService.GetDatasList('', vEditionTodo.ParentData.IdChampAutoComplete));
+vEditionTodo.AutoCompleteValeurChamp.OnItemSelected.BindCommand(aas.Services.Browser.ClientTodosService.SelectDataFromList(''));
+vEditionTodo.AutoCompleteValeurChamp.Custom.BindData(false);
+vEditionTodo.AutoCompleteValeurChamp.FillSelected.BindData(false);
+vEditionTodo.LibelleChampAutoComplete.BindData(vEditionTodo.ParentData.LibelleChampAutoComplete);
+//vEditionTodo.DisplayAutoComplete.BindData(aas.Expression(IIF('LibelleChampAutoComplete', '', 'hidden')));
 
 
 // Création des caractéristiques
@@ -69,7 +76,7 @@ var vCaracteristiques = Aspectize.CreateRepeatedView("Caracteristique", aas.Cont
     aas.Expression('IdGroupePourFiltre === ' + vGroupeChamps.ParentData.TimosId + ' && !IsTemplate'));
 //*/
 vCaracteristiques.LibelleCarac.BindData(vCaracteristiques.ParentData.Titre);
-vCaracteristiques.BoutonEditerCarac.click.BindCommand(aas.Services.Browser.BootStrapClientService.ShowModal(aas.ViewName.EditionCarac, true, false, true));
+vCaracteristiques.BoutonEditerCarac.click.BindCommand(aas.Services.Browser.BootStrapClientService.ShowModal(aas.ViewName.EditionCarac, false, false, true));
 vCaracteristiques.BoutonEditerCarac.click.BindCommand(aas.Services.Browser.DataRecorder.Start(aas.Data.MainData));
 vCaracteristiques.BoutonSupprimerCarac.click.BindCommand(aas.Services.Browser.ClientTodosService.DeleteCaracteristc(vCaracteristiques.ParentData.TimosId, vCaracteristiques.ParentData.ElementType));
 //vCaracteristiques.DisplayBtnDeleteCarac.BindData(aas.Expression(IIF(aas.ViewName.GroupeChamps.DisplayBtnAddCarac + ' == hidden', 'hidden', '')));

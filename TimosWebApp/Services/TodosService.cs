@@ -8,6 +8,8 @@ using timos.data.Aspectize;
 using sc2i.common;
 using sc2i.multitiers.client;
 using System.IO;
+using System.Linq;
+using System.Collections;
 
 namespace TimosWebApp.Services
 {
@@ -23,10 +25,8 @@ namespace TimosWebApp.Services
         DataSet UploadDocuments(UploadedFile[] uploadedFiles, int nIdTodo, int nIdDocument, string strLibelle, int nIdCategorie);
         void DeleteDocument(string strKeyFile);
         byte[] DownloadDocument(string strKeyFile, string strFileName);
-        bool TestAppelServeur();
-        string TestAppelServeurAvecParmatres(string alpha, string beta);
 
-        Dictionary<string, object>[] GetDatasList(string term);
+        Dictionary<string, object>[] GetDatasList(string term, string strChampId);
 
 
     }
@@ -526,6 +526,7 @@ namespace TimosWebApp.Services
                             }
                         }
                     }
+                    // Traitement des Actions
                     if(ds.Tables.Contains(CActionWeb.c_nomTable))
                     {
                         DataTable tableActions = ds.Tables[CActionWeb.c_nomTable];
@@ -571,12 +572,15 @@ namespace TimosWebApp.Services
                     champTimos.LibelleConvivial = (string)rowChamp[CChampTimosWebApp.c_champLibelleConvivial];
                     champTimos.Editable = (bool)rowChamp[CChampTimosWebApp.c_champIsEditable];
                     champTimos.CustomClass = (string)rowChamp[CChampTimosWebApp.c_champCustomClass];
+
+                    bool bUseAutoComplete = (bool)rowChamp[CChampTimosWebApp.c_champUseAutoComplete];
                     bool bIsSelect = (bool)rowChamp[CChampTimosWebApp.c_champIsChoixParmis];
                     bool bMultiline = (bool)rowChamp[CChampTimosWebApp.c_champIsMultiline];
                     int nIdGroupeAssocie = (int)rowChamp[CChampTimosWebApp.c_champIdGroupeChamps];
                     string strIdCaracAssociee = (string)rowChamp[CChampTimosWebApp.c_champIdCaracteristique];
 
-                    if (bIsSelect)
+                    champTimos.UseAutoComplete = bUseAutoComplete;
+                    if (bIsSelect && !bUseAutoComplete)
                     {
                         champTimos.IsSelect = true;
                         champTimos.AspectizeFieldType = champTimos.TimosId.ToString();
@@ -617,12 +621,19 @@ namespace TimosWebApp.Services
                     }
 
 
+                    // Le champ appartient à un Groupe ou une Caracteristique
                     try
                     {
-                        // Le champ appartient à un Groupe ou une Caracteristique
                         GroupeChamps groupeAssocie = em.GetInstance<GroupeChamps>(nIdGroupeAssocie);
                         if (groupeAssocie != null && champTimos.GetAssociatedInstance<GroupeChamps, RelationGroupeChampsChampsTimos>() != groupeAssocie)
+                        {
                             em.AssociateInstance<RelationGroupeChampsChampsTimos>(groupeAssocie, champTimos);
+                            if (champTimos.UseAutoComplete)
+                            {
+                                groupeAssocie.LibelleChampAutoComplete = champTimos.LibelleConvivial + " (AutoComplete)";
+                                groupeAssocie.IdChampAutoComplete = champTimos.TimosId.ToString();
+                            }
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -632,8 +643,11 @@ namespace TimosWebApp.Services
                     {
                         Caracteristiques caracAssociee = em.GetInstance<Caracteristiques>(strIdCaracAssociee);
                         if (caracAssociee != null && champTimos.GetAssociatedInstance<Caracteristiques, RelationCaracChamp>() != caracAssociee)
+                        {
                             em.AssociateInstance<RelationCaracChamp>(caracAssociee, champTimos);
-
+                            if (champTimos.UseAutoComplete)
+                                caracAssociee.LibelleChampAutoComplete = champTimos.LibelleConvivial + " (AutoComplete)";
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -642,8 +656,7 @@ namespace TimosWebApp.Services
                     
                 }
             }
-
-
+            
             // Gestion des valeurs possibles de champs
             if (ds.Tables.Contains(CChampValeursPossibles.c_nomTable))
             {
@@ -660,45 +673,58 @@ namespace TimosWebApp.Services
                     ChampTimos champ = em.GetInstance<ChampTimos>(strChampTimosId);
                     if (champ != null)
                     {
-                        string strId = strChampTimosId + "-" + strStoredValue;
-                        ValeursChamp valPossible = em.GetInstance<ValeursChamp>(strId);
-                        if (valPossible == null)
+                        if (champ.UseAutoComplete)
                         {
-                            valPossible = em.CreateInstance<ValeursChamp>();
-                            valPossible.Id = strId;
-                            valPossible.ChampTimosId = strChampTimosId;
-                            valPossible.Index = nIndex;
-                            valPossible.StoredValue = strStoredValue;
-                            valPossible.DisplayedValue = strDisplayeddValue;
+                            // Remplissage du dictionnaire AUTO COMPLETE
+                            Dictionary<string, string> dicValeursChamp = m_htChampValeursPossibles[strChampTimosId] as Dictionary<string, string>;
+                            if (dicValeursChamp == null)
+                            {
+                                dicValeursChamp = new Dictionary<string, string>();
+                                m_htChampValeursPossibles[strChampTimosId] = dicValeursChamp;
+                            }
+                            dicValeursChamp[strStoredValue] = strDisplayeddValue;
                         }
-                        /*/
-                        ChampTimos champDejaAssocie = valPossible.GetAssociatedInstance<ChampTimos, RelationChampValeursPossibles>();
-                        if(champDejaAssocie == null || champDejaAssocie.TimosId != champ.TimosId)
-                            em.AssociateInstance<RelationChampValeursPossibles>(champ, valPossible);
-                        //*/
-                        //*/ Assoication de la cvaleur possible au Groupe et/ou Caracteristique
-                        try
+                        else
                         {
-                            GroupeChamps groupeAssocie = em.GetInstance<GroupeChamps>(nIdGroupeAssocie);
-                            if (groupeAssocie != null)
-                                em.AssociateInstance<ValeursPossibles>(groupeAssocie, valPossible);
+                            string strId = strChampTimosId + "-" + strStoredValue;
+                            ValeursChamp valPossible = em.GetInstance<ValeursChamp>(strId);
+                            if (valPossible == null)
+                            {
+                                valPossible = em.CreateInstance<ValeursChamp>();
+                                valPossible.Id = strId;
+                                valPossible.ChampTimosId = strChampTimosId;
+                                valPossible.Index = nIndex;
+                                valPossible.StoredValue = strStoredValue;
+                                valPossible.DisplayedValue = strDisplayeddValue;
+                            }
+                            /*/
+                            ChampTimos champDejaAssocie = valPossible.GetAssociatedInstance<ChampTimos, RelationChampValeursPossibles>();
+                            if(champDejaAssocie == null || champDejaAssocie.TimosId != champ.TimosId)
+                                em.AssociateInstance<RelationChampValeursPossibles>(champ, valPossible);
+                            //*/
+                            //*/ Assoication de la cvaleur possible au Groupe et/ou Caracteristique
+                            try
+                            {
+                                GroupeChamps groupeAssocie = em.GetInstance<GroupeChamps>(nIdGroupeAssocie);
+                                if (groupeAssocie != null)
+                                    em.AssociateInstance<ValeursPossibles>(groupeAssocie, valPossible);
+                            }
+                            catch (Exception ex)
+                            {
+                                Context.Log(ex, InfoType.Error, "Erreur d'association GroupeChamps <-> ValeursChamp" + Environment.NewLine + ex.Message);
+                            }
+                            try
+                            {
+                                Caracteristiques caracAssociee = em.GetInstance<Caracteristiques>(strIdCaracAssociee);
+                                if (caracAssociee != null)
+                                    em.AssociateInstance<RelationCaracValeursPossibles>(caracAssociee, valPossible);
+                            }
+                            catch (Exception ex)
+                            {
+                                Context.Log(ex, InfoType.Error, "Erreur d'association Caracteristiques <-> ValeursChamps" + Environment.NewLine + ex.Message);
+                            }
+                            //*/
                         }
-
-                        catch (Exception ex)
-                        {
-                            Context.Log(ex, InfoType.Error, "Erreur d'association GroupeChamps <-> ValeursChamp" + Environment.NewLine + ex.Message);
-                        }
-                        try
-                        {
-                            Caracteristiques caracAssociee = em.GetInstance<Caracteristiques>(strIdCaracAssociee);
-                            if (caracAssociee != null)
-                                em.AssociateInstance<RelationCaracValeursPossibles>(caracAssociee, valPossible);
-                        }
-                        catch (Exception ex)
-                        {
-                            Context.Log(ex, InfoType.Error, "Erreur d'association Caracteristiques <-> ValeursChamps" + Environment.NewLine + ex.Message);
-                        }
-                        //*/
                     }
                 }
             }
@@ -724,6 +750,7 @@ namespace TimosWebApp.Services
                     valChampTimos.OrdreChamp = (int)rowVal[CTodoValeurChamp.c_champOrdreAffichage];
                     valChampTimos.ElementType = (string)rowVal[CTodoValeurChamp.c_champElementType];
                     valChampTimos.ElementId = (int)rowVal[CTodoValeurChamp.c_champElementId];
+                    valChampTimos.UseAutoComplete = (bool)rowVal[CTodoValeurChamp.c_champUseAutoComplete];
 
                     string strValeurChamp = "";
                     object valeur = rowVal[CTodoValeurChamp.c_champValeur];
@@ -771,6 +798,7 @@ namespace TimosWebApp.Services
                     valChampTimos.OrdreChamp = (int)rowVal[CCaracValeurChamp.c_champOrdreAffichage];
                     valChampTimos.ElementType = (string)rowVal[CCaracValeurChamp.c_champElementType];
                     valChampTimos.ElementId = (int)rowVal[CCaracValeurChamp.c_champElementId];
+                    valChampTimos.UseAutoComplete = (bool)rowVal[CCaracValeurChamp.c_champUseAutoComplete];
                     valChampTimos.ValeurChamp = valeurChamp;
 
                     ChampTimos champ = em.GetInstance<ChampTimos>(nIdChampTimosAssocie);
@@ -795,32 +823,30 @@ namespace TimosWebApp.Services
             }
         }
 
-
-
-
         //--------------------------------------------------------------------------------------------------
-        // POUR DEBUG UNIQUEMENT
-        public bool TestAppelServeur()
+        private static Hashtable m_htChampValeursPossibles = new Hashtable();
+        public Dictionary<string, object>[] GetDatasList(string term, string strChampId)
         {
-            //throw new SmartException(9900, "Erreur dans test d'appel serveur");
-            return true;
-        }
-        public string TestAppelServeurAvecParmatres(string alpha, string beta)
-        {
-            return "Paramètre alpha = " + alpha + Environment.NewLine + "Paramètre beta = " + beta;
-        }
+            var listeResult = new List<Dictionary<string, object>>();
 
-        //--------------------------------------------------------------------------------------------------
-        public Dictionary<string, object>[] GetDatasList(string term)
-        {
-            var result = new List<Dictionary<string, object>>();
+            Dictionary<string, string> dicValeursChamp = m_htChampValeursPossibles[strChampId] as Dictionary<string, string>;
+            if (dicValeursChamp != null)
+            {
+                List<KeyValuePair<string, string>> listeFiltre = dicValeursChamp.Where(val => val.Value.ToUpper().Contains(term.ToUpper())).Take(10).ToList();
 
-            result.Add(new Dictionary<string, object>() { { "label", "toto" }, {"value", 1 } });
-            result.Add(new Dictionary<string, object>() { { "label", "tata" }, {"value", 2 } });
-            result.Add(new Dictionary<string, object>() { { "label", "tutu" }, {"value", 3 } });
-            
+                foreach(KeyValuePair<string, string> valeurChamp in listeFiltre)
+                {
+                    listeResult.Add(new Dictionary<string, object>() { { "label", valeurChamp.Value }, { "value", valeurChamp.Key } });
+                }
 
-            return result.ToArray();
+                /*
+                result.Add(new Dictionary<string, object>() { { "label", "toto" }, { "value", 1 } });
+                result.Add(new Dictionary<string, object>() { { "label", "tata" }, { "value", 2 } });
+                result.Add(new Dictionary<string, object>() { { "label", "tutu" }, { "value", 3 } });
+                */
+            }
+
+            return listeResult.ToArray();
         }
     }
 

@@ -270,6 +270,7 @@ namespace TimosWebApp
 			public const string Editable = "Editable";
 			public const string Multiline = "Multiline";
 			public const string CustomClass = "CustomClass";
+			public const string UseAutoComplete = "UseAutoComplete";
 		}
 
 		void IDataWrapper.InitData(DataRow data, string namePrefix)
@@ -362,6 +363,13 @@ namespace TimosWebApp
 			set { setValue<string>("CustomClass", value); }
 		}
 
+		[Data(DefaultValue = false)]
+		public bool UseAutoComplete
+		{
+			get { return getValue<bool>("UseAutoComplete"); }
+			set { setValue<bool>("UseAutoComplete", value); }
+		}
+
 	}
 
 	[DataDefinition]
@@ -430,6 +438,7 @@ namespace TimosWebApp
 			public const string ElementType = "ElementType";
 			public const string ElementId = "ElementId";
 			public const string Id = "Id";
+			public const string UseAutoComplete = "UseAutoComplete";
 		}
 
 		void IDataWrapper.InitData(DataRow data, string namePrefix)
@@ -484,6 +493,13 @@ namespace TimosWebApp
 		{
 			get { return getValue<string>("Id"); }
 			set { setValue<string>("Id", value); }
+		}
+
+		[Data(DefaultValue = false)]
+		public bool UseAutoComplete
+		{
+			get { return getValue<bool>("UseAutoComplete"); }
+			set { setValue<bool>("UseAutoComplete", value); }
 		}
 
 	}
@@ -632,6 +648,8 @@ namespace TimosWebApp
 			public const string InfosSecondaires = "InfosSecondaires";
 			public const string CanAddCaracteristiques = "CanAddCaracteristiques";
 			public const string TitreCaracteristiques = "TitreCaracteristiques";
+			public const string LibelleChampAutoComplete = "LibelleChampAutoComplete";
+			public const string IdChampAutoComplete = "IdChampAutoComplete";
 		}
 
 		void IDataWrapper.InitData(DataRow data, string namePrefix)
@@ -688,6 +706,20 @@ namespace TimosWebApp
 			set { setValue<string>("TitreCaracteristiques", value); }
 		}
 
+		[Data(DefaultValue = "none")]
+		public string LibelleChampAutoComplete
+		{
+			get { return getValue<string>("LibelleChampAutoComplete"); }
+			set { setValue<string>("LibelleChampAutoComplete", value); }
+		}
+
+		[Data]
+		public string IdChampAutoComplete
+		{
+			get { return getValue<string>("IdChampAutoComplete"); }
+			set { setValue<string>("IdChampAutoComplete", value); }
+		}
+
 	}
 
 	[DataDefinition]
@@ -706,6 +738,7 @@ namespace TimosWebApp
 			public const string Id = "Id";
 			public const string ParentElementType = "ParentElementType";
 			public const string ParentElementId = "ParentElementId";
+			public const string LibelleChampAutoComplete = "LibelleChampAutoComplete";
 		}
 
 		void IDataWrapper.InitData(DataRow data, string namePrefix)
@@ -790,6 +823,13 @@ namespace TimosWebApp
 			set { setValue<int>("ParentElementId", value); }
 		}
 
+		[Data]
+		public string LibelleChampAutoComplete
+		{
+			get { return getValue<string>("LibelleChampAutoComplete"); }
+			set { setValue<string>("LibelleChampAutoComplete", value); }
+		}
+
 	}
 
 	[DataDefinition]
@@ -804,6 +844,7 @@ namespace TimosWebApp
 			public const string ElementType = "ElementType";
 			public const string ElementId = "ElementId";
 			public const string Id = "Id";
+			public const string UseAutoComplete = "UseAutoComplete";
 		}
 
 		void IDataWrapper.InitData(DataRow data, string namePrefix)
@@ -858,6 +899,13 @@ namespace TimosWebApp
 		{
 			get { return getValue<string>("Id"); }
 			set { setValue<string>("Id", value); }
+		}
+
+		[Data(DefaultValue = false)]
+		public bool UseAutoComplete
+		{
+			get { return getValue<bool>("UseAutoComplete"); }
+			set { setValue<bool>("UseAutoComplete", value); }
 		}
 
 	}

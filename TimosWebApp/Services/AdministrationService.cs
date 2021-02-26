@@ -14,6 +14,9 @@ namespace TimosWebApp.Services
     {
         DataSet UploadFiles(UploadedFile[] uploadedFiles);
         string TestAppelServeurRadius(string strIP, string strSecret, string strUser, string strPassword);
+        bool TestAppelServeur();
+        string TestAppelServeurAvecParmatres(string alpha, string beta);
+
     }
 
     [Service(Name = "AdministrationService")]
@@ -117,5 +120,19 @@ namespace TimosWebApp.Services
             return sbRetour.ToString();
 
         }
+
+
+        //--------------------------------------------------------------------------------------------------
+        // POUR DEBUG UNIQUEMENT
+        public bool TestAppelServeur()
+        {
+            //throw new SmartException(9900, "Erreur dans test d'appel serveur");
+            return true;
+        }
+        public string TestAppelServeurAvecParmatres(string alpha, string beta)
+        {
+            return "Paramètre alpha = " + alpha + Environment.NewLine + "Paramètre beta = " + beta;
+        }
+
     }
 }
