@@ -25,10 +25,9 @@ namespace TimosWebApp.Services
         DataSet UploadDocuments(UploadedFile[] uploadedFiles, int nIdTodo, int nIdDocument, string strLibelle, int nIdCategorie);
         void DeleteDocument(string strKeyFile);
         byte[] DownloadDocument(string strKeyFile, string strFileName);
-
+        [Command(IsSaveCommand = true)]
+        void ExecuteAction(DataSet dataSet, int nIdAction, string elementType, int elementId);
         Dictionary<string, object>[] GetDatasList(string term, string strChampId);
-
-
     }
 
     [Service(Name = "TodosService")]
@@ -353,6 +352,41 @@ namespace TimosWebApp.Services
         }
 
         //-----------------------------------------------------------------------------------------
+        public void ExecuteAction(DataSet dataSet, int nIdAction, string elementType, int elementId)
+        {
+            if (!dataSet.HasChanges())
+                return;
+
+            AspectizeUser aspectizeUser = ExecutingContext.CurrentUser;
+
+            if (aspectizeUser.IsAuthenticated)
+            {
+                if (dataSet.HasChanges())
+                {
+                    int nTimosSessionId = (int)aspectizeUser[CUserTimosWebApp.c_champSessionId];
+                    IEntityManager em = EntityManager.FromDataSet(dataSet);
+
+                    ITimosServiceForAspectize serviceClientAspectize = (ITimosServiceForAspectize)C2iFactory.GetNewObject(typeof(ITimosServiceForAspectize));
+                    CResultAErreur result = serviceClientAspectize.GetSession(nTimosSessionId);
+                    if (!result)
+                    {
+                        throw new SmartException(1100, "Votre session a expiré, veuillez vous reconnecter");
+                    }
+                    result = serviceClientAspectize.ExecuteAction(nTimosSessionId, dataSet, nIdAction, elementType, elementId);
+
+                    if (!result)
+                        throw new SmartException(1010, result.MessageErreur);
+                }
+            }
+            else
+            {
+                throw new SmartException(1100, "Votre session a expiré, veuillez vous reconnecter");
+            }
+
+        }
+
+
+        //-----------------------------------------------------------------------------------------
         private void FillEntitiesFromDataSet(DataSet ds, IEntityManager em)
         {
             if (ds == null || em == null)
@@ -538,6 +572,39 @@ namespace TimosWebApp.Services
                                 Action action = em.CreateInstance<Action>();
                                 action.Id = nIdAction;
                                 action.Libelle = (string)row[CActionWeb.c_champLibelle];
+                                action.Instructions = (string)row[CActionWeb.c_champInstructions];
+                                // Variables Texte
+                                action.IDT1 = (string)row[CActionWeb.c_champIdVarText1];
+                                action.IDT2 = (string)row[CActionWeb.c_champIdVarText2];
+                                action.IDT3 = (string)row[CActionWeb.c_champIdVarText3];
+                                action.IDT4 = (string)row[CActionWeb.c_champIdVarText4];
+                                action.IDT5 = (string)row[CActionWeb.c_champIdVarText5];
+                                action.LBLT1 = (string)row[CActionWeb.c_champLabelVarText1];
+                                action.LBLT2 = (string)row[CActionWeb.c_champLabelVarText2];
+                                action.LBLT3 = (string)row[CActionWeb.c_champLabelVarText3];
+                                action.LBLT4 = (string)row[CActionWeb.c_champLabelVarText4];
+                                action.LBLT5 = (string)row[CActionWeb.c_champLabelVarText5];
+                                // Variables Int
+                                action.IDN1 = (string)row[CActionWeb.c_champIdVarInt1];
+                                action.IDN2 = (string)row[CActionWeb.c_champIdVarInt2];
+                                action.IDN3 = (string)row[CActionWeb.c_champIdVarInt3];
+                                action.LBLN1 = (string)row[CActionWeb.c_champLabelVarInt1];
+                                action.LBLN2 = (string)row[CActionWeb.c_champLabelVarInt2];
+                                action.LBLN3 = (string)row[CActionWeb.c_champLabelVarInt3];
+                                // Variables Date
+                                action.IDD1 = (string)row[CActionWeb.c_champIdVarDate1];
+                                action.IDD2 = (string)row[CActionWeb.c_champIdVarDate2];
+                                action.IDD3 = (string)row[CActionWeb.c_champIdVarDate3];
+                                action.LBLD1 = (string)row[CActionWeb.c_champLabelVarDate1];
+                                action.LBLD2 = (string)row[CActionWeb.c_champLabelVarDate2];
+                                action.LBLD3 = (string)row[CActionWeb.c_champLabelVarDate3];
+                                // Variables Bool
+                                action.IDB1 = (string)row[CActionWeb.c_champIdVarBool1];
+                                action.IDB2 = (string)row[CActionWeb.c_champIdVarBool2];
+                                action.IDB3 = (string)row[CActionWeb.c_champIdVarBool3];
+                                action.LBLB1 = (string)row[CActionWeb.c_champLabelVarBool1];
+                                action.LBLB2 = (string)row[CActionWeb.c_champLabelVarBool2];
+                                action.LBLB3 = (string)row[CActionWeb.c_champLabelVarBool3];
 
                                 try
                                 {

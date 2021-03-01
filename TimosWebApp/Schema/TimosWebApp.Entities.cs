@@ -918,10 +918,48 @@ namespace TimosWebApp
 			public const string Id = "Id";
 			public const string Libelle = "Libelle";
 			public const string Instructions = "Instructions";
-			public const string VarText1 = "VarText1";
-			public const string VarText2 = "VarText2";
-			public const string VarInt1 = "VarInt1";
-			public const string VarInt2 = "VarInt2";
+			public const string IDT1 = "IDT1";
+			public const string LBLT1 = "LBLT1";
+			public const string VALT1 = "VALT1";
+			public const string IDT2 = "IDT2";
+			public const string LBLT2 = "LBLT2";
+			public const string VALT2 = "VALT2";
+			public const string IDT3 = "IDT3";
+			public const string LBLT3 = "LBLT3";
+			public const string VALT3 = "VALT3";
+			public const string IDT4 = "IDT4";
+			public const string LBLT4 = "LBLT4";
+			public const string VALT4 = "VALT4";
+			public const string IDT5 = "IDT5";
+			public const string LBLT5 = "LBLT5";
+			public const string VALT5 = "VALT5";
+			public const string IDN1 = "IDN1";
+			public const string LBLN1 = "LBLN1";
+			public const string VALN1 = "VALN1";
+			public const string IDN2 = "IDN2";
+			public const string LBLN2 = "LBLN2";
+			public const string VALN2 = "VALN2";
+			public const string IDN3 = "IDN3";
+			public const string LBLN3 = "LBLN3";
+			public const string VALN3 = "VALN3";
+			public const string IDD1 = "IDD1";
+			public const string LBLD1 = "LBLD1";
+			public const string VALD1 = "VALD1";
+			public const string IDD2 = "IDD2";
+			public const string LBLD2 = "LBLD2";
+			public const string VALD2 = "VALD2";
+			public const string IDD3 = "IDD3";
+			public const string LBLD3 = "LBLD3";
+			public const string VALD3 = "VALD3";
+			public const string IDB1 = "IDB1";
+			public const string VALB1 = "VALB1";
+			public const string IDB2 = "IDB2";
+			public const string LBLB2 = "LBLB2";
+			public const string VALB2 = "VALB2";
+			public const string IDB3 = "IDB3";
+			public const string LBLB3 = "LBLB3";
+			public const string VALB3 = "VALB3";
+			public const string LBLB1 = "LBLB1";
 		}
 
 		void IDataWrapper.InitData(DataRow data, string namePrefix)
@@ -951,31 +989,297 @@ namespace TimosWebApp
 		}
 
 		[Data]
-		public string VarText1
+		public string IDT1
 		{
-			get { return getValue<string>("VarText1"); }
-			set { setValue<string>("VarText1", value); }
+			get { return getValue<string>("IDT1"); }
+			set { setValue<string>("IDT1", value); }
 		}
 
 		[Data]
-		public string VarText2
+		public string LBLT1
 		{
-			get { return getValue<string>("VarText2"); }
-			set { setValue<string>("VarText2", value); }
+			get { return getValue<string>("LBLT1"); }
+			set { setValue<string>("LBLT1", value); }
 		}
 
 		[Data]
-		public string VarInt1
+		public string VALT1
 		{
-			get { return getValue<string>("VarInt1"); }
-			set { setValue<string>("VarInt1", value); }
+			get { return getValue<string>("VALT1"); }
+			set { setValue<string>("VALT1", value); }
 		}
 
 		[Data]
-		public string VarInt2
+		public string IDT2
 		{
-			get { return getValue<string>("VarInt2"); }
-			set { setValue<string>("VarInt2", value); }
+			get { return getValue<string>("IDT2"); }
+			set { setValue<string>("IDT2", value); }
+		}
+
+		[Data]
+		public string LBLT2
+		{
+			get { return getValue<string>("LBLT2"); }
+			set { setValue<string>("LBLT2", value); }
+		}
+
+		[Data]
+		public string VALT2
+		{
+			get { return getValue<string>("VALT2"); }
+			set { setValue<string>("VALT2", value); }
+		}
+
+		[Data]
+		public string IDT3
+		{
+			get { return getValue<string>("IDT3"); }
+			set { setValue<string>("IDT3", value); }
+		}
+
+		[Data]
+		public string LBLT3
+		{
+			get { return getValue<string>("LBLT3"); }
+			set { setValue<string>("LBLT3", value); }
+		}
+
+		[Data]
+		public string VALT3
+		{
+			get { return getValue<string>("VALT3"); }
+			set { setValue<string>("VALT3", value); }
+		}
+
+		[Data]
+		public string IDT4
+		{
+			get { return getValue<string>("IDT4"); }
+			set { setValue<string>("IDT4", value); }
+		}
+
+		[Data]
+		public string LBLT4
+		{
+			get { return getValue<string>("LBLT4"); }
+			set { setValue<string>("LBLT4", value); }
+		}
+
+		[Data]
+		public string VALT4
+		{
+			get { return getValue<string>("VALT4"); }
+			set { setValue<string>("VALT4", value); }
+		}
+
+		[Data]
+		public string IDT5
+		{
+			get { return getValue<string>("IDT5"); }
+			set { setValue<string>("IDT5", value); }
+		}
+
+		[Data]
+		public string LBLT5
+		{
+			get { return getValue<string>("LBLT5"); }
+			set { setValue<string>("LBLT5", value); }
+		}
+
+		[Data]
+		public string VALT5
+		{
+			get { return getValue<string>("VALT5"); }
+			set { setValue<string>("VALT5", value); }
+		}
+
+		[Data]
+		public string IDN1
+		{
+			get { return getValue<string>("IDN1"); }
+			set { setValue<string>("IDN1", value); }
+		}
+
+		[Data]
+		public string LBLN1
+		{
+			get { return getValue<string>("LBLN1"); }
+			set { setValue<string>("LBLN1", value); }
+		}
+
+		[Data]
+		public string VALN1
+		{
+			get { return getValue<string>("VALN1"); }
+			set { setValue<string>("VALN1", value); }
+		}
+
+		[Data]
+		public string IDN2
+		{
+			get { return getValue<string>("IDN2"); }
+			set { setValue<string>("IDN2", value); }
+		}
+
+		[Data]
+		public string LBLN2
+		{
+			get { return getValue<string>("LBLN2"); }
+			set { setValue<string>("LBLN2", value); }
+		}
+
+		[Data]
+		public string VALN2
+		{
+			get { return getValue<string>("VALN2"); }
+			set { setValue<string>("VALN2", value); }
+		}
+
+		[Data]
+		public string IDN3
+		{
+			get { return getValue<string>("IDN3"); }
+			set { setValue<string>("IDN3", value); }
+		}
+
+		[Data]
+		public string LBLN3
+		{
+			get { return getValue<string>("LBLN3"); }
+			set { setValue<string>("LBLN3", value); }
+		}
+
+		[Data]
+		public string VALN3
+		{
+			get { return getValue<string>("VALN3"); }
+			set { setValue<string>("VALN3", value); }
+		}
+
+		[Data]
+		public string IDD1
+		{
+			get { return getValue<string>("IDD1"); }
+			set { setValue<string>("IDD1", value); }
+		}
+
+		[Data]
+		public string LBLD1
+		{
+			get { return getValue<string>("LBLD1"); }
+			set { setValue<string>("LBLD1", value); }
+		}
+
+		[Data]
+		public string VALD1
+		{
+			get { return getValue<string>("VALD1"); }
+			set { setValue<string>("VALD1", value); }
+		}
+
+		[Data]
+		public string IDD2
+		{
+			get { return getValue<string>("IDD2"); }
+			set { setValue<string>("IDD2", value); }
+		}
+
+		[Data]
+		public string LBLD2
+		{
+			get { return getValue<string>("LBLD2"); }
+			set { setValue<string>("LBLD2", value); }
+		}
+
+		[Data]
+		public string VALD2
+		{
+			get { return getValue<string>("VALD2"); }
+			set { setValue<string>("VALD2", value); }
+		}
+
+		[Data]
+		public string IDD3
+		{
+			get { return getValue<string>("IDD3"); }
+			set { setValue<string>("IDD3", value); }
+		}
+
+		[Data]
+		public string LBLD3
+		{
+			get { return getValue<string>("LBLD3"); }
+			set { setValue<string>("LBLD3", value); }
+		}
+
+		[Data]
+		public string VALD3
+		{
+			get { return getValue<string>("VALD3"); }
+			set { setValue<string>("VALD3", value); }
+		}
+
+		[Data]
+		public string IDB1
+		{
+			get { return getValue<string>("IDB1"); }
+			set { setValue<string>("IDB1", value); }
+		}
+
+		[Data]
+		public string VALB1
+		{
+			get { return getValue<string>("VALB1"); }
+			set { setValue<string>("VALB1", value); }
+		}
+
+		[Data]
+		public string IDB2
+		{
+			get { return getValue<string>("IDB2"); }
+			set { setValue<string>("IDB2", value); }
+		}
+
+		[Data]
+		public string LBLB2
+		{
+			get { return getValue<string>("LBLB2"); }
+			set { setValue<string>("LBLB2", value); }
+		}
+
+		[Data]
+		public string VALB2
+		{
+			get { return getValue<string>("VALB2"); }
+			set { setValue<string>("VALB2", value); }
+		}
+
+		[Data]
+		public string IDB3
+		{
+			get { return getValue<string>("IDB3"); }
+			set { setValue<string>("IDB3", value); }
+		}
+
+		[Data]
+		public string LBLB3
+		{
+			get { return getValue<string>("LBLB3"); }
+			set { setValue<string>("LBLB3", value); }
+		}
+
+		[Data]
+		public string VALB3
+		{
+			get { return getValue<string>("VALB3"); }
+			set { setValue<string>("VALB3", value); }
+		}
+
+		[Data]
+		public string LBLB1
+		{
+			get { return getValue<string>("LBLB1"); }
+			set { setValue<string>("LBLB1", value); }
 		}
 
 	}

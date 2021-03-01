@@ -126,6 +126,23 @@ Global.ClientTodosService = {
 
     },
 
+    //-------------------------------------------------------------------------------------------------------
+    StartAction: function(nIdAction)
+    {
+        var em = Aspectize.EntityManagerFromContextDataName(this.MainData);
+        Aspectize.ExecuteCommand(aas.Services.Browser.DataRecorder.Start(em.GetDataSet()));
+
+        var action = em.GetInstance('Action', {Id:nIdAction})
+        if(action){
+            Aspectize.ExecuteCommand(aas.Services.Browser.UIService.SetCurrent(aas.Path.MainData.Todos.RelationTodoActions.Action, action.Id));
+            Aspectize.ExecuteCommand(aas.Services.Browser.BootStrapClientService.ShowModal(aas.ViewName.ExecutionAction, false, false, true));
+        }
+        else {
+            Aspectize.ExecuteCommand(aas.Services.Browser.DataRecorder.CancelRowChanges(em.GetDataSet()));
+        }
+    },
+
+
     //---------------------------------------------------------------------------------------------------
     AddCaracteristic: function (nIdTodo, nIdGroupe) {
 

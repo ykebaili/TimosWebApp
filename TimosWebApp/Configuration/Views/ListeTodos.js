@@ -41,9 +41,10 @@ vDetailTodo.DisplayBtnTerminer.BindData(aas.Expression(IIF(vDetailTodo.ParentDat
 //vDetailTodo.BoutonTerminerTodo.click.BindCommand(aas.Services.Browser.ClientTodosService.ToastAlert("todo terminé"));
 vDetailTodo.BoutonTerminerTodo.click.BindCommand(aas.Services.Browser.BootStrapClientService.ShowModal(aas.ViewName.ConfirmationEndTodo, true, true, false));
 vDetailTodo.SelectAction.BindList(vDetailTodo.ParentData.RelationTodoActions.Action, 'Id', 'Libelle', 'Libelle');
-vDetailTodo.SelectAction.NullValueDisplay.BindData('Action à lancer');
+vDetailTodo.SelectAction.NullValueDisplay.BindData('Actions');
 vDetailTodo.SelectAction.DefaultIndex.BindData(0);
-vDetailTodo.SelectAction.SelectedValueChanged.BindCommand(aas.Services.Browser.TestingServices.Alert(vDetailTodo.SelectAction.CurrentDisplay));
+vDetailTodo.SelectAction.SelectedValueChanged.BindCommand(aas.Services.Browser.BootStrapClientService.ShowModal(aas.ViewName.ExecutionAction, false, false, true));
+vDetailTodo.SelectAction.SelectedValueChanged.BindCommand(aas.Services.Browser.UIService.SetCurrent(aas.Path.MainData.Action, vDetailTodo.SelectAction.CurrentValue));
 
 // Modale de confirmation de fin de todo
 var vConfirmationEndTodo = Aspectize.CreateView("ConfirmationEndTodo", aas.Controls.ConfirmationEndTodo, "", false, aas.Data.MainData.Todos);
@@ -58,4 +59,19 @@ var vDetailTodoTab = Aspectize.CreateView("DetailTodoTabs", aas.Controls.Bootstr
 
 // Configuration des Actions
 var vExecutionAction = Aspectize.CreateView("ExecutionAction", aas.Controls.ExecutionAction, "", false, aas.Data.MainData.Todos.RelationTodoActions.Action);
-//vExecutionAction.Select1.BindList(vExecutionAction.ParentData, '', '')
+vExecutionAction.OnActivated.BindCommand(aas.Services.Browser.DataRecorder.Start(aas.Data.MainData));
+vExecutionAction.BtnCancel.click.BindCommand(aas.Services.Browser.BootStrapClientService.CloseModal(aas.ViewName.ExecutionAction));
+vExecutionAction.BtnCancel.click.BindCommand(aas.Services.Browser.DataRecorder.CancelRowChanges(aas.Data.MainData));
+vExecutionAction.BtnSave.click.BindCommand(aas.Services.Server.TodosService.ExecuteAction(
+    aas.Data.MainData,
+    vExecutionAction.ParentData.Id,
+    vExecutionAction.ParentData.RelationTodoActions.Todos.ElementType,
+    vExecutionAction.ParentData.RelationTodoActions.Todos.ElementId), "", false, true);
+vExecutionAction.BtnSave.click.BindCommand(aas.Services.Browser.BootStrapClientService.CloseModal(aas.ViewName.ExecutionAction));
+vExecutionAction.LibelleAction.BindData(vExecutionAction.ParentData.Libelle);
+vExecutionAction.InstructionsAction.BindData(vExecutionAction.ParentData.Instructions);
+vExecutionAction.LabelVarText1.BindData(vExecutionAction.ParentData.LBLT1);
+vExecutionAction.LabelVarText2.BindData(vExecutionAction.ParentData.LBLT2);
+vExecutionAction.VarText1.value.BindData(vExecutionAction.ParentData.VALT1);
+vExecutionAction.VarText2.value.BindData(vExecutionAction.ParentData.VALT2);
+
