@@ -127,19 +127,18 @@ Global.ClientTodosService = {
     },
 
     //-------------------------------------------------------------------------------------------------------
-    StartAction: function(nIdAction)
+    ExecuteAction: function (dataSet, nIdAction, elementType, elementId)
     {
-        var em = Aspectize.EntityManagerFromContextDataName(this.MainData);
-        Aspectize.ExecuteCommand(aas.Services.Browser.DataRecorder.Start(em.GetDataSet()));
+        var cmd = Aspectize.PrepareCommand();
+        cmd.Attributes.aasShowWaiting = true;
+        cmd.Attributes.aasAsynchronousCall = true;
 
-        var action = em.GetInstance('Action', {Id:nIdAction})
-        if(action){
-            Aspectize.ExecuteCommand(aas.Services.Browser.UIService.SetCurrent(aas.Path.MainData.Todos.RelationTodoActions.Action, action.Id));
-            Aspectize.ExecuteCommand(aas.Services.Browser.BootStrapClientService.ShowModal(aas.ViewName.ExecutionAction, false, false, true));
+        cmd.OnComplete = function (result) {
+            Aspectize.ExecuteCommand(aas.Services.Browser.BootStrapClientService.CloseModal(aas.ViewName.ExecutionAction));
+            Aspectize.ExecuteCommand(aas.Services.Browser.ClientTodosService.ToastAlert(result));
         }
-        else {
-            Aspectize.ExecuteCommand(aas.Services.Browser.DataRecorder.CancelRowChanges(em.GetDataSet()));
-        }
+        cmd.Call(aas.Services.Server.TodosService.ExecuteAction(dataSet, nIdAction, elementType, elementId));
+
     },
 
 
@@ -357,7 +356,7 @@ Global.ClientTodosService = {
 
         if(aasEventArg && aasEventArg.Item){
             var item = aasEventArg.Item;
-            alert(item.label);
+            //alert(item.label);
         }
         
     }

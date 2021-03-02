@@ -26,7 +26,7 @@ namespace TimosWebApp.Services
         void DeleteDocument(string strKeyFile);
         byte[] DownloadDocument(string strKeyFile, string strFileName);
         [Command(IsSaveCommand = true)]
-        void ExecuteAction(DataSet dataSet, int nIdAction, string elementType, int elementId);
+        string ExecuteAction(DataSet dataSet, int nIdAction, string elementType, int elementId);
         Dictionary<string, object>[] GetDatasList(string term, string strChampId);
     }
 
@@ -352,10 +352,11 @@ namespace TimosWebApp.Services
         }
 
         //-----------------------------------------------------------------------------------------
-        public void ExecuteAction(DataSet dataSet, int nIdAction, string elementType, int elementId)
+        // Retourne le message de succes de l'execution de l'action Timos
+        public string ExecuteAction(DataSet dataSet, int nIdAction, string elementType, int elementId)
         {
             if (!dataSet.HasChanges())
-                return;
+                return "";
 
             AspectizeUser aspectizeUser = ExecutingContext.CurrentUser;
 
@@ -373,16 +374,18 @@ namespace TimosWebApp.Services
                         throw new SmartException(1100, "Votre session a expiré, veuillez vous reconnecter");
                     }
                     result = serviceClientAspectize.ExecuteAction(nTimosSessionId, dataSet, nIdAction, elementType, elementId);
-
                     if (!result)
                         throw new SmartException(1010, result.MessageErreur);
+
+                    if (result.Data != null)
+                        return result.Data.ToString();
                 }
             }
             else
             {
                 throw new SmartException(1100, "Votre session a expiré, veuillez vous reconnecter");
             }
-
+            return "default";
         }
 
 
