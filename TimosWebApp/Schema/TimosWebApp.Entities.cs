@@ -706,7 +706,7 @@ namespace TimosWebApp
 			set { setValue<string>("TitreCaracteristiques", value); }
 		}
 
-		[Data(DefaultValue = "none")]
+		[Data(DefaultValue = "hidden")]
 		public string LibelleChampAutoComplete
 		{
 			get { return getValue<string>("LibelleChampAutoComplete"); }
@@ -714,10 +714,10 @@ namespace TimosWebApp
 		}
 
 		[Data]
-		public string IdChampAutoComplete
+		public int IdChampAutoComplete
 		{
-			get { return getValue<string>("IdChampAutoComplete"); }
-			set { setValue<string>("IdChampAutoComplete", value); }
+			get { return getValue<int>("IdChampAutoComplete"); }
+			set { setValue<int>("IdChampAutoComplete", value); }
 		}
 
 	}
@@ -1108,10 +1108,10 @@ namespace TimosWebApp
 		}
 
 		[Data]
-		public string VALN1
+		public int VALN1
 		{
-			get { return getValue<string>("VALN1"); }
-			set { setValue<string>("VALN1", value); }
+			get { return getValue<int>("VALN1"); }
+			set { setValue<int>("VALN1", value); }
 		}
 
 		[Data]
@@ -1129,10 +1129,10 @@ namespace TimosWebApp
 		}
 
 		[Data]
-		public string VALN2
+		public int VALN2
 		{
-			get { return getValue<string>("VALN2"); }
-			set { setValue<string>("VALN2", value); }
+			get { return getValue<int>("VALN2"); }
+			set { setValue<int>("VALN2", value); }
 		}
 
 		[Data]
@@ -1150,10 +1150,10 @@ namespace TimosWebApp
 		}
 
 		[Data]
-		public string VALN3
+		public int VALN3
 		{
-			get { return getValue<string>("VALN3"); }
-			set { setValue<string>("VALN3", value); }
+			get { return getValue<int>("VALN3"); }
+			set { setValue<int>("VALN3", value); }
 		}
 
 		[Data]
@@ -1171,10 +1171,10 @@ namespace TimosWebApp
 		}
 
 		[Data]
-		public string VALD1
+		public DateTime VALD1
 		{
-			get { return getValue<string>("VALD1"); }
-			set { setValue<string>("VALD1", value); }
+			get { return getValue<DateTime>("VALD1"); }
+			set { setValue<DateTime>("VALD1", value); }
 		}
 
 		[Data]
@@ -1192,10 +1192,10 @@ namespace TimosWebApp
 		}
 
 		[Data]
-		public string VALD2
+		public DateTime VALD2
 		{
-			get { return getValue<string>("VALD2"); }
-			set { setValue<string>("VALD2", value); }
+			get { return getValue<DateTime>("VALD2"); }
+			set { setValue<DateTime>("VALD2", value); }
 		}
 
 		[Data]
@@ -1213,10 +1213,10 @@ namespace TimosWebApp
 		}
 
 		[Data]
-		public string VALD3
+		public DateTime VALD3
 		{
-			get { return getValue<string>("VALD3"); }
-			set { setValue<string>("VALD3", value); }
+			get { return getValue<DateTime>("VALD3"); }
+			set { setValue<DateTime>("VALD3", value); }
 		}
 
 		[Data]
@@ -1227,10 +1227,10 @@ namespace TimosWebApp
 		}
 
 		[Data]
-		public string VALB1
+		public bool VALB1
 		{
-			get { return getValue<string>("VALB1"); }
-			set { setValue<string>("VALB1", value); }
+			get { return getValue<bool>("VALB1"); }
+			set { setValue<bool>("VALB1", value); }
 		}
 
 		[Data]
@@ -1248,10 +1248,10 @@ namespace TimosWebApp
 		}
 
 		[Data]
-		public string VALB2
+		public bool VALB2
 		{
-			get { return getValue<string>("VALB2"); }
-			set { setValue<string>("VALB2", value); }
+			get { return getValue<bool>("VALB2"); }
+			set { setValue<bool>("VALB2", value); }
 		}
 
 		[Data]
@@ -1269,10 +1269,10 @@ namespace TimosWebApp
 		}
 
 		[Data]
-		public string VALB3
+		public bool VALB3
 		{
-			get { return getValue<string>("VALB3"); }
-			set { setValue<string>("VALB3", value); }
+			get { return getValue<bool>("VALB3"); }
+			set { setValue<bool>("VALB3", value); }
 		}
 
 		[Data]

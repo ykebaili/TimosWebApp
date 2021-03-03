@@ -184,7 +184,7 @@
                     </div>
                     <div class="modal-body">
                         <h3>{LabelElementEdite}</h3>
-                        <div class="form-horizontal {DisplayAutoComplete}">
+                        <div class="form-horizontal {LibelleChampAutoComplete}">
                             <div class="form-group">
                                 <label class="control-label col-xs-6 col-md-4" for="EditionChamps-AutoCompleteValeurChamp">{LibelleChampAutoComplete}</label>
                                 <div class="col-xs-6 col-md-8">
@@ -279,19 +279,110 @@
                     <div class="modal-body">
                         <p>{InstructionsAction}</p>
                         <div class="form-horizontal">
-                            <div class="form-group">
+                            <!-- 5 variables de type texte -->
+                            <div class="form-group {LabelVarText1}">
                                 <label class="control-label col-xs-6" for="ExecutionAction-VarText1">{LabelVarText1}</label>
                                 <div class="col-xs-6">
                                     <input class="form-control" name="VarText1" type="text" />
                                 </div>
-
                             </div>
-                            <div class="form-group">
+                            <div class="form-group {LabelVarText2}">
                                 <label class="control-label col-xs-6" for="ExecutionAction-VarText2">{LabelVarText2}</label>
                                 <div class="col-xs-6">
                                     <input class="form-control" name="VarText2" type="text" />
                                 </div>
                             </div>
+                            <div class="form-group {LabelVarText3}">
+                                <label class="control-label col-xs-6" for="ExecutionAction-VarText3">{LabelVarText3}</label>
+                                <div class="col-xs-6">
+                                    <input class="form-control" name="VarText3" type="text" />
+                                </div>
+                            </div>
+                            <div class="form-group {LabelVarText4}">
+                                <label class="control-label col-xs-6" for="ExecutionAction-VarText4">{LabelVarText4}</label>
+                                <div class="col-xs-6">
+                                    <input class="form-control" name="VarText4" type="text" />
+                                </div>
+                            </div>
+                            <div class="form-group {LabelVarText5}">
+                                <label class="control-label col-xs-6" for="ExecutionAction-VarText5">{LabelVarText5}</label>
+                                <div class="col-xs-6">
+                                    <input class="form-control" name="VarText5" type="text" />
+                                </div>
+                            </div>
+                            <!-- 3 variables de type nombre entier -->
+                            <div class="form-group {LabelVarInt1}">
+                                <label class="control-label col-xs-6" for="ExecutionAction-VarInt1">{LabelVarInt1}</label>
+                                <div class="col-xs-6">
+                                    <input class="form-control" name="VarInt1" type="number" />
+                                </div>
+                            </div>
+                            <div class="form-group {LabelVarInt2}">
+                                <label class="control-label col-xs-6" for="ExecutionAction-VarInt2">{LabelVarInt2}</label>
+                                <div class="col-xs-6">
+                                    <input class="form-control" name="VarInt2" type="number" />
+                                </div>
+                            </div>
+                            <div class="form-group {LabelVarInt3}">
+                                <label class="control-label col-xs-6" for="ExecutionAction-VarInt3">{LabelVarInt3}</label>
+                                <div class="col-xs-6">
+                                    <input class="form-control" name="VarInt3" type="number" />
+                                </div>
+                            </div>
+                            <!-- 3 variables de type date -->
+                            <div class="form-group {LabelVarDate1}">
+                                <label class="control-label col-xs-6" for="ExecutionAction-VarDate1">{LabelVarDate1}</label>
+                                <div class="col-xs-6">
+                                    <div aas-name='VarDate1' aas-type='BootstrapDateTimePicker.BootstrapDateTimePicker' class='input-group date'>
+                                        <input type='text' class="form-control" />
+                                        <span class="input-group-addon">
+                                            <span class="fa fa-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group {LabelVarDate2}">
+                                <label class="control-label col-xs-6" for="ExecutionAction-VarDate2">{LabelVarDate2}</label>
+                                <div class="col-xs-6">
+                                    <div aas-name='VarDate2' aas-type='BootstrapDateTimePicker.BootstrapDateTimePicker' class='input-group date'>
+                                        <input type='text' class="form-control" />
+                                        <span class="input-group-addon">
+                                            <span class="fa fa-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group {LabelVarDate3}">
+                                <label class="control-label col-xs-6" for="ExecutionAction-VarDate3">{LabelVarDate3}</label>
+                                <div class="col-xs-6">
+                                    <div aas-name='VarDate3' aas-type='BootstrapDateTimePicker.BootstrapDateTimePicker' class='input-group date'>
+                                        <input type='text' class="form-control" />
+                                        <span class="input-group-addon">
+                                            <span class="fa fa-calendar"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- 3 variables de type bool -->
+                            <div class="form-group {LabelVarBool1}">
+                                <label class="control-label col-xs-6" for="ExecutionAction-VarBool1">{LabelVarBool1}</label>
+                                <div class="col-xs-6">
+                                    <input name="VarBool1" type="checkbox" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="form-group {LabelVarBool2}">
+                                <label class="control-label col-xs-6" for="ExecutionAction-VarBool2">{LabelVarBool2}</label>
+                                <div class="col-xs-6">
+                                    <input name="VarBool2" type="checkbox" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="form-group {LabelVarBool3}">
+                                <label class="control-label col-xs-6" for="ExecutionAction-VarBool3">{LabelVarBool3}</label>
+                                <div class="col-xs-6">
+                                    <input name="VarBool3" type="checkbox" class="form-control" />
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                     <div class="modal-footer">

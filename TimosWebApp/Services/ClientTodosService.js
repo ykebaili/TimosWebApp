@@ -352,11 +352,24 @@ Global.ClientTodosService = {
     },
 
     //-------------------------------------------------------------------------------------------------------
-    SelectDataFromList: function (aasEventArg) {
+    // Récupère la valeur de l'input AutoComplete et set la valeur du champ Timos associé
+    SelectDataFromList: function (aasEventArg, nIdChamp, nIdGroupe, nIdCarac) {
 
         if(aasEventArg && aasEventArg.Item){
             var item = aasEventArg.Item;
             //alert(item.label);
+            var valeur = item.value;
+
+            var em = Aspectize.EntityManagerFromContextDataName(this.MainData);
+            var groupeChamps = em.GetInstance('GroupeChamps', { 'TimosId': nIdGroupe });
+            if (groupeChamps) {
+                var idValeurChamp = nIdGroupe + '' + nIdChamp;
+                var todoValeurChamp = em.GetInstance('TodoValeurChamp', { 'Id': idValeurChamp });
+                if (todoValeurChamp) {
+                    todoValeurChamp.SetField('ValeurChamp', valeur);
+                }
+            }
+            
         }
         
     }

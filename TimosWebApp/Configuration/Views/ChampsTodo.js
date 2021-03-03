@@ -62,12 +62,11 @@ vEditionTodo.GridChamps.EnumValuesTableTypeColumn.BindData("ChampTimosId");
 vEditionTodo.GridChamps.EditMode.BindData(true);
 vEditionTodo.GridChamps.OnEndRender.BindCommand(aas.Services.Browser.ClientTodosService.InitPropertyGrid(aas.ViewName.EditionTodo.GridChamps));
 // Auto complete
-vEditionTodo.AutoCompleteValeurChamp.OnNeedData.BindCommand(aas.Services.Server.TodosService.GetDatasList('', vEditionTodo.ParentData.IdChampAutoComplete));
-vEditionTodo.AutoCompleteValeurChamp.OnItemSelected.BindCommand(aas.Services.Browser.ClientTodosService.SelectDataFromList(''));
-vEditionTodo.AutoCompleteValeurChamp.Custom.BindData(false);
-vEditionTodo.AutoCompleteValeurChamp.FillSelected.BindData(false);
 vEditionTodo.LibelleChampAutoComplete.BindData(vEditionTodo.ParentData.LibelleChampAutoComplete);
-//vEditionTodo.DisplayAutoComplete.BindData(aas.Expression(IIF('LibelleChampAutoComplete', '', 'hidden')));
+vEditionTodo.AutoCompleteValeurChamp.OnNeedData.BindCommand(aas.Services.Server.TodosService.GetDatasList('', vEditionTodo.ParentData.IdChampAutoComplete));
+vEditionTodo.AutoCompleteValeurChamp.OnItemSelected.BindCommand(aas.Services.Browser.ClientTodosService.SelectDataFromList('', vEditionTodo.ParentData.IdChampAutoComplete, vEditionTodo.ParentData.TimosId, -1));
+vEditionTodo.AutoCompleteValeurChamp.Custom.BindData(false);
+vEditionTodo.AutoCompleteValeurChamp.FillSelected.BindData(true);
 
 
 // Création des caractéristiques

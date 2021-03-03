@@ -701,7 +701,7 @@ namespace TimosWebApp.Services
                             if (champTimos.UseAutoComplete)
                             {
                                 groupeAssocie.LibelleChampAutoComplete = champTimos.LibelleConvivial + " (AutoComplete)";
-                                groupeAssocie.IdChampAutoComplete = champTimos.TimosId.ToString();
+                                groupeAssocie.IdChampAutoComplete = champTimos.TimosId;
                             }
                         }
                     }

@@ -65,6 +65,8 @@
 <script src="~TimosWebApp/BootstrapSelect/js/bootstrap-select.min.js"></script>
 <script src="~TimosWebApp/BootstrapSelect/js/i18n/defaults-fr_FR.js"></script>
 
+<script src="~JQueryAutoComplete/JQueryAutoComplete.library.js"></script>
+
 
 <title>TimosWebApp by Ooredoo</title>
 </head>
