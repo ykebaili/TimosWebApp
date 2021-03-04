@@ -1452,7 +1452,7 @@ namespace TimosWebApp
 			base.InitData(data, null);
 		}
 
-		[RelationEnd(Type = typeof(Todos), Role = typeof(Todos), Multiplicity = Multiplicity.ZeroOrOne)]
+		[RelationEnd(Type = typeof(Todos), Role = typeof(Todos), Multiplicity = Multiplicity.ZeroOrMany)]
 		public IEntity Todos;
 
 		[RelationEnd(Type = typeof(Action), Role = typeof(Action), Multiplicity = Multiplicity.ZeroOrMany)]

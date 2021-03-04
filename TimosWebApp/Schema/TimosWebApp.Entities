@@ -278,7 +278,7 @@
     </relation>
     <relation Id="49a28c5b-72da-4535-bec7-3e897b721f65" name="RelationTodoActions" guid="00000000-0000-0000-0000-000000000000" hasTriggers="false" hasCustomValidators="false">
       <entityReferenceClasses>
-        <relationReferencesEntityReferenceClasses Id="46aec7a9-05b2-420b-ace9-dee002e99909" role="Todos" cardinality="O__I">
+        <relationReferencesEntityReferenceClasses Id="46aec7a9-05b2-420b-ace9-dee002e99909" role="Todos" cardinality="O__N">
           <entityMoniker Id="91a7a2c7-8230-434a-9900-5328d42c3fca" />
         </relationReferencesEntityReferenceClasses>
         <relationReferencesEntityReferenceClasses Id="c0bfa697-d831-4d80-bb77-a2c719656aca" role="Action" cardinality="O__N">

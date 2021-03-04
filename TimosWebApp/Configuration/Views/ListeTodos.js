@@ -44,7 +44,7 @@ vDetailTodo.BoutonTerminerTodo.click.BindCommand(aas.Services.Browser.BootStrapC
 vDetailTodo.SelectAction.BindList(vDetailTodo.ParentData.RelationTodoActions.Action, 'Id', 'Libelle', 'Libelle');
 vDetailTodo.SelectAction.NullValueDisplay.BindData('Actions');
 vDetailTodo.SelectAction.DefaultIndex.BindData(0);
-vDetailTodo.SelectAction.SelectedValueChanged.BindCommand(aas.Services.Browser.BootStrapClientService.ShowModal(aas.ViewName.ExecutionAction, false, false, true));
+vDetailTodo.SelectAction.SelectedValueChanged.BindCommand(aas.Services.Browser.ClientTodosService.PrepareAction(vDetailTodo.SelectAction.CurrentValue));
 
 // Modale de confirmation de fin de todo
 var vConfirmationEndTodo = Aspectize.CreateView("ConfirmationEndTodo", aas.Controls.ConfirmationEndTodo, "", false, aas.Data.MainData.Todos);
@@ -65,9 +65,10 @@ vExecutionAction.BtnCancel.click.BindCommand(aas.Services.Browser.DataRecorder.C
 vExecutionAction.BtnSave.click.BindCommand(aas.Services.Browser.ClientTodosService.ExecuteAction(
     aas.Data.MainData,
     vExecutionAction.ParentData.Id,
-    vExecutionAction.ParentData.RelationTodoActions.Todos.ElementType,
-    vExecutionAction.ParentData.RelationTodoActions.Todos.ElementId));
+    aas.Data.MainData.Todos.ElementType,
+    aas.Data.MainData.Todos.ElementId));
 vExecutionAction.LibelleAction.BindData(vExecutionAction.ParentData.Libelle);
+vExecutionAction.LibelleTodo.BindData(aas.Data.MainData.Todos.Label);
 vExecutionAction.InstructionsAction.BindData(vExecutionAction.ParentData.Instructions);
 
 vExecutionAction.LabelVarText1.BindData(vExecutionAction.ParentData.LBLT1);

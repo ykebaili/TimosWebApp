@@ -126,9 +126,18 @@ Global.ClientTodosService = {
 
     },
 
+    //---------------------------------------------------------------------------------------------------
+    PrepareAction: function (selectedValue) {
+        // On réinitialise la Select sur l'index 0
+        $('select[name=SelectAction]').val(0);
+        if (selectedValue != null) {
+            Aspectize.ExecuteCommand(aas.Services.Browser.BootStrapClientService.ShowModal(aas.ViewName.ExecutionAction, false, false, true));
+        }
+    },
+
     //-------------------------------------------------------------------------------------------------------
-    ExecuteAction: function (dataSet, nIdAction, elementType, elementId)
-    {
+    ExecuteAction: function (dataSet, nIdAction, elementType, elementId) {
+
         var cmd = Aspectize.PrepareCommand();
         cmd.Attributes.aasShowWaiting = true;
         cmd.Attributes.aasAsynchronousCall = true;
@@ -138,7 +147,6 @@ Global.ClientTodosService = {
             Aspectize.ExecuteCommand(aas.Services.Browser.ClientTodosService.ToastAlert(result));
         }
         cmd.Call(aas.Services.Server.TodosService.ExecuteAction(dataSet, nIdAction, elementType, elementId));
-
     },
 
 
@@ -358,7 +366,7 @@ Global.ClientTodosService = {
         if(aasEventArg && aasEventArg.Item){
             var item = aasEventArg.Item;
             //alert(item.label);
-            var valeur = item.value;
+            var valeur = item.label;
 
             var em = Aspectize.EntityManagerFromContextDataName(this.MainData);
             var groupeChamps = em.GetInstance('GroupeChamps', { 'TimosId': nIdGroupe });

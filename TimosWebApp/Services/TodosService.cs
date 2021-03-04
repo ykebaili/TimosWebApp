@@ -89,17 +89,18 @@ namespace TimosWebApp.Services
                     {
                         throw new SmartException(1100, "Votre session a expiré, veuillez vous reconnecter");
                     }
-                    result = serviceClientAspectize.SaveTodo(nTimosSessionId, dataSet, nIdTodo, elementType, elementId);
-
-                    if (!result)
-                        throw new SmartException(1010, result.MessageErreur);
-
-                    /* DEBUG
-                    var valeurChamp = em.GetAllInstances<TodoValeurChamp>();
-                    foreach (var val in valeurChamp)
+                    try
                     {
-                        int idchamp = val.ChampTimosId;
-                    }*/
+                        // Pré-traitement des champs AutoComplete
+                        result = TraiteAutoCompleteValues(dataSet, "TodoValeurChamp");
+                        result = serviceClientAspectize.SaveTodo(nTimosSessionId, dataSet, nIdTodo, elementType, elementId);
+                        if (!result)
+                            throw new SmartException(1010, result.MessageErreur);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new SmartException(1010, ex.Message);
+                    }
                 }
             }
             else
@@ -107,6 +108,41 @@ namespace TimosWebApp.Services
                 throw new SmartException(1100, "Votre session a expiré, veuillez vous reconnecter");
             }
 
+        }
+
+        private CResultAErreur TraiteAutoCompleteValues(DataSet ds, string strNomTable)
+        {
+            CResultAErreur result = CResultAErreur.True;
+            if(ds != null)
+            {
+                DataTable tableATraiter = ds.Tables[strNomTable];
+                if(tableATraiter != null)
+                {
+                    foreach(DataRow row in tableATraiter.Rows)
+                    {
+                        string strChampId = row["ChampTimosId"].ToString();
+                        string strValeur = (string)row["ValeurChamp"];
+                        if (row.RowState == DataRowState.Modified)
+                        {
+                            Dictionary<string, string> dicValeursChamp = m_htChampValeursPossibles[strChampId] as Dictionary<string, string>;
+                            if (dicValeursChamp != null)
+                            {
+                                try
+                                {
+                                    string strKey = dicValeursChamp.Where(p => p.Value == strValeur).First().Key;
+                                    row["ValeurChamp"] = strKey;
+                                }
+                                catch(Exception ex)
+                                {
+                                    result.EmpileErreur(ex.Message);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return result;
         }
 
         //-----------------------------------------------------------------------------------------
@@ -730,6 +766,7 @@ namespace TimosWebApp.Services
             // Gestion des valeurs possibles de champs
             if (ds.Tables.Contains(CChampValeursPossibles.c_nomTable))
             {
+                int nIlfautPrendreaumoins2valeursPossibles = 2;
                 DataTable tableValeursPossibles = ds.Tables[CChampValeursPossibles.c_nomTable];
                 foreach (DataRow rowValPossbile in tableValeursPossibles.Rows)
                 {
@@ -743,7 +780,8 @@ namespace TimosWebApp.Services
                     ChampTimos champ = em.GetInstance<ChampTimos>(strChampTimosId);
                     if (champ != null)
                     {
-                        if (champ.UseAutoComplete)
+                        bool bAutoComplete = champ.UseAutoComplete;
+                        if (bAutoComplete)
                         {
                             // Remplissage du dictionnaire AUTO COMPLETE
                             Dictionary<string, string> dicValeursChamp = m_htChampValeursPossibles[strChampTimosId] as Dictionary<string, string>;
@@ -754,7 +792,7 @@ namespace TimosWebApp.Services
                             }
                             dicValeursChamp[strStoredValue] = strDisplayeddValue;
                         }
-                        else
+                        if(!bAutoComplete)
                         {
                             string strId = strChampTimosId + "-" + strStoredValue;
                             ValeursChamp valPossible = em.GetInstance<ValeursChamp>(strId);
