@@ -739,6 +739,7 @@ namespace TimosWebApp
 			public const string ParentElementType = "ParentElementType";
 			public const string ParentElementId = "ParentElementId";
 			public const string LibelleChampAutoComplete = "LibelleChampAutoComplete";
+			public const string IdChampAutoComplete = "IdChampAutoComplete";
 		}
 
 		void IDataWrapper.InitData(DataRow data, string namePrefix)
@@ -828,6 +829,13 @@ namespace TimosWebApp
 		{
 			get { return getValue<string>("LibelleChampAutoComplete"); }
 			set { setValue<string>("LibelleChampAutoComplete", value); }
+		}
+
+		[Data]
+		public int IdChampAutoComplete
+		{
+			get { return getValue<int>("IdChampAutoComplete"); }
+			set { setValue<int>("IdChampAutoComplete", value); }
 		}
 
 	}

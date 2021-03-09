@@ -67,7 +67,7 @@ vEditionTodo.AutoCompleteValeurChamp.OnNeedData.BindCommand(aas.Services.Server.
 vEditionTodo.AutoCompleteValeurChamp.OnItemSelected.BindCommand(aas.Services.Browser.ClientTodosService.SelectDataFromList('', vEditionTodo.ParentData.IdChampAutoComplete, vEditionTodo.ParentData.TimosId, -1));
 vEditionTodo.AutoCompleteValeurChamp.Custom.BindData(false);
 vEditionTodo.AutoCompleteValeurChamp.FillSelected.BindData(true);
-
+vEditionTodo.AutoCompleteValeurChamp.Label.BindData(aas.Services.Browser.ClientTodosService.InitAutoCompleteValue(vEditionTodo.ParentData.IdChampAutoComplete, vEditionTodo.ParentData.TimosId, -1));
 
 // Création des caractéristiques
 var vCaracteristiques = Aspectize.CreateRepeatedView("Caracteristique", aas.Controls.Caracteristique, aas.Zones.GroupeChamps.RepeaterPanelCaracteristiques,
@@ -108,7 +108,7 @@ vEditionCarac.BtnSave.click.BindCommand(aas.Services.Browser.ClientTodosService.
     vEditionCarac.ParentData.RelationTodoCaracteristique.Todos.TimosId));
 
 // Configuration de la PropertyGrid en mode édition
-vEditionCarac.GridChamps.BindList(vEditionCarac.ParentData.RelationCaracValeurChamp.CaracValeurChamp, "ValeurChamp", "LibelleChamp", "OrdreChamp");
+vEditionCarac.GridChamps.BindList(vEditionCarac.ParentData.RelationCaracValeurChamp.CaracValeurChamp, "ValeurChamp", "LibelleChamp", "OrdreChamp", aas.Expression('!UseAutoComplete'));
 vEditionCarac.GridChamps.TypeTableName.BindData(vEditionCarac.ParentPath.RelationCaracChamp.ChampTimos);
 vEditionCarac.GridChamps.TypeTableNameColumn.BindData("LibelleConvivial");
 vEditionCarac.GridChamps.TypeTableTypeColumn.BindData("AspectizeFieldType");
@@ -122,6 +122,12 @@ vEditionCarac.GridChamps.EnumValuesTableOptionValueColumn.BindData("StoredValue"
 vEditionCarac.GridChamps.EnumValuesTableTypeColumn.BindData("ChampTimosId");
 vEditionCarac.GridChamps.EditMode.BindData(true);
 vEditionCarac.GridChamps.OnEndRender.BindCommand(aas.Services.Browser.ClientTodosService.InitPropertyGrid(aas.ViewName.EditionCarac.GridChamps));
-
+// Auto complete
+vEditionCarac.LibelleChampAutoComplete.BindData(vEditionCarac.ParentData.LibelleChampAutoComplete);
+vEditionCarac.AutoCompleteValeurChamp.OnNeedData.BindCommand(aas.Services.Server.TodosService.GetDatasList('', vEditionCarac.ParentData.IdChampAutoComplete));
+vEditionCarac.AutoCompleteValeurChamp.OnItemSelected.BindCommand(aas.Services.Browser.ClientTodosService.SelectDataFromList('', vEditionCarac.ParentData.IdChampAutoComplete, -1, vEditionCarac.ParentData.Id));
+vEditionCarac.AutoCompleteValeurChamp.Custom.BindData(false);
+vEditionCarac.AutoCompleteValeurChamp.FillSelected.BindData(true);
+vEditionCarac.AutoCompleteValeurChamp.Label.BindData(aas.Services.Browser.ClientTodosService.InitAutoCompleteValue(vEditionCarac.ParentData.IdChampAutoComplete, -1, vEditionCarac.ParentData.Id));
 
 //*/

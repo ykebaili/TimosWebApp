@@ -110,6 +110,7 @@ namespace TimosWebApp.Services
 
         }
 
+        //-----------------------------------------------------------------------------------------
         private CResultAErreur TraiteAutoCompleteValues(DataSet ds, string strNomTable)
         {
             CResultAErreur result = CResultAErreur.True;
@@ -122,7 +123,7 @@ namespace TimosWebApp.Services
                     {
                         string strChampId = row["ChampTimosId"].ToString();
                         string strValeur = (string)row["ValeurChamp"];
-                        if (row.RowState == DataRowState.Modified)
+                        if (row.RowState == DataRowState.Modified || row.RowState == DataRowState.Added)
                         {
                             Dictionary<string, string> dicValeursChamp = m_htChampValeursPossibles[strChampId] as Dictionary<string, string>;
                             if (dicValeursChamp != null)
@@ -175,8 +176,7 @@ namespace TimosWebApp.Services
                 throw new SmartException(1100, "Votre session a expiré, veuillez vous reconnecter");
             }
         }
-
-
+        
         //------------------------------------------------------------------------------------------------------------
         public DataSet SaveCaracteristique(DataSet dataSet, int nIdCarac, string strTypeElement, int nIdTodo)
         {
@@ -197,10 +197,17 @@ namespace TimosWebApp.Services
                 {
                     throw new SmartException(1100, "Votre session a expiré, veuillez vous reconnecter");
                 }
-                result = serviceClientAspectize.SaveCaracteristique(nTimosSessionId, dataSet, nIdCarac, strTypeElement, nIdTodo);
-                if (!result)
-                    throw new SmartException(1010, result.MessageErreur);
-
+                try
+                {
+                    result = TraiteAutoCompleteValues(dataSet, "CaracValeurChamp");
+                    result = serviceClientAspectize.SaveCaracteristique(nTimosSessionId, dataSet, nIdCarac, strTypeElement, nIdTodo);
+                    if (!result)
+                        throw new SmartException(1010, result.MessageErreur);
+                }
+                catch (Exception ex)
+                {
+                    throw new SmartException(1010, ex.Message);
+                }
                 DataSet dsRetour = result.Data as DataSet;
                 FillEntitiesFromDataSet(dsRetour, em);
                 em.Data.AcceptChanges();
@@ -752,7 +759,10 @@ namespace TimosWebApp.Services
                         {
                             em.AssociateInstance<RelationCaracChamp>(caracAssociee, champTimos);
                             if (champTimos.UseAutoComplete)
+                            {
                                 caracAssociee.LibelleChampAutoComplete = champTimos.LibelleConvivial + " (AutoComplete)";
+                                caracAssociee.IdChampAutoComplete = champTimos.TimosId;
+                            }
                         }
                     }
                     catch (Exception ex)

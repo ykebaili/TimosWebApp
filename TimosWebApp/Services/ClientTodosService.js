@@ -183,6 +183,8 @@ Global.ClientTodosService = {
                 newCarac.SetField('IdMetaType', caracTemplate.IdMetaType);
                 newCarac.SetField('ParentElementType', caracTemplate.ParentElementType);
                 newCarac.SetField('ParentElementId', caracTemplate.ParentElementId);
+                newCarac.SetField('LibelleChampAutoComplete', caracTemplate.LibelleChampAutoComplete);
+                newCarac.SetField('IdChampAutoComplete', caracTemplate.IdChampAutoComplete);
 
                 // Association de tous les Champs
                 var champs = caracTemplate.GetAssociated('RelationCaracChamp', 'ChampTimos');
@@ -207,6 +209,7 @@ Global.ClientTodosService = {
                     newValeur.SetField('ElementType', valeur.ElementType);
                     newValeur.SetField('ElementId', newCarac.TimosId);
                     newValeur.SetField('ValeurChamp', valeur.ValeurChamp);
+                    newValeur.SetField('UseAutoComplete', valeur.UseAutoComplete);
 
                     em.AssociateInstance('RelationCaracValeurChamp', newCarac, 'Caracteristiques', newValeur, 'CaracValeurChamp');
                 }
@@ -369,6 +372,7 @@ Global.ClientTodosService = {
             var valeur = item.label;
 
             var em = Aspectize.EntityManagerFromContextDataName(this.MainData);
+
             var groupeChamps = em.GetInstance('GroupeChamps', { 'TimosId': nIdGroupe });
             if (groupeChamps) {
                 var idValeurChamp = nIdGroupe + '' + nIdChamp;
@@ -377,9 +381,38 @@ Global.ClientTodosService = {
                     todoValeurChamp.SetField('ValeurChamp', valeur);
                 }
             }
+            var caracteristique = em.GetInstance('Caracteristiques', { 'Id': nIdCarac });
+            if (caracteristique) {
+                var idValeurChamp = nIdCarac + '' + nIdChamp;
+                var caracValeurChamp = em.GetInstance('CaracValeurChamp', { 'Id': idValeurChamp });
+                if (caracValeurChamp) {
+                    caracValeurChamp.SetField('ValeurChamp', valeur);
+                }
+            }
             
         }
-        
+    },
+
+    //-------------------------------------------------------------------------------------------------------
+    InitAutoCompleteValue: function (nIdChamp, nIdGroupe, nIdCarac) {
+
+        var em = Aspectize.EntityManagerFromContextDataName(this.MainData);
+        var groupeChamps = em.GetInstance('GroupeChamps', { 'TimosId': nIdGroupe });
+        if (groupeChamps) {
+            var idValeurChamp = nIdGroupe + '' + nIdChamp;
+            var todoValeurChamp = em.GetInstance('TodoValeurChamp', { 'Id': idValeurChamp });
+            if (todoValeurChamp) {
+                return todoValeurChamp.ValeurChamp;
+            }
+        }
+        var caracteristique = em.GetInstance('Caracteristiques', { 'Id': nIdCarac });
+        if (caracteristique) {
+            var idValeurChamp = nIdCarac + '' + nIdChamp;
+            var caracValeurChamp = em.GetInstance('CaracValeurChamp', { 'Id': idValeurChamp });
+            if (caracValeurChamp) {
+                return caracValeurChamp.ValeurChamp;
+            }
+        }
     }
 
 };

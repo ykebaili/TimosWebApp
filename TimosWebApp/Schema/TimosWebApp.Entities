@@ -111,6 +111,7 @@
         <entityProperty name="ParentElementType" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
         <entityProperty name="ParentElementId" type="Int32" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
         <entityProperty name="LibelleChampAutoComplete" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="IdChampAutoComplete" type="Int32" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
       </properties>
     </entity>
     <entity Id="41978310-6a5d-4748-956e-cdcbf1da5f88" name="CaracValeurChamp" guid="f6beafe2-cf7e-491d-af99-cdb9b897af78" guidIdentifier="false" hasCustomValidators="false" hasTriggers="false">
