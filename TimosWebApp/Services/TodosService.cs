@@ -199,8 +199,9 @@ namespace TimosWebApp.Services
                 }
                 try
                 {
-                    result = TraiteAutoCompleteValues(dataSet, "CaracValeurChamp");
-                    result = serviceClientAspectize.SaveCaracteristique(nTimosSessionId, dataSet, nIdCarac, strTypeElement, nIdTodo);
+                    DataSet dsClone = dataSet.Copy();
+                    result = TraiteAutoCompleteValues(dsClone, "CaracValeurChamp");
+                    result = serviceClientAspectize.SaveCaracteristique(nTimosSessionId, dsClone, nIdCarac, strTypeElement, nIdTodo);
                     if (!result)
                         throw new SmartException(1010, result.MessageErreur);
                 }
