@@ -19,7 +19,7 @@
             </div>
             <div class="col-sm-2 col-xs-12 text-right">
                 <button class="btn btn-success {DisplayBtnTerminer}" name="BoutonTerminerTodo" style="margin-bottom:10px;"><i class="fas fa-check"></i> Terminer</button>
-                <div class="input-group">
+                <div class="input-group {DisplayBtnTerminer}">
                     <span class="input-group-addon select-input"><i class="fas fa-cog"></i></span>
                     <select class="form-control" name="SelectAction"></select>
                 </div>
@@ -78,7 +78,7 @@
                     <h3 class="titre-groupe">{TitreGroupe}</h3>
                 </div>
                 <div class="col-xs-2">
-                    <button class="btn btn-primary bouton-niveau1" name="BoutonEditionTodo"><i class="fas fa-edit"></i> <span class="bouton-libelle">Editer</span></button>
+                    <button class="btn btn-primary bouton-niveau1 {DisplayBtnEditer}" name="BoutonEditionTodo"><i class="fas fa-edit"></i> <span class="bouton-libelle">Editer</span></button>
                 </div>
             </div>
             <div class="row section-contenu-groupe">
@@ -107,17 +107,23 @@
     <!--------------------------------------------------- Controle affichage d'une Caratéristique---------------------------------------->
     <div aas-control="Caracteristique">
         <div class="row item-caracteristique">
-            <div class="col-md-8 col-xs-12 titre-caracteristique">
-                <h4>{LibelleCarac}</h4>
-            </div>
-            <div class="col-md-2 col-xs-6 bouton-caracteristique">
-                <button class="btn btn-primary" name="BoutonEditerCarac"><i class="fas fa-edit"></i> Editer</button>
-            </div>
-            <div class="col-md-2 col-xs-6 bouton-caracteristique">
-                <button class="btn btn-danger {DisplayBtnDeleteCarac}" name="BoutonSupprimerCarac"><i class="fas fa-trash"></i> Supprimer</button>
-            </div>
             <div class="col-xs-12">
-                <div aas-name="GridChampsCaracteristique" aas-type="AspectizePropertyGrid"></div>
+                <div class="row titre-caracteristique">
+                    <div class="col-md-8 col-xs-12">
+                        <h4>{LibelleCarac}</h4>
+                    </div>
+                    <div class="col-md-2 col-xs-6 bouton-caracteristique">
+                        <button class="btn btn-primary {DisplayBtnEditer}" name="BoutonEditerCarac"><i class="fas fa-edit"></i> Editer</button>
+                    </div>
+                    <div class="col-md-2 col-xs-6 bouton-caracteristique">
+                        <button class="btn btn-danger {DisplayBtnDeleteCarac}" name="BoutonSupprimerCarac"><i class="fas fa-trash"></i> Supprimer</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div aas-name="GridChampsCaracteristique" aas-type="AspectizePropertyGrid"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

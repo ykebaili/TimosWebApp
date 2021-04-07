@@ -49,15 +49,29 @@ namespace TimosWebApp.Services
                     throw new SmartException(1100, "Votre session a expiré, veuillez vous reconnecter");
                 }
 
-                result = serviceClientAspectize.GetTodoDetails(nTimosSessionId, nIdTodo);
-
-                if (result && result.Data != null)
+                try
                 {
-                    DataSet ds = result.Data as DataSet;
-                    FillEntitiesFromDataSet(ds, em);
+                    result = serviceClientAspectize.GetTodoDetails(nTimosSessionId, nIdTodo);
+                    if (!result)
+                        throw new SmartException(1010, "Erreur GetTodoDetails(nTimosSessionId = " + nTimosSessionId + ", nIdTodo = " + nIdTodo + ")" +
+                        Environment.NewLine +
+                        result.MessageErreur);
 
-                    em.Data.AcceptChanges();
-                    return em.Data;
+                    if (result && result.Data != null)
+                    {
+                        DataSet ds = result.Data as DataSet;
+                        FillEntitiesFromDataSet(ds, em);
+
+                        em.Data.AcceptChanges();
+                        return em.Data;
+                    }
+                }
+                catch (Exception ex)   
+                {
+                    throw new SmartException(1010,
+                        "Erreur GetTodoDetails(nTimosSessionId = " + nTimosSessionId + ", nIdTodo = " + nIdTodo + ")" +
+                        Environment.NewLine +
+                        ex.Message);
                 }
             }
             else
@@ -529,6 +543,9 @@ namespace TimosWebApp.Services
                                 caracteristique.IdMetaType = (int)rowCarac[CCaracteristique.c_champIdMetaType];
                                 caracteristique.ParentElementType = (string)rowCarac[CCaracteristique.c_champParentElementType];
                                 caracteristique.ParentElementId = (int)rowCarac[CCaracteristique.c_champParentElementId];
+                                var groupeChamps = em.GetInstance<GroupeChamps>(nIdGroupe);
+                                if (groupeChamps != null)
+                                    caracteristique.CanDeleteCaracteristique = groupeChamps.CanAddCaracteristiques;
 
                                 try
                                 {
@@ -744,7 +761,7 @@ namespace TimosWebApp.Services
                             em.AssociateInstance<RelationGroupeChampsChampsTimos>(groupeAssocie, champTimos);
                             if (champTimos.UseAutoComplete)
                             {
-                                groupeAssocie.LibelleChampAutoComplete = champTimos.LibelleConvivial + " (AutoComplete)";
+                                groupeAssocie.LibelleChampAutoComplete = champTimos.LibelleConvivial;
                                 groupeAssocie.IdChampAutoComplete = champTimos.TimosId;
                             }
                         }
@@ -761,7 +778,7 @@ namespace TimosWebApp.Services
                             em.AssociateInstance<RelationCaracChamp>(caracAssociee, champTimos);
                             if (champTimos.UseAutoComplete)
                             {
-                                caracAssociee.LibelleChampAutoComplete = champTimos.LibelleConvivial + " (AutoComplete)";
+                                caracAssociee.LibelleChampAutoComplete = champTimos.LibelleConvivial;
                                 caracAssociee.IdChampAutoComplete = champTimos.TimosId;
                             }
                         }

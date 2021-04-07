@@ -26,23 +26,32 @@ namespace TimosWebApp.Services
         [Parameter(Optional = false)]
         public string TimosServerURL = "";
 
-        /*[Parameter(Optional = false)]
+        [Parameter(Optional = false)]
         public string RadiusServerURL = "";
+        
         [Parameter(Optional = false)]
-        public uint RadiusServerPort = 1815;
+        public int RadiusServerPort = 1815;
+        
         [Parameter(Optional = false)]
-        public string RadiusSharedKey = "";*/
+        public string RadiusSharedKey = "";
 
         public void InitTimos()
         {
             CResultAErreur result = CResultAErreur.True;
+
             string strServeurUrl = TimosServerURL;
             int nTcpChannel = 0;
             string strBindTo = "";
 
+            string strRadiuServerUrl = RadiusServerURL;
+            uint nRadiusPort = (uint)RadiusServerPort;
+            string strSharedKey = RadiusSharedKey;            
+
             try
             {
                 AppDomain.CurrentDomain.SetPrincipalPolicy(PrincipalPolicy.WindowsPrincipal);
+
+                AuthenticationService.Init(strRadiuServerUrl, nRadiusPort, strSharedKey);
 
                 result = CSC2iMultitiersClient.Init(nTcpChannel, strServeurUrl, strBindTo);
 

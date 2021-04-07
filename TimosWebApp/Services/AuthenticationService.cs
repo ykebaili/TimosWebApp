@@ -21,25 +21,37 @@ namespace TimosWebApp
     [Service(Name = "AuthenticationService")]
     public class AuthenticationService : IAuthentication, IUserProfile, IPersistentAuthentication, IAuthentificationTimos //, IInitializable, ISingleton
     {
+        private static string m_strRadiusHost = "172.22.114.144";
+        private static uint m_nRadiusPort = 1815;
+        private static string m_strRadiusSharedKey = ""; // H_Sf2V"T%2\n
 
-        private const string m_strRadiusHost = "172.22.114.144";
-        private const string m_strRadiusSharedKey = "H_Sf2V\"T%2\\n";
-        private const uint m_nRadiusPort = 1815;
+        //-------------------------------------------------------------------------------------------------------------------------
+        public static void Init(string strRadiusHost, uint nPort, string strSharedKey)
+        {
+            m_strRadiusHost = strRadiusHost;
+            m_nRadiusPort = nPort;
+            m_strRadiusSharedKey = strSharedKey;
+        }
 
-
+        //-------------------------------------------------------------------------------------------------------------------------
+        // Premier appel Radius
         public string AuthenticateRadius(string strUserName, string strPassword)
         {
-            Context.Log(InfoType.Information, "AuthenticateRadius : " + strUserName);
+            string messageLog = "AuthenticateRadius : " + strUserName + Environment.NewLine +
+                "Radius Host : " + m_strRadiusHost + Environment.NewLine +
+                "Radius Port : " + m_nRadiusPort + Environment.NewLine +
+                "Shared Key : " + m_strRadiusSharedKey;
+
+            Context.Log(InfoType.Information, messageLog);
 
             if (ExecutingContext.CurrentHostUrl.ToLower().StartsWith(@"http://localhost"))
                 return "11#blablabbal";
 
             else
-                // Premier appel Radius
                 return AdministrationService.AuthenticateRadius(m_strRadiusHost, m_nRadiusPort, m_strRadiusSharedKey, strUserName, strPassword, "");
         }
 
-
+        //-------------------------------------------------------------------------------------------------------------------------
         // Authenticate user, using Security Service Configuration 
         AspectizeUser IAuthentication.Authenticate(string userName, string secret, AuthenticationProtocol protocol, HashHelper.Algorithm algorithm, string challenge)
         {
@@ -87,8 +99,8 @@ namespace TimosWebApp
             // Fin authentification TIMOS 
         }
 
-              
 
+        //-------------------------------------------------------------------------------------------------------------------------
         // This Command is called when user is remembered, instead of Authenticate
         bool IPersistentAuthentication.ValidateUser(AspectizeUser user)
         {
@@ -101,6 +113,7 @@ namespace TimosWebApp
             return false;
         }
 
+        //-------------------------------------------------------------------------------------------------------------------------
         // Get Profile (ie initial DataSet) of user, authenticated or not
         DataSet IUserProfile.GetUserProfile()
         {
@@ -161,6 +174,7 @@ namespace TimosWebApp
             return null;
         }
 
+        //-------------------------------------------------------------------------------------------------------------------------
         public void LogoutUser()
         {
             AspectizeUser aspectizeUser = ExecutingContext.CurrentUser;

@@ -258,6 +258,7 @@ img.logo{
 /* Affichage des documents */
 .bouton-niveau1{
     margin-top: 10px;
+    margin-bottom: 6px;
 }
 
 .gcActionSupprimer, .gcActionVisualiser {
@@ -349,11 +350,8 @@ img.logo{
 }
 .titre-caracteristique{
     background-color: #f2f4f7;
-    padding-top: 8px;
-    padding-bottom: 7px;
 }
 .bouton-caracteristique {
-    background-color: #f2f4f7;
     padding-top: 10px;
     padding-bottom: 10px;
 }

@@ -18,7 +18,9 @@ MailService.ExpediteurDisplay = "";
 
 var TimosInitialisationService = Aspectize.ConfigureNewService("TimosInitialisationService", aas.ConfigurableServices.InitialisationService);
 TimosInitialisationService.TimosServerURL = 'tcp://127.0.0.1:8160';
-//TimosInitialisationService.RadiusServerURL = '172.22.114.144';
+TimosInitialisationService.RadiusServerURL = '172.22.114.144';
+TimosInitialisationService.RadiusServerPort = 1815;
+TimosInitialisationService.RadiusSharedKey = '';
 
 var DbLogException = Aspectize.ConfigureNewService("DbLogExceptionService", aas.ConfigurableServices.DBLogException);
 DbLogException.MailServiceName = "MailService";

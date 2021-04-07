@@ -26,6 +26,7 @@ namespace TimosWebApp
 			public const string Caracteristiques = "Caracteristiques";
 			public const string CaracValeurChamp = "CaracValeurChamp";
 			public const string Action = "Action";
+			public const string Export = "Export";
 		}
 
 		public static partial class Relations
@@ -740,6 +741,7 @@ namespace TimosWebApp
 			public const string ParentElementId = "ParentElementId";
 			public const string LibelleChampAutoComplete = "LibelleChampAutoComplete";
 			public const string IdChampAutoComplete = "IdChampAutoComplete";
+			public const string CanDeleteCaracteristique = "CanDeleteCaracteristique";
 		}
 
 		void IDataWrapper.InitData(DataRow data, string namePrefix)
@@ -824,7 +826,7 @@ namespace TimosWebApp
 			set { setValue<int>("ParentElementId", value); }
 		}
 
-		[Data]
+		[Data(DefaultValue = "hidden")]
 		public string LibelleChampAutoComplete
 		{
 			get { return getValue<string>("LibelleChampAutoComplete"); }
@@ -836,6 +838,13 @@ namespace TimosWebApp
 		{
 			get { return getValue<int>("IdChampAutoComplete"); }
 			set { setValue<int>("IdChampAutoComplete", value); }
+		}
+
+		[Data]
+		public bool CanDeleteCaracteristique
+		{
+			get { return getValue<bool>("CanDeleteCaracteristique"); }
+			set { setValue<bool>("CanDeleteCaracteristique", value); }
 		}
 
 	}
@@ -1288,6 +1297,52 @@ namespace TimosWebApp
 		{
 			get { return getValue<string>("LBLB1"); }
 			set { setValue<string>("LBLB1", value); }
+		}
+
+	}
+
+	[DataDefinition]
+	public class Export : Entity, IDataWrapper
+	{
+		public static partial class Fields
+		{
+			public const string Libelle = "Libelle";
+			public const string Id = "Id";
+			public const string Description = "Description";
+			public const string Data = "Data";
+		}
+
+		void IDataWrapper.InitData(DataRow data, string namePrefix)
+		{
+			base.InitData(data, null);
+		}
+
+		[Data]
+		public string Libelle
+		{
+			get { return getValue<string>("Libelle"); }
+			set { setValue<string>("Libelle", value); }
+		}
+
+		[Data(IsPrimaryKey = true)]
+		public int Id
+		{
+			get { return getValue<int>("Id"); }
+			set { setValue<int>("Id", value); }
+		}
+
+		[Data]
+		public string Description
+		{
+			get { return getValue<string>("Description"); }
+			set { setValue<string>("Description", value); }
+		}
+
+		[Data]
+		public byte[] Data
+		{
+			get { return getValue<byte[]>("Data"); }
+			set { setValue<byte[]>("Data", value); }
 		}
 
 	}
