@@ -83,6 +83,12 @@ vExecutionAction.VarText3.value.BindData(vExecutionAction.ParentData.VALT3);
 vExecutionAction.VarText4.value.BindData(vExecutionAction.ParentData.VALT4);
 vExecutionAction.VarText5.value.BindData(vExecutionAction.ParentData.VALT5);
 
+vExecutionAction.SelectVarText1.BindList(vExecutionAction.ParentData.RelationActionValeursVariable.ValeursVariable, "Value", "Display", "Value", aas.Expression('IdVariable === "T1"'));
+vExecutionAction.SelectVarText2.BindList(vExecutionAction.ParentData.RelationActionValeursVariable.ValeursVariable, "Value", "Display", "Value", aas.Expression('IdVariable === "T2"'));
+vExecutionAction.SelectVarText3.BindList(vExecutionAction.ParentData.RelationActionValeursVariable.ValeursVariable, "Value", "Display", "Value", aas.Expression('IdVariable === "T3"'));
+vExecutionAction.SelectVarText4.BindList(vExecutionAction.ParentData.RelationActionValeursVariable.ValeursVariable, "Value", "Display", "Value", aas.Expression('IdVariable === "T4"'));
+vExecutionAction.SelectVarText5.BindList(vExecutionAction.ParentData.RelationActionValeursVariable.ValeursVariable, "Value", "Display", "Value", aas.Expression('IdVariable === "T5"'));
+
 vExecutionAction.LabelVarInt1.BindData(vExecutionAction.ParentData.LBLN1);
 vExecutionAction.LabelVarInt2.BindData(vExecutionAction.ParentData.LBLN2);
 vExecutionAction.LabelVarInt3.BindData(vExecutionAction.ParentData.LBLN3);
@@ -90,6 +96,10 @@ vExecutionAction.LabelVarInt3.BindData(vExecutionAction.ParentData.LBLN3);
 vExecutionAction.VarInt1.value.BindData(vExecutionAction.ParentData.VALN1);
 vExecutionAction.VarInt2.value.BindData(vExecutionAction.ParentData.VALN2);
 vExecutionAction.VarInt3.value.BindData(vExecutionAction.ParentData.VALN3);
+
+vExecutionAction.SelectVarInt1.BindList(vExecutionAction.ParentData.RelationActionValeursVariable.ValeursVariable, "Value", "Display", "Value", aas.Expression('IdVariable === "N1"'));
+vExecutionAction.SelectVarInt2.BindList(vExecutionAction.ParentData.RelationActionValeursVariable.ValeursVariable, "Value", "Display", "Value", aas.Expression('IdVariable === "N2"'));
+vExecutionAction.SelectVarInt3.BindList(vExecutionAction.ParentData.RelationActionValeursVariable.ValeursVariable, "Value", "Display", "Value", aas.Expression('IdVariable === "N3"'));
 
 vExecutionAction.LabelVarDate1.BindData(vExecutionAction.ParentData.LBLD1);
 vExecutionAction.LabelVarDate2.BindData(vExecutionAction.ParentData.LBLD2);

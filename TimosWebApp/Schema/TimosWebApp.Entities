@@ -184,6 +184,14 @@
         <entityProperty name="Data" type="ByteArray" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
       </properties>
     </entity>
+    <entity Id="6095bbda-cc99-46d8-ac15-484c53fbdcd4" name="ValeursVariable" guid="e8272c28-7f3a-40d5-a2b6-caf239c095c6" guidIdentifier="false" hasCustomValidators="false" hasTriggers="false">
+      <properties>
+        <entityProperty name="Id" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" identifier="Identifier" />
+        <entityProperty name="Value" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="Display" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="IdVariable" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+      </properties>
+    </entity>
   </entities>
   <relations>
     <relation Id="775f2974-b3c3-4516-bed2-2c69ad4bec9d" name="ValeursPossibles" guid="00000000-0000-0000-0000-000000000000" hasTriggers="false" hasCustomValidators="false">
@@ -293,6 +301,16 @@
         </relationReferencesEntityReferenceClasses>
         <relationReferencesEntityReferenceClasses Id="c0bfa697-d831-4d80-bb77-a2c719656aca" role="Action" cardinality="O__N">
           <entityMoniker Id="fdc0ef08-51e9-4bc9-932b-9a834ff6c7c7" />
+        </relationReferencesEntityReferenceClasses>
+      </entityReferenceClasses>
+    </relation>
+    <relation Id="f9c03e15-5fa9-43f4-95a2-8711bc9602ba" name="RelationActionValeursVariable" guid="00000000-0000-0000-0000-000000000000" hasTriggers="false" hasCustomValidators="false">
+      <entityReferenceClasses>
+        <relationReferencesEntityReferenceClasses Id="39cd272e-6658-4ac6-9f67-17be0c0914f7" role="Action" cardinality="O__I">
+          <entityMoniker Id="fdc0ef08-51e9-4bc9-932b-9a834ff6c7c7" />
+        </relationReferencesEntityReferenceClasses>
+        <relationReferencesEntityReferenceClasses Id="4f3d7e39-fe0f-4e54-b08d-20e96c165764" role="ValeursVariable" cardinality="O__N">
+          <entityMoniker Id="6095bbda-cc99-46d8-ac15-484c53fbdcd4" />
         </relationReferencesEntityReferenceClasses>
       </entityReferenceClasses>
     </relation>

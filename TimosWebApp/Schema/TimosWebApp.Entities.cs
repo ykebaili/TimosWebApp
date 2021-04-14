@@ -27,6 +27,7 @@ namespace TimosWebApp
 			public const string CaracValeurChamp = "CaracValeurChamp";
 			public const string Action = "Action";
 			public const string Export = "Export";
+			public const string ValeursVariable = "ValeursVariable";
 		}
 
 		public static partial class Relations
@@ -42,6 +43,7 @@ namespace TimosWebApp
 			public const string RelationCaracValeurChamp = "RelationCaracValeurChamp";
 			public const string RelationCaracValeursPossibles = "RelationCaracValeursPossibles";
 			public const string RelationTodoActions = "RelationTodoActions";
+			public const string RelationActionValeursVariable = "RelationActionValeursVariable";
 		}
 	}
 
@@ -1348,6 +1350,52 @@ namespace TimosWebApp
 	}
 
 	[DataDefinition]
+	public class ValeursVariable : Entity, IDataWrapper
+	{
+		public static partial class Fields
+		{
+			public const string Id = "Id";
+			public const string Value = "Value";
+			public const string Display = "Display";
+			public const string IdVariable = "IdVariable";
+		}
+
+		void IDataWrapper.InitData(DataRow data, string namePrefix)
+		{
+			base.InitData(data, null);
+		}
+
+		[Data(IsPrimaryKey = true)]
+		public string Id
+		{
+			get { return getValue<string>("Id"); }
+			set { setValue<string>("Id", value); }
+		}
+
+		[Data]
+		public string Value
+		{
+			get { return getValue<string>("Value"); }
+			set { setValue<string>("Value", value); }
+		}
+
+		[Data]
+		public string Display
+		{
+			get { return getValue<string>("Display"); }
+			set { setValue<string>("Display", value); }
+		}
+
+		[Data]
+		public string IdVariable
+		{
+			get { return getValue<string>("IdVariable"); }
+			set { setValue<string>("IdVariable", value); }
+		}
+
+	}
+
+	[DataDefinition]
 	public class ValeursPossibles : DataWrapper, IDataWrapper, IRelation
 	{
 		void IDataWrapper.InitData(DataRow data, string namePrefix)
@@ -1520,6 +1568,22 @@ namespace TimosWebApp
 
 		[RelationEnd(Type = typeof(Action), Role = typeof(Action), Multiplicity = Multiplicity.ZeroOrMany)]
 		public IEntity Action;
+
+	}
+
+	[DataDefinition]
+	public class RelationActionValeursVariable : DataWrapper, IDataWrapper, IRelation
+	{
+		void IDataWrapper.InitData(DataRow data, string namePrefix)
+		{
+			base.InitData(data, null);
+		}
+
+		[RelationEnd(Type = typeof(Action), Role = typeof(Action), Multiplicity = Multiplicity.ZeroOrOne)]
+		public IEntity Action;
+
+		[RelationEnd(Type = typeof(ValeursVariable), Role = typeof(ValeursVariable), Multiplicity = Multiplicity.ZeroOrMany)]
+		public IEntity ValeursVariable;
 
 	}
 

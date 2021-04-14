@@ -648,6 +648,18 @@ namespace TimosWebApp.Services
                                 action.LBLT3 = (string)row[CActionWeb.c_champLabelVarText3];
                                 action.LBLT4 = (string)row[CActionWeb.c_champLabelVarText4];
                                 action.LBLT5 = (string)row[CActionWeb.c_champLabelVarText5];
+
+                                string strValeursVarText1 = (string)row[CActionWeb.c_champValeursVarText1];
+                                string strValeursVarText2 = (string)row[CActionWeb.c_champValeursVarText2];
+                                string strValeursVarText3 = (string)row[CActionWeb.c_champValeursVarText3];
+                                string strValeursVarText4 = (string)row[CActionWeb.c_champValeursVarText4];
+                                string strValeursVarText5 = (string)row[CActionWeb.c_champValeursVarText5];
+                                FillValeursVariableForAction(em, action, strValeursVarText1, "T1");
+                                FillValeursVariableForAction(em, action, strValeursVarText2, "T2");
+                                FillValeursVariableForAction(em, action, strValeursVarText3, "T3");
+                                FillValeursVariableForAction(em, action, strValeursVarText4, "T4");
+                                FillValeursVariableForAction(em, action, strValeursVarText5, "T5");
+
                                 // Variables Int
                                 action.IDN1 = (string)row[CActionWeb.c_champIdVarInt1];
                                 action.IDN2 = (string)row[CActionWeb.c_champIdVarInt2];
@@ -655,6 +667,14 @@ namespace TimosWebApp.Services
                                 action.LBLN1 = (string)row[CActionWeb.c_champLabelVarInt1];
                                 action.LBLN2 = (string)row[CActionWeb.c_champLabelVarInt2];
                                 action.LBLN3 = (string)row[CActionWeb.c_champLabelVarInt3];
+
+                                string strValeursVarInt1 = (string)row[CActionWeb.c_champValeursVarInt1];
+                                string strValeursVarInt2 = (string)row[CActionWeb.c_champValeursVarInt2];
+                                string strValeursVarInt3 = (string)row[CActionWeb.c_champValeursVarInt3];
+                                FillValeursVariableForAction(em, action, strValeursVarInt1, "N1");
+                                FillValeursVariableForAction(em, action, strValeursVarInt2, "N2");
+                                FillValeursVariableForAction(em, action, strValeursVarInt3, "N3");
+
                                 // Variables Date
                                 action.IDD1 = (string)row[CActionWeb.c_champIdVarDate1];
                                 action.IDD2 = (string)row[CActionWeb.c_champIdVarDate2];
@@ -955,6 +975,28 @@ namespace TimosWebApp.Services
                         }
 
                     }
+                }
+            }
+        }
+
+        //--------------------------------------------------------------------------------------------------
+        private void FillValeursVariableForAction(IEntityManager em, Action action, string strvaleurs, string strIdVariable)
+        {
+            if (em == null)
+                return;
+            if (strvaleurs != "")
+            {
+                string[] parts = strvaleurs.Split('#');
+                for (int i = 0; i < parts.Length -1; i = i + 2)
+                {
+                    string strValue = parts[i];
+                    string strDisplay = parts[i + 1];
+                    var valeurVariable = em.CreateInstance<ValeursVariable>();
+                    valeurVariable.Id = action.Id + strValue;
+                    valeurVariable.Value = strValue;
+                    valeurVariable.Display = strDisplay;
+                    valeurVariable.IdVariable = strIdVariable;
+                    em.AssociateInstance<RelationActionValeursVariable>(action, valeurVariable);
                 }
             }
         }

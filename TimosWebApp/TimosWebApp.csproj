@@ -85,6 +85,7 @@
     <Compile Include="Services\AdministrationService.cs" />
     <Compile Include="Services\AuthenticationService.cs" />
     <Compile Include="Services\EventLogService.cs" />
+    <Compile Include="Services\ExportService.cs" />
     <Compile Include="Services\InitialisationService.cs" />
     <Compile Include="Services\TodosService.cs" />
   </ItemGroup>
