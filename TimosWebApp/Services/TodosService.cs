@@ -987,16 +987,20 @@ namespace TimosWebApp.Services
             if (strvaleurs != "")
             {
                 string[] parts = strvaleurs.Split('#');
-                for (int i = 0; i < parts.Length -1; i = i + 2)
+                if (parts.Length > 0)
                 {
-                    string strValue = parts[i];
-                    string strDisplay = parts[i + 1];
-                    var valeurVariable = em.CreateInstance<ValeursVariable>();
-                    valeurVariable.Id = action.Id + strValue;
-                    valeurVariable.Value = strValue;
-                    valeurVariable.Display = strDisplay;
-                    valeurVariable.IdVariable = strIdVariable;
-                    em.AssociateInstance<RelationActionValeursVariable>(action, valeurVariable);
+                    for (int i = 0; i < parts.Length - 1; i = i + 2)
+                    {
+                        string strValue = parts[i];
+                        string strDisplay = parts[i + 1];
+                        var valeurVariable = em.CreateInstance<ValeursVariable>();
+                        valeurVariable.Id = action.Id + strValue;
+                        valeurVariable.Value = strValue;
+                        valeurVariable.Display = strDisplay;
+                        valeurVariable.IdVariable = strIdVariable;
+                        em.AssociateInstance<RelationActionValeursVariable>(action, valeurVariable);
+                    }
+                    action.data["VAL" + strIdVariable] = parts[0];
                 }
             }
         }
