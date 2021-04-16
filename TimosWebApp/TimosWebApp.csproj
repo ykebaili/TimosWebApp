@@ -97,6 +97,7 @@
     <Content Include="Configuration\Views\Caracteristiques.js" />
     <Content Include="Configuration\Views\ChampsTodo.js" />
     <Content Include="Configuration\Views\Documents.js" />
+    <Content Include="Configuration\Views\Exports.js" />
     <Content Include="Configuration\Views\InfosSecondaires.js" />
     <Content Include="Configuration\Views\ListeTodos.js" />
     <Content Include="Configuration\Views\Home.js" />
@@ -110,6 +111,7 @@
   <ItemGroup>
     <Content Include="Controls\Administration.html" />
     <Content Include="Controls\DetailTodo.htm" />
+    <Content Include="Controls\Exports.html" />
     <Content Include="Controls\Inscription.htm" />
     <Content Include="Controls\Home.htm" />
     <Content Include="Controls\ListeTodos.htm" />

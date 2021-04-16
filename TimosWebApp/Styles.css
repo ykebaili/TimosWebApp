@@ -355,3 +355,18 @@ img.logo{
     padding-top: 10px;
     padding-bottom: 10px;
 }
+
+/* Exports */
+.bloc-resume-export{
+    background-color: white;
+    border: 1px solid #DCE3E6;
+    border-radius: 6px 6px 6px 6px;
+    margin-bottom: 2%;
+    margin-right: 1%;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.bloc-resume-export h2{
+    font-size: 20px;
+    margin-top: 10px;
+}

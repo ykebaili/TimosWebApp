@@ -12,6 +12,7 @@ home.Home.click.BindCommand(aas.Services.Browser.UIService.ShowView(aas.ViewName
 home.MesTodos.click.BindCommand(aas.Services.Browser.UIService.ShowView(aas.ViewName.ListeTodos));
 home.Admin.click.BindCommand(aas.Services.Browser.UIService.ShowView(aas.ViewName.Administration));
 home.DisplayAdminNav.BindData(aas.Expression(IIF(aas.Data.MainData.User.IsAdministrator, '', 'hidden')));
+home.Exports.click.BindCommand(aas.Services.Browser.UIService.ShowView(aas.ViewName.ListeExports));
 
 var vLogin = Aspectize.CreateView("Login", aas.Controls.Login);
 vLogin.AddAuthorizationRole(aas.Roles.Anonymous, aas.Enum.AccessControl.ReadWrite);

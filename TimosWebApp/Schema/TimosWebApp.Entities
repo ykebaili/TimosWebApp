@@ -181,7 +181,7 @@
         <entityProperty name="Libelle" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
         <entityProperty name="Id" type="Int32" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" identifier="Identifier" />
         <entityProperty name="Description" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
-        <entityProperty name="Data" type="ByteArray" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="DataDate" type="DateTime" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
       </properties>
     </entity>
     <entity Id="6095bbda-cc99-46d8-ac15-484c53fbdcd4" name="ValeursVariable" guid="e8272c28-7f3a-40d5-a2b6-caf239c095c6" guidIdentifier="false" hasCustomValidators="false" hasTriggers="false">

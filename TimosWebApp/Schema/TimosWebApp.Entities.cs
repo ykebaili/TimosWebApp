@@ -1311,7 +1311,7 @@ namespace TimosWebApp
 			public const string Libelle = "Libelle";
 			public const string Id = "Id";
 			public const string Description = "Description";
-			public const string Data = "Data";
+			public const string DataDate = "DataDate";
 		}
 
 		void IDataWrapper.InitData(DataRow data, string namePrefix)
@@ -1341,10 +1341,10 @@ namespace TimosWebApp
 		}
 
 		[Data]
-		public byte[] Data
+		public DateTime DataDate
 		{
-			get { return getValue<byte[]>("Data"); }
-			set { setValue<byte[]>("Data", value); }
+			get { return getValue<DateTime>("DataDate"); }
+			set { setValue<DateTime>("DataDate", value); }
 		}
 
 	}

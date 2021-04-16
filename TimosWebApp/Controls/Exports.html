@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+<html>
+<body>
+
+    <!----------------------------------------------- LISTE DES EXPORTS DISPONIBLES ---------------------------------------------------------->
+    <div aas-control="ListeExports">
+        <div class="row">
+            <div class="col-xs-12">
+                <h1><i class="fas fa-file-export"></i> Exports disponibles</h1>
+                <p class="infos-sous-titre">
+                    Vous trouverez sur cette page la liste des exports Timos disponibles via l'iterface web.
+                </p>
+            </div>
+        </div>
+        <div class="row section-exports">
+            <div aas-name="PanelResumesExports" aas-type="AspectizeRepeaterPanel"></div>
+        </div>
+    </div>
+
+    <!----------------------------------------------- Bloc résumé d'un Export disponible --------------------------------------------------------------->
+    <div aas-control="ResumeExport">
+        <div class="col-xs-12 col-sm-6 col-md-4">
+            <div class="bloc-resume-export">
+                <h2>{LibelleExport}</h2>
+                <p>{DescriptionExport}</p>
+            </div>
+        </div>
+    </div>
+
+
+    <!----------------------------------------------- CONSULTATION D'UN EXPORT --------------------------------------------------------------->
+    <div aas-control="ConsultationExport">
+
+
+    </div>
+
+
+</body>
+</html>
