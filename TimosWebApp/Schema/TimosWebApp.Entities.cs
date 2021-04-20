@@ -28,6 +28,7 @@ namespace TimosWebApp
 			public const string Action = "Action";
 			public const string Export = "Export";
 			public const string ValeursVariable = "ValeursVariable";
+			public const string ExportDatas = "ExportDatas";
 		}
 
 		public static partial class Relations
@@ -44,6 +45,7 @@ namespace TimosWebApp
 			public const string RelationCaracValeursPossibles = "RelationCaracValeursPossibles";
 			public const string RelationTodoActions = "RelationTodoActions";
 			public const string RelationActionValeursVariable = "RelationActionValeursVariable";
+			public const string RelationExportDatas = "RelationExportDatas";
 		}
 	}
 
@@ -1312,6 +1314,16 @@ namespace TimosWebApp
 			public const string Id = "Id";
 			public const string Description = "Description";
 			public const string DataDate = "DataDate";
+			public const string COL1 = "COL1";
+			public const string COL2 = "COL2";
+			public const string COL3 = "COL3";
+			public const string COL4 = "COL4";
+			public const string COL5 = "COL5";
+			public const string COL6 = "COL6";
+			public const string COL7 = "COL7";
+			public const string COL8 = "COL8";
+			public const string COL9 = "COL9";
+			public const string COL10 = "COL10";
 		}
 
 		void IDataWrapper.InitData(DataRow data, string namePrefix)
@@ -1327,10 +1339,10 @@ namespace TimosWebApp
 		}
 
 		[Data(IsPrimaryKey = true)]
-		public int Id
+		public string Id
 		{
-			get { return getValue<int>("Id"); }
-			set { setValue<int>("Id", value); }
+			get { return getValue<string>("Id"); }
+			set { setValue<string>("Id", value); }
 		}
 
 		[Data]
@@ -1340,11 +1352,81 @@ namespace TimosWebApp
 			set { setValue<string>("Description", value); }
 		}
 
-		[Data]
-		public DateTime DataDate
+		[Data(IsNullable = true)]
+		public DateTime? DataDate
 		{
-			get { return getValue<DateTime>("DataDate"); }
-			set { setValue<DateTime>("DataDate", value); }
+			get { return getValue<DateTime?>("DataDate"); }
+			set { setValue<DateTime?>("DataDate", value); }
+		}
+
+		[Data]
+		public string COL1
+		{
+			get { return getValue<string>("COL1"); }
+			set { setValue<string>("COL1", value); }
+		}
+
+		[Data]
+		public string COL2
+		{
+			get { return getValue<string>("COL2"); }
+			set { setValue<string>("COL2", value); }
+		}
+
+		[Data]
+		public string COL3
+		{
+			get { return getValue<string>("COL3"); }
+			set { setValue<string>("COL3", value); }
+		}
+
+		[Data]
+		public string COL4
+		{
+			get { return getValue<string>("COL4"); }
+			set { setValue<string>("COL4", value); }
+		}
+
+		[Data]
+		public string COL5
+		{
+			get { return getValue<string>("COL5"); }
+			set { setValue<string>("COL5", value); }
+		}
+
+		[Data]
+		public string COL6
+		{
+			get { return getValue<string>("COL6"); }
+			set { setValue<string>("COL6", value); }
+		}
+
+		[Data]
+		public string COL7
+		{
+			get { return getValue<string>("COL7"); }
+			set { setValue<string>("COL7", value); }
+		}
+
+		[Data]
+		public string COL8
+		{
+			get { return getValue<string>("COL8"); }
+			set { setValue<string>("COL8", value); }
+		}
+
+		[Data]
+		public string COL9
+		{
+			get { return getValue<string>("COL9"); }
+			set { setValue<string>("COL9", value); }
+		}
+
+		[Data]
+		public string COL10
+		{
+			get { return getValue<string>("COL10"); }
+			set { setValue<string>("COL10", value); }
 		}
 
 	}
@@ -1391,6 +1473,108 @@ namespace TimosWebApp
 		{
 			get { return getValue<string>("IdVariable"); }
 			set { setValue<string>("IdVariable", value); }
+		}
+
+	}
+
+	[DataDefinition]
+	public class ExportDatas : Entity, IDataWrapper
+	{
+		public static partial class Fields
+		{
+			public const string Id = "Id";
+			public const string VAL1 = "VAL1";
+			public const string VAL2 = "VAL2";
+			public const string VAL3 = "VAL3";
+			public const string VAL4 = "VAL4";
+			public const string VAL5 = "VAL5";
+			public const string VAL6 = "VAL6";
+			public const string VAL7 = "VAL7";
+			public const string VAL8 = "VAL8";
+			public const string VAL9 = "VAL9";
+			public const string VAL10 = "VAL10";
+		}
+
+		void IDataWrapper.InitData(DataRow data, string namePrefix)
+		{
+			base.InitData(data, null);
+		}
+
+		[Data(IsPrimaryKey = true)]
+		public string Id
+		{
+			get { return getValue<string>("Id"); }
+			set { setValue<string>("Id", value); }
+		}
+
+		[Data]
+		public string VAL1
+		{
+			get { return getValue<string>("VAL1"); }
+			set { setValue<string>("VAL1", value); }
+		}
+
+		[Data]
+		public string VAL2
+		{
+			get { return getValue<string>("VAL2"); }
+			set { setValue<string>("VAL2", value); }
+		}
+
+		[Data]
+		public string VAL3
+		{
+			get { return getValue<string>("VAL3"); }
+			set { setValue<string>("VAL3", value); }
+		}
+
+		[Data]
+		public string VAL4
+		{
+			get { return getValue<string>("VAL4"); }
+			set { setValue<string>("VAL4", value); }
+		}
+
+		[Data]
+		public string VAL5
+		{
+			get { return getValue<string>("VAL5"); }
+			set { setValue<string>("VAL5", value); }
+		}
+
+		[Data]
+		public string VAL6
+		{
+			get { return getValue<string>("VAL6"); }
+			set { setValue<string>("VAL6", value); }
+		}
+
+		[Data]
+		public string VAL7
+		{
+			get { return getValue<string>("VAL7"); }
+			set { setValue<string>("VAL7", value); }
+		}
+
+		[Data]
+		public string VAL8
+		{
+			get { return getValue<string>("VAL8"); }
+			set { setValue<string>("VAL8", value); }
+		}
+
+		[Data]
+		public string VAL9
+		{
+			get { return getValue<string>("VAL9"); }
+			set { setValue<string>("VAL9", value); }
+		}
+
+		[Data]
+		public string VAL10
+		{
+			get { return getValue<string>("VAL10"); }
+			set { setValue<string>("VAL10", value); }
 		}
 
 	}
@@ -1584,6 +1768,22 @@ namespace TimosWebApp
 
 		[RelationEnd(Type = typeof(ValeursVariable), Role = typeof(ValeursVariable), Multiplicity = Multiplicity.ZeroOrMany)]
 		public IEntity ValeursVariable;
+
+	}
+
+	[DataDefinition]
+	public class RelationExportDatas : DataWrapper, IDataWrapper, IRelation
+	{
+		void IDataWrapper.InitData(DataRow data, string namePrefix)
+		{
+			base.InitData(data, null);
+		}
+
+		[RelationEnd(Type = typeof(Export), Role = typeof(Export), Multiplicity = Multiplicity.One)]
+		public IEntity Export;
+
+		[RelationEnd(Type = typeof(ExportDatas), Role = typeof(ExportDatas), Multiplicity = Multiplicity.ZeroOrMany)]
+		public IEntity ExportDatas;
 
 	}
 

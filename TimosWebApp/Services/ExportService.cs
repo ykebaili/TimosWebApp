@@ -8,19 +8,24 @@ using Aspectize.Office;
 using sc2i.common;
 using timos.data.Aspectize;
 using sc2i.multitiers.client;
+using System.IO;
+using Newtonsoft.Json;
 
 namespace TimosWebApp.Services
 {
     public interface IExportService
     {
         DataSet GetListeExportsForCurrentUser();
-        byte[] GetExport();
+        bool GetDataSetExport(string keyExport);
+        DataSet GetExportForDisplay(string keyExport, string strLibelle, string strDescription);
+        byte[] GetExportForExcel(string keyExport, string strLibelle);
     }
 
     [Service(Name = "ExportService")]
     public class ExportService : IExportService //, IInitializable, ISingleton
     {
 
+        //-------------------------------------------------------------------------------------------------------------------------------
         public DataSet GetListeExportsForCurrentUser()
         {
             AspectizeUser aspectizeUser = ExecutingContext.CurrentUser;
@@ -57,13 +62,18 @@ namespace TimosWebApp.Services
                             foreach (DataRow row in dt.Rows)
                             {
                                 var export = em.CreateInstance<Export>();
-                                export.Id = (int)row[CExportWeb.c_champId];
+                                export.Id = (string)row[CExportWeb.c_champId];
                                 export.Libelle = (string)row[CExportWeb.c_champLibelle];
                                 export.Description = (string)row[CExportWeb.c_champDescription];
-                                if (row[CExportWeb.c_champDateDonnees] == DBNull.Value)
-                                    export.DataDate = DateTime.Now;
+                               
+                                var fs = ExecutingContext.GetService<IFileService>("TimosFileService");
+                                string relativePath = export.Id + ".json";
+                                string fullPath = fs.GetFileUrl(relativePath);
+                                fullPath = fullPath.Substring(16);
+                                if (File.Exists(fullPath))
+                                    export.DataDate = File.GetLastWriteTime(fullPath);
                                 else
-                                    export.DataDate = (DateTime)row[CExportWeb.c_champDateDonnees];
+                                    export.DataDate = null;
                             }
 
                         }
@@ -89,27 +99,199 @@ namespace TimosWebApp.Services
 
         }
 
-        public byte[] GetExport()
+        //-------------------------------------------------------------------------------------------------------------------------------
+        public bool GetDataSetExport(string keyExport)
         {
-            var dsExport = DataSetHelper.Create();
+            AspectizeUser aspectizeUser = ExecutingContext.CurrentUser;
+            IEntityManager em = EntityManager.FromDataSet(DataSetHelper.Create());
 
-            var dtExport = dsExport.Tables.Add("Organisation");
+            if (aspectizeUser.IsAuthenticated)
+            {
+                int nTimosSessionId = (int)aspectizeUser[CUserTimosWebApp.c_champSessionId];
 
-            dtExport.Columns.Add("Segment", typeof(String));
+                ITimosServiceForAspectize serviceClientAspectize = (ITimosServiceForAspectize)C2iFactory.GetNewObject(typeof(ITimosServiceForAspectize));
+                CResultAErreur result = serviceClientAspectize.GetSession(nTimosSessionId);
+                if (!result)
+                {
+                    throw new SmartException(1100, "Votre session a expiré, veuillez vous reconnecter");
+                }
 
-            var drExport = dtExport.NewRow();
-            //drExport["Segment"] = site.Segment;
-            dtExport.Rows.Add(drExport);
+                try
+                {
+                    result = serviceClientAspectize.GetDataSetExport(nTimosSessionId, keyExport);
+                    if (!result)
+                        throw new SmartException(1010, "Erreur GetDataSetExport(nTimosSessionId = " + nTimosSessionId + ", keyExport = " + keyExport + ")" +
+                        Environment.NewLine +
+                        result.MessageErreur);
 
-            IAspectizeExcel aspectizeExcel = ExecutingContext.GetService<IAspectizeExcel>("AspectizeExcel");
+                    if (result && result.Data != null)
+                    {
+                        DataSet ds = result.Data as DataSet;
+                        if (ds != null && ds.Tables.Count > 0)
+                        {
+                            DataTable dt = ds.Tables[0];
+                            var fs = ExecutingContext.GetService<IFileService>("TimosFileService");
 
-            var bytes = aspectizeExcel.ToExcel(dsExport, null);
+                            string relativePath = keyExport + ".json";
+                            string json = JsonConvert.SerializeObject(ds, Formatting.None);
+                            MemoryStream stream = new MemoryStream(Encoding.ASCII.GetBytes(json));
+                            fs.Write(relativePath, stream);
 
-            ExecutingContext.SetHttpDownloadFileName(string.Format("Organisation_Vitalrest_{0:yyyyMMddHHmm}.xlsx", DateTime.Now));
-
-            return bytes;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw new SmartException(1010,
+                        "Erreur GetExportsForUser(nTimosSessionId = " + nTimosSessionId + ", keyExport = " + keyExport + ")" +
+                        Environment.NewLine +
+                        ex.Message);
+                }
+            }
+            else
+            {
+                throw new SmartException(1100, "Votre session a expiré, veuillez vous reconnecter");
+            }
+            return true;
         }
 
-    }
 
+        //-------------------------------------------------------------------------------------------------------------------------------
+        public DataSet GetExportForDisplay(string keyExport, string strLibelle, string strDescription)
+        {
+            AspectizeUser aspectizeUser = ExecutingContext.CurrentUser;
+            IEntityManager em = EntityManager.FromDataSet(DataSetHelper.Create());
+
+            if (aspectizeUser.IsAuthenticated)
+            {
+                int nTimosSessionId = (int)aspectizeUser[CUserTimosWebApp.c_champSessionId];
+
+                ITimosServiceForAspectize serviceClientAspectize = (ITimosServiceForAspectize)C2iFactory.GetNewObject(typeof(ITimosServiceForAspectize));
+                CResultAErreur result = serviceClientAspectize.GetSession(nTimosSessionId);
+                if (!result)
+                {
+                    throw new SmartException(1100, "Votre session a expiré, veuillez vous reconnecter");
+                }
+                try
+                {
+                    IFileService fs = ExecutingContext.GetService<IFileService>("TimosFileService");
+                    string relativePath = keyExport + ".json";
+                    string fullPath = fs.GetFileUrl(relativePath);
+                    fullPath = fullPath.Substring(16);
+                    if (File.Exists(fullPath))
+                    {
+                        byte[] buffer = fs.ReadBytes(relativePath);
+                        string jsonLecture = Encoding.ASCII.GetString(buffer);
+                        DataSet dsExport = JsonConvert.DeserializeObject<DataSet>(jsonLecture);
+
+                        if (dsExport != null && dsExport.Tables.Count > 0)
+                        {
+                            Export export = em.CreateInstance<Export>();
+                            export.Id = keyExport;
+                            export.Libelle = strLibelle;
+                            export.Description = strDescription;
+                            export.DataDate = File.GetLastWriteTime(fullPath);
+
+                            // Extraction des données du DataSet
+                            DataTable tableExport = dsExport.Tables[0]; // On traite uniquement la première table
+                            int nIndexCol = 1; // Les 10 premières colonnes uniquement
+                            foreach (DataColumn col in tableExport.Columns)
+                            {
+                                export.data["COL" + nIndexCol] = col.ColumnName;
+                                nIndexCol++;
+                                if (nIndexCol > 10)
+                                    break;
+                            }
+                            // Traitement des données (lignes)
+                            int nIndexRow = 0;
+                            foreach (DataRow row in tableExport.Rows)
+                            {
+                                string strIdCompose = keyExport + "#" + nIndexRow++;
+                                ExportDatas expData = em.GetInstance<ExportDatas>(strIdCompose);
+                                if (expData == null)
+                                {
+                                    expData = em.CreateInstance<ExportDatas>();
+                                    expData.Id = strIdCompose;
+                                    em.AssociateInstance<RelationExportDatas>(export, expData);
+                                }
+                                for (int i = 0; i < tableExport.Columns.Count && i < 10; i++)
+                                {
+                                    if (row[i] == DBNull.Value)
+                                        expData.data[i+1] = "";
+                                    else
+                                        expData.data[i+1] = row[i];
+                                }
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw new SmartException(1010,
+                        "Erreur GetExportForDisplay(nTimosSessionId = " + nTimosSessionId + ", keyExport = " + keyExport + ")" +
+                        Environment.NewLine +
+                        ex.Message);
+                }
+            }
+            else
+            {
+                throw new SmartException(1100, "Votre session a expiré, veuillez vous reconnecter");
+            }
+            em.Data.AcceptChanges();
+            return em.Data;
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        public byte[] GetExportForExcel(string keyExport, string strLibelle)
+        {
+            AspectizeUser aspectizeUser = ExecutingContext.CurrentUser;
+            IEntityManager em = EntityManager.FromDataSet(DataSetHelper.Create());
+
+            if (aspectizeUser.IsAuthenticated)
+            {
+                int nTimosSessionId = (int)aspectizeUser[CUserTimosWebApp.c_champSessionId];
+
+                ITimosServiceForAspectize serviceClientAspectize = (ITimosServiceForAspectize)C2iFactory.GetNewObject(typeof(ITimosServiceForAspectize));
+                CResultAErreur result = serviceClientAspectize.GetSession(nTimosSessionId);
+                if (!result)
+                {
+                    throw new SmartException(1100, "Votre session a expiré, veuillez vous reconnecter");
+                }
+
+                try
+                {
+                    IFileService fs = ExecutingContext.GetService<IFileService>("TimosFileService");
+                    string relativePath = keyExport + ".json";
+                    string fullPath = fs.GetFileUrl(relativePath);
+                    fullPath = fullPath.Substring(16);
+                    if (File.Exists(fullPath))
+                    {
+                        byte[] buffer = fs.ReadBytes(relativePath);
+                        string jsonLecture = Encoding.ASCII.GetString(buffer);
+                        DataSet dsExport = JsonConvert.DeserializeObject<DataSet>(jsonLecture);
+                        if (dsExport != null)
+                        {
+                            IAspectizeExcel aspectizeExcel = ExecutingContext.GetService<IAspectizeExcel>("AspectizeExcel");
+                            var bytes = aspectizeExcel.ToExcel(dsExport, null);
+                            ExecutingContext.SetHttpDownloadFileName(string.Format(strLibelle + " {0:yyyyMMddHHmm}.xlsx", File.GetLastWriteTime(fullPath)));
+                            return bytes;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw new SmartException(1010,
+                        "Erreur GetExportForExcel(nTimosSessionId = " + nTimosSessionId + ", keyExport = " + keyExport + ")" +
+                        Environment.NewLine +
+                        ex.Message);
+                }
+
+            }
+            else
+            {
+                throw new SmartException(1100, "Votre session a expiré, veuillez vous reconnecter");
+            }
+            return new byte[] { };
+        }
+    }
 }

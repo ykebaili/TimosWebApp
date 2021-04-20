@@ -179,9 +179,19 @@
     <entity Id="17948141-de39-4674-90fe-4ea7a5abbcea" name="Export" guid="c1194b75-0be6-47ea-8ab9-1cd1c96baad2" guidIdentifier="false" hasCustomValidators="false" hasTriggers="false">
       <properties>
         <entityProperty name="Libelle" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
-        <entityProperty name="Id" type="Int32" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" identifier="Identifier" />
+        <entityProperty name="Id" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" identifier="Identifier" />
         <entityProperty name="Description" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
-        <entityProperty name="DataDate" type="DateTime" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="DataDate" type="DateTime" nullable="true" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="COL1" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="COL2" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="COL3" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="COL4" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="COL5" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="COL6" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="COL7" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="COL8" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="COL9" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="COL10" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
       </properties>
     </entity>
     <entity Id="6095bbda-cc99-46d8-ac15-484c53fbdcd4" name="ValeursVariable" guid="e8272c28-7f3a-40d5-a2b6-caf239c095c6" guidIdentifier="false" hasCustomValidators="false" hasTriggers="false">
@@ -190,6 +200,21 @@
         <entityProperty name="Value" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
         <entityProperty name="Display" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
         <entityProperty name="IdVariable" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+      </properties>
+    </entity>
+    <entity Id="602dda84-29ee-4b5c-98c6-b84751f4d59e" name="ExportDatas" guid="2e99942b-e98c-45c1-ae59-664bea003db7" guidIdentifier="false" hasCustomValidators="false" hasTriggers="false">
+      <properties>
+        <entityProperty name="Id" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" identifier="Identifier" />
+        <entityProperty name="VAL1" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="VAL2" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="VAL3" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="VAL4" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="VAL5" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="VAL6" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="VAL7" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="VAL8" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="VAL9" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="VAL10" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
       </properties>
     </entity>
   </entities>
@@ -311,6 +336,16 @@
         </relationReferencesEntityReferenceClasses>
         <relationReferencesEntityReferenceClasses Id="4f3d7e39-fe0f-4e54-b08d-20e96c165764" role="ValeursVariable" cardinality="O__N">
           <entityMoniker Id="6095bbda-cc99-46d8-ac15-484c53fbdcd4" />
+        </relationReferencesEntityReferenceClasses>
+      </entityReferenceClasses>
+    </relation>
+    <relation Id="8c565f14-a3d5-4251-9413-268a54d99660" name="RelationExportDatas" guid="00000000-0000-0000-0000-000000000000" hasTriggers="false" hasCustomValidators="false">
+      <entityReferenceClasses>
+        <relationReferencesEntityReferenceClasses Id="805179a8-66d5-49cd-ba0d-b07cd24b0ad1" role="Export" cardinality="I__I">
+          <entityMoniker Id="17948141-de39-4674-90fe-4ea7a5abbcea" />
+        </relationReferencesEntityReferenceClasses>
+        <relationReferencesEntityReferenceClasses Id="7f388ca7-326b-441f-abb1-275ba1e0071d" role="ExportDatas" cardinality="O__N">
+          <entityMoniker Id="602dda84-29ee-4b5c-98c6-b84751f4d59e" />
         </relationReferencesEntityReferenceClasses>
       </entityReferenceClasses>
     </relation>
