@@ -27,6 +27,13 @@ vListeTodos.CheckFiltreRetard.CheckedChanged.BindCommand(aas.Services.Browser.Cl
 vListeTodos.CompteurTodos.BindData(vListeTodos.GridListeTodos.RowCount);
 vListeTodos.TotalTodos.BindData(aas.Services.Browser.DataService.Count(aas.Data.MainData.Todos));
 
+// Selection d'une Action globale
+vListeTodos.SelectAction.BindList(aas.Data.MainData.Action, 'Id', 'Libelle', 'Libelle', aas.Expression('IsGlobale'));
+vListeTodos.SelectAction.NullValueDisplay.BindData('Actions');
+vListeTodos.SelectAction.DefaultIndex.BindData(0);
+vListeTodos.SelectAction.SelectedValueChanged.BindCommand(aas.Services.Browser.ClientTodosService.PrepareAction(vListeTodos.SelectAction.CurrentValue));
+
+
 // Vue détaillée d'un todo
 var vDetailTodo = Aspectize.CreateView("DetailTodo", aas.Controls.DetailTodo, aas.Zones.Home.ZoneInfo, false, aas.Data.MainData.Todos);
 vDetailTodo.OnActivated.BindCommand(aas.Services.Browser.History.PushState(aas.ViewName.DetailTodo, aas.Path.MainData.Todos, vDetailTodo.ParentData.TimosId));
@@ -40,8 +47,8 @@ vDetailTodo.DisplayBtnTerminer.BindData(aas.Expression(IIF(vDetailTodo.ParentDat
 // Terminer Todo
 vDetailTodo.BoutonTerminerTodo.click.BindCommand(aas.Services.Browser.BootStrapClientService.ShowModal(aas.ViewName.ConfirmationEndTodo, true, true, false));
 
-// Selection d'une Action
-vDetailTodo.SelectAction.BindList(vDetailTodo.ParentData.RelationTodoActions.Action, 'Id', 'Libelle', 'Libelle');
+// Selection d'une Action spécifique à un Todo
+vDetailTodo.SelectAction.BindList(vDetailTodo.ParentData.RelationTodoActions.Action, 'Id', 'Libelle', 'Libelle', aas.Expression('!IsGlobale'));
 vDetailTodo.SelectAction.NullValueDisplay.BindData('Actions');
 vDetailTodo.SelectAction.DefaultIndex.BindData(0);
 vDetailTodo.SelectAction.SelectedValueChanged.BindCommand(aas.Services.Browser.ClientTodosService.PrepareAction(vDetailTodo.SelectAction.CurrentValue));
@@ -58,7 +65,7 @@ var vDetailTodoTab = Aspectize.CreateView("DetailTodoTabs", aas.Controls.Bootstr
 //vDetailTodoTab.className.BindData(aas.Expression(IIF(aas.Data.MainData.Todos.RelationTodoDocument.DocumentsAttendus.TimosId, 'display-documents', '')));
 
 // Configuration des Actions
-var vExecutionAction = Aspectize.CreateView("ExecutionAction", aas.Controls.ExecutionAction, "", false, aas.Data.MainData.Todos.RelationTodoActions.Action);
+var vExecutionAction = Aspectize.CreateView("ExecutionAction", aas.Controls.ExecutionAction, "", false, aas.Data.MainData.Action);
 vExecutionAction.OnActivated.BindCommand(aas.Services.Browser.DataRecorder.Start(aas.Data.MainData));
 vExecutionAction.BtnCancel.click.BindCommand(aas.Services.Browser.BootStrapClientService.CloseModal(aas.ViewName.ExecutionAction));
 vExecutionAction.BtnCancel.click.BindCommand(aas.Services.Browser.DataRecorder.CancelRowChanges(aas.Data.MainData));

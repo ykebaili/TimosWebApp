@@ -981,6 +981,7 @@ namespace TimosWebApp
 			public const string LBLB3 = "LBLB3";
 			public const string VALB3 = "VALB3";
 			public const string LBLB1 = "LBLB1";
+			public const string IsGlobale = "IsGlobale";
 		}
 
 		void IDataWrapper.InitData(DataRow data, string namePrefix)
@@ -1301,6 +1302,13 @@ namespace TimosWebApp
 		{
 			get { return getValue<string>("LBLB1"); }
 			set { setValue<string>("LBLB1", value); }
+		}
+
+		[Data]
+		public bool IsGlobale
+		{
+			get { return getValue<bool>("IsGlobale"); }
+			set { setValue<bool>("IsGlobale", value); }
 		}
 
 	}

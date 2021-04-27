@@ -409,35 +409,29 @@ namespace TimosWebApp.Services
             return null;
         }
 
+
         //-----------------------------------------------------------------------------------------
         // Retourne le message de succes de l'execution de l'action Timos
         public string ExecuteAction(DataSet dataSet, int nIdAction, string elementType, int elementId)
         {
-            if (!dataSet.HasChanges())
-                return "";
-
             AspectizeUser aspectizeUser = ExecutingContext.CurrentUser;
 
             if (aspectizeUser.IsAuthenticated)
             {
-                if (dataSet.HasChanges())
+                int nTimosSessionId = (int)aspectizeUser[CUserTimosWebApp.c_champSessionId];
+
+                ITimosServiceForAspectize serviceClientAspectize = (ITimosServiceForAspectize)C2iFactory.GetNewObject(typeof(ITimosServiceForAspectize));
+                CResultAErreur result = serviceClientAspectize.GetSession(nTimosSessionId);
+                if (!result)
                 {
-                    int nTimosSessionId = (int)aspectizeUser[CUserTimosWebApp.c_champSessionId];
-                    IEntityManager em = EntityManager.FromDataSet(dataSet);
-
-                    ITimosServiceForAspectize serviceClientAspectize = (ITimosServiceForAspectize)C2iFactory.GetNewObject(typeof(ITimosServiceForAspectize));
-                    CResultAErreur result = serviceClientAspectize.GetSession(nTimosSessionId);
-                    if (!result)
-                    {
-                        throw new SmartException(1100, "Votre session a expiré, veuillez vous reconnecter");
-                    }
-                    result = serviceClientAspectize.ExecuteAction(nTimosSessionId, dataSet, nIdAction, elementType, elementId);
-                    if (!result)
-                        throw new SmartException(1010, result.MessageErreur);
-
-                    if (result.Data != null)
-                        return result.Data.ToString();
+                    throw new SmartException(1100, "Votre session a expiré, veuillez vous reconnecter");
                 }
+                result = serviceClientAspectize.ExecuteAction(nTimosSessionId, dataSet, nIdAction, elementType, elementId);
+                if (!result)
+                    throw new SmartException(1010, result.MessageErreur);
+
+                if (result.Data != null)
+                    return result.Data.ToString();
             }
             else
             {
@@ -637,6 +631,8 @@ namespace TimosWebApp.Services
                                 action.Id = nIdAction;
                                 action.Libelle = (string)row[CActionWeb.c_champLibelle];
                                 action.Instructions = (string)row[CActionWeb.c_champInstructions];
+                                action.IsGlobale = (bool)row[CActionWeb.c_champIsGlobale];
+
                                 // Variables Texte
                                 action.IDT1 = (string)row[CActionWeb.c_champIdVarText1];
                                 action.IDT2 = (string)row[CActionWeb.c_champIdVarText2];
@@ -980,7 +976,7 @@ namespace TimosWebApp.Services
         }
 
         //--------------------------------------------------------------------------------------------------
-        private void FillValeursVariableForAction(IEntityManager em, Action action, string strvaleurs, string strIdVariable)
+        public static void FillValeursVariableForAction(IEntityManager em, Action action, string strvaleurs, string strIdVariable)
         {
             if (em == null)
                 return;

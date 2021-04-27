@@ -35,7 +35,11 @@
                 </div>
             </div>
            <div class="col-xs-12 col-sm-3">
-               <p class="compteur-todos"><i class="fas fa-list-ol"></i> Todos : <span>{CompteurTodos}</span><span> / </span><span>{TotalTodos}</span></p>
+               <p class="compteur-todos" style="margin-bottom:10px;"><i class="fas fa-list-ol"></i> Todos : <span>{CompteurTodos}</span><span> / </span><span>{TotalTodos}</span></p>
+               <div class="input-group {DisplayBtnTerminer}">
+                   <span class="input-group-addon select-input"><i class="fas fa-cog"></i></span>
+                   <select class="form-control" name="SelectAction"></select>
+               </div>
            </div>
         </div>
         <div class="row section-liste">

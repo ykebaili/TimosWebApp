@@ -166,6 +166,98 @@ namespace TimosWebApp
 
                 }
 
+                // Récupère la liste des Actions globales disponibles pour cet utilisateur
+                try
+                {
+                    result = serviceClientAspectize.GetActionsForUser(user.TimosSessionId, user.TimosKey);
+                    if (!result)
+                        throw new SmartException(1010, "Erreur GetExportsForUser(nTimosSessionId = " + user.TimosSessionId + ", keyUser = " + user.TimosKey + ")" +
+                        Environment.NewLine +
+                        result.MessageErreur);
+
+                    if (result && result.Data != null)
+                    {
+                        DataSet ds = result.Data as DataSet;
+
+                        if (ds != null && ds.Tables.Contains(CActionWeb.c_nomTable))
+                        {
+                            DataTable dt = ds.Tables[CActionWeb.c_nomTable];
+
+                            foreach (DataRow row in dt.Rows)
+                            {
+                                var action = em.CreateInstance<Action>();
+                                action.Id = (int)row[CActionWeb.c_champId];
+                                action.Libelle = (string)row[CActionWeb.c_champLibelle];
+                                action.Instructions = (string)row[CActionWeb.c_champInstructions];
+                                action.IsGlobale = (bool)row[CActionWeb.c_champIsGlobale];
+
+                                // Variables Texte
+                                action.IDT1 = (string)row[CActionWeb.c_champIdVarText1];
+                                action.IDT2 = (string)row[CActionWeb.c_champIdVarText2];
+                                action.IDT3 = (string)row[CActionWeb.c_champIdVarText3];
+                                action.IDT4 = (string)row[CActionWeb.c_champIdVarText4];
+                                action.IDT5 = (string)row[CActionWeb.c_champIdVarText5];
+                                action.LBLT1 = (string)row[CActionWeb.c_champLabelVarText1];
+                                action.LBLT2 = (string)row[CActionWeb.c_champLabelVarText2];
+                                action.LBLT3 = (string)row[CActionWeb.c_champLabelVarText3];
+                                action.LBLT4 = (string)row[CActionWeb.c_champLabelVarText4];
+                                action.LBLT5 = (string)row[CActionWeb.c_champLabelVarText5];
+
+                                string strValeursVarText1 = (string)row[CActionWeb.c_champValeursVarText1];
+                                string strValeursVarText2 = (string)row[CActionWeb.c_champValeursVarText2];
+                                string strValeursVarText3 = (string)row[CActionWeb.c_champValeursVarText3];
+                                string strValeursVarText4 = (string)row[CActionWeb.c_champValeursVarText4];
+                                string strValeursVarText5 = (string)row[CActionWeb.c_champValeursVarText5];
+                                TodosService.FillValeursVariableForAction(em, action, strValeursVarText1, "T1");
+                                TodosService.FillValeursVariableForAction(em, action, strValeursVarText2, "T2");
+                                TodosService.FillValeursVariableForAction(em, action, strValeursVarText3, "T3");
+                                TodosService.FillValeursVariableForAction(em, action, strValeursVarText4, "T4");
+                                TodosService.FillValeursVariableForAction(em, action, strValeursVarText5, "T5");
+
+                                // Variables Int
+                                action.IDN1 = (string)row[CActionWeb.c_champIdVarInt1];
+                                action.IDN2 = (string)row[CActionWeb.c_champIdVarInt2];
+                                action.IDN3 = (string)row[CActionWeb.c_champIdVarInt3];
+                                action.LBLN1 = (string)row[CActionWeb.c_champLabelVarInt1];
+                                action.LBLN2 = (string)row[CActionWeb.c_champLabelVarInt2];
+                                action.LBLN3 = (string)row[CActionWeb.c_champLabelVarInt3];
+
+                                string strValeursVarInt1 = (string)row[CActionWeb.c_champValeursVarInt1];
+                                string strValeursVarInt2 = (string)row[CActionWeb.c_champValeursVarInt2];
+                                string strValeursVarInt3 = (string)row[CActionWeb.c_champValeursVarInt3];
+                                TodosService.FillValeursVariableForAction(em, action, strValeursVarInt1, "N1");
+                                TodosService.FillValeursVariableForAction(em, action, strValeursVarInt2, "N2");
+                                TodosService.FillValeursVariableForAction(em, action, strValeursVarInt3, "N3");
+
+                                // Variables Date
+                                action.IDD1 = (string)row[CActionWeb.c_champIdVarDate1];
+                                action.IDD2 = (string)row[CActionWeb.c_champIdVarDate2];
+                                action.IDD3 = (string)row[CActionWeb.c_champIdVarDate3];
+                                action.LBLD1 = (string)row[CActionWeb.c_champLabelVarDate1];
+                                action.LBLD2 = (string)row[CActionWeb.c_champLabelVarDate2];
+                                action.LBLD3 = (string)row[CActionWeb.c_champLabelVarDate3];
+                                // Variables Bool
+                                action.IDB1 = (string)row[CActionWeb.c_champIdVarBool1];
+                                action.IDB2 = (string)row[CActionWeb.c_champIdVarBool2];
+                                action.IDB3 = (string)row[CActionWeb.c_champIdVarBool3];
+                                action.LBLB1 = (string)row[CActionWeb.c_champLabelVarBool1];
+                                action.LBLB2 = (string)row[CActionWeb.c_champLabelVarBool2];
+                                action.LBLB3 = (string)row[CActionWeb.c_champLabelVarBool3];
+
+                            }
+                        }
+
+                        em.Data.AcceptChanges();
+                        return em.Data;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw new SmartException(1010, "Erreur GetExportsForUser(nTimosSessionId = " + user.TimosSessionId + ", keyUser = " + user.TimosKey + ")" +
+                        Environment.NewLine +
+                        result.MessageErreur);
+                }
+
                 em.Data.AcceptChanges();
                 return em.Data;
                 
@@ -173,6 +265,7 @@ namespace TimosWebApp
             // No profile for unanthenticated user
             return null;
         }
+       
 
         //-------------------------------------------------------------------------------------------------------------------------
         public void LogoutUser()
