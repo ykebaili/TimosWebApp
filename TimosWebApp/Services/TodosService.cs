@@ -497,6 +497,7 @@ namespace TimosWebApp.Services
                                 groupeChamps.Expand = bExpand;
                                 groupeChamps.CanAddCaracteristiques = (bool)rowGroupe[CGroupeChamps.c_champCanAddCaracteristiques];
                                 groupeChamps.TitreCaracteristiques = (string)rowGroupe[CGroupeChamps.c_champTitreCaracteristiques];
+                                groupeChamps.Editable = (bool)rowGroupe[CGroupeChamps.c_champIsEditable];
                                 bExpand = false;
 
                                 try
@@ -632,6 +633,7 @@ namespace TimosWebApp.Services
                                 action.Libelle = (string)row[CActionWeb.c_champLibelle];
                                 action.Instructions = (string)row[CActionWeb.c_champInstructions];
                                 action.IsGlobale = (bool)row[CActionWeb.c_champIsGlobale];
+                                action.HasForm = (bool)row[CActionWeb.c_champHasForm];
 
                                 // Variables Texte
                                 action.IDT1 = (string)row[CActionWeb.c_champIdVarText1];
@@ -774,6 +776,7 @@ namespace TimosWebApp.Services
                         GroupeChamps groupeAssocie = em.GetInstance<GroupeChamps>(nIdGroupeAssocie);
                         if (groupeAssocie != null && champTimos.GetAssociatedInstance<GroupeChamps, RelationGroupeChampsChampsTimos>() != groupeAssocie)
                         {
+                            champTimos.Editable = champTimos.Editable && groupeAssocie.Editable;
                             em.AssociateInstance<RelationGroupeChampsChampsTimos>(groupeAssocie, champTimos);
                             if (champTimos.UseAutoComplete)
                             {

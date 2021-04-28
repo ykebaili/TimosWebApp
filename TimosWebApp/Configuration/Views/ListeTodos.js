@@ -31,8 +31,10 @@ vListeTodos.TotalTodos.BindData(aas.Services.Browser.DataService.Count(aas.Data.
 vListeTodos.SelectAction.BindList(aas.Data.MainData.Action, 'Id', 'Libelle', 'Libelle', aas.Expression('IsGlobale'));
 vListeTodos.SelectAction.NullValueDisplay.BindData('Actions');
 vListeTodos.SelectAction.DefaultIndex.BindData(0);
-vListeTodos.SelectAction.SelectedValueChanged.BindCommand(aas.Services.Browser.ClientTodosService.PrepareAction(vListeTodos.SelectAction.CurrentValue));
-
+vListeTodos.SelectAction.SelectedValueChanged.BindCommand(aas.Services.Browser.ClientTodosService.PrepareAction(
+    vListeTodos.SelectAction.CurrentValue,
+        aas.Data.MainData.Todos.ElementType,
+        aas.Data.MainData.Todos.ElementId));
 
 // Vue détaillée d'un todo
 var vDetailTodo = Aspectize.CreateView("DetailTodo", aas.Controls.DetailTodo, aas.Zones.Home.ZoneInfo, false, aas.Data.MainData.Todos);
@@ -51,7 +53,10 @@ vDetailTodo.BoutonTerminerTodo.click.BindCommand(aas.Services.Browser.BootStrapC
 vDetailTodo.SelectAction.BindList(vDetailTodo.ParentData.RelationTodoActions.Action, 'Id', 'Libelle', 'Libelle', aas.Expression('!IsGlobale'));
 vDetailTodo.SelectAction.NullValueDisplay.BindData('Actions');
 vDetailTodo.SelectAction.DefaultIndex.BindData(0);
-vDetailTodo.SelectAction.SelectedValueChanged.BindCommand(aas.Services.Browser.ClientTodosService.PrepareAction(vDetailTodo.SelectAction.CurrentValue));
+vDetailTodo.SelectAction.SelectedValueChanged.BindCommand(aas.Services.Browser.ClientTodosService.PrepareAction(
+    vDetailTodo.SelectAction.CurrentValue,
+    aas.Data.MainData.Todos.ElementType,
+    aas.Data.MainData.Todos.ElementId));
 
 // Modale de confirmation de fin de todo
 var vConfirmationEndTodo = Aspectize.CreateView("ConfirmationEndTodo", aas.Controls.ConfirmationEndTodo, "", false, aas.Data.MainData.Todos);

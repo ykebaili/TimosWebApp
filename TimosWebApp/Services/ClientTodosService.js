@@ -127,14 +127,19 @@ Global.ClientTodosService = {
     },
 
     //---------------------------------------------------------------------------------------------------
-    PrepareAction: function (selectedValue) {
+    PrepareAction: function (nIdAction, elementType, elementId) {
         // On réinitialise la Select sur l'index 0
         $('select[name=SelectAction]').val(0);
-        if (selectedValue != null) {
-            var em = Aspectize.EntityManagerFromContextDataName(this.MainData);
-            var action = em.GetInstance('Action', { 'Id': selectedValue });
-            
-            Aspectize.ExecuteCommand(aas.Services.Browser.BootStrapClientService.ShowModal(aas.ViewName.ExecutionAction, false, false, true));
+        if (nIdAction != null) {
+            var dataName = this.MainData;
+            var em = Aspectize.EntityManagerFromContextDataName(dataName);
+            var action = em.GetInstance('Action', { 'Id': nIdAction });
+            if (action.HasForm) {
+                Aspectize.ExecuteCommand(aas.Services.Browser.BootStrapClientService.ShowModal(aas.ViewName.ExecutionAction, false, false, true));
+            }
+            else {
+                this.ExecuteAction(em.GetDataSet(), nIdAction, elementType, elementId);
+            }
         }
     },
 

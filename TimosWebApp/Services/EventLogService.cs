@@ -25,8 +25,6 @@ namespace TimosWebApp.Services
                 sw.WriteLine("Message : " + message);
                 sw.WriteLine("-----------------------------------------------------------------------------------------");
             }
-            
-
         }
     }
 

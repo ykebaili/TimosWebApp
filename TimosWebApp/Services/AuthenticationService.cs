@@ -190,6 +190,7 @@ namespace TimosWebApp
                                 action.Libelle = (string)row[CActionWeb.c_champLibelle];
                                 action.Instructions = (string)row[CActionWeb.c_champInstructions];
                                 action.IsGlobale = (bool)row[CActionWeb.c_champIsGlobale];
+                                action.HasForm = (bool)row[CActionWeb.c_champHasForm];
 
                                 // Variables Texte
                                 action.IDT1 = (string)row[CActionWeb.c_champIdVarText1];

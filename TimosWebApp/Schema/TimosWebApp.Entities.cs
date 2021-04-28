@@ -655,6 +655,7 @@ namespace TimosWebApp
 			public const string TitreCaracteristiques = "TitreCaracteristiques";
 			public const string LibelleChampAutoComplete = "LibelleChampAutoComplete";
 			public const string IdChampAutoComplete = "IdChampAutoComplete";
+			public const string Editable = "Editable";
 		}
 
 		void IDataWrapper.InitData(DataRow data, string namePrefix)
@@ -723,6 +724,13 @@ namespace TimosWebApp
 		{
 			get { return getValue<int>("IdChampAutoComplete"); }
 			set { setValue<int>("IdChampAutoComplete", value); }
+		}
+
+		[Data]
+		public bool Editable
+		{
+			get { return getValue<bool>("Editable"); }
+			set { setValue<bool>("Editable", value); }
 		}
 
 	}
@@ -982,6 +990,7 @@ namespace TimosWebApp
 			public const string VALB3 = "VALB3";
 			public const string LBLB1 = "LBLB1";
 			public const string IsGlobale = "IsGlobale";
+			public const string HasForm = "HasForm";
 		}
 
 		void IDataWrapper.InitData(DataRow data, string namePrefix)
@@ -1309,6 +1318,13 @@ namespace TimosWebApp
 		{
 			get { return getValue<bool>("IsGlobale"); }
 			set { setValue<bool>("IsGlobale", value); }
+		}
+
+		[Data]
+		public bool HasForm
+		{
+			get { return getValue<bool>("HasForm"); }
+			set { setValue<bool>("HasForm", value); }
 		}
 
 	}

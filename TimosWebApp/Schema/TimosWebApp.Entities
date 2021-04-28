@@ -95,6 +95,7 @@
         <entityProperty name="TitreCaracteristiques" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
         <entityProperty name="LibelleChampAutoComplete" defaultValue="&quot;hidden&quot;" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
         <entityProperty name="IdChampAutoComplete" type="Int32" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="Editable" type="Boolean" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
       </properties>
     </entity>
     <entity Id="36da5692-c34f-4c95-82cf-9afdf083209f" name="Caracteristiques" guid="605400be-7106-4580-8c8d-dd0591cb1a80" guidIdentifier="false" hasCustomValidators="false" hasTriggers="false">
@@ -175,6 +176,7 @@
         <entityProperty name="VALB3" type="Boolean" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
         <entityProperty name="LBLB1" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
         <entityProperty name="IsGlobale" type="Boolean" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="HasForm" type="Boolean" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
       </properties>
     </entity>
     <entity Id="17948141-de39-4674-90fe-4ea7a5abbcea" name="Export" guid="c1194b75-0be6-47ea-8ab9-1cd1c96baad2" guidIdentifier="false" hasCustomValidators="false" hasTriggers="false">
