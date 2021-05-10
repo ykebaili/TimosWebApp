@@ -7,6 +7,7 @@ vResumeExport.LibelleExport.BindData(vResumeExport.ParentData.Libelle);
 vResumeExport.DescriptionExport.BindData(vResumeExport.ParentData.Description);
 vResumeExport.DataDate.BindData(vResumeExport.ParentData.DataDate, "dd/MM/yyyy HH:mm");
 
+vResumeExport.DisplayBoutonCalculer.BindData(aas.Expression(IIF(aas.Data.MainData.User.IsAdministrator, '', 'hidden')));
 vResumeExport.BoutonCalculer.click.BindCommand(aas.Services.Server.ExportService.GetDataSetExport(vResumeExport.ParentData.Id), "", false, true);
 vResumeExport.BoutonVoirExport.click.BindCommand(aas.Services.Server.ExportService.GetExportForDisplay(vResumeExport.ParentData.Id, vResumeExport.ParentData.Libelle, vResumeExport.ParentData.Description), aas.Data.MainData, true, true);
 vResumeExport.BoutonVoirExport.click.BindCommand(aas.Services.Browser.UIService.ShowView(aas.ViewName.ConsultationExport));

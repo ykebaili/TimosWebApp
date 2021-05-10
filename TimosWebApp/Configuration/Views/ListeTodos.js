@@ -80,7 +80,6 @@ vExecutionAction.BtnSave.click.BindCommand(aas.Services.Browser.ClientTodosServi
     aas.Data.MainData.Todos.ElementType,
     aas.Data.MainData.Todos.ElementId));
 vExecutionAction.LibelleAction.BindData(vExecutionAction.ParentData.Libelle);
-vExecutionAction.LibelleTodo.BindData(aas.Data.MainData.Todos.Label);
 vExecutionAction.InstructionsAction.BindData(vExecutionAction.ParentData.Instructions);
 
 vExecutionAction.LabelVarText1.BindData(vExecutionAction.ParentData.LBLT1);

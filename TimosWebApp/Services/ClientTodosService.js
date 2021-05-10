@@ -134,11 +134,14 @@ Global.ClientTodosService = {
             var dataName = this.MainData;
             var em = Aspectize.EntityManagerFromContextDataName(dataName);
             var action = em.GetInstance('Action', { 'Id': nIdAction });
-            if (action.HasForm) {
-                Aspectize.ExecuteCommand(aas.Services.Browser.BootStrapClientService.ShowModal(aas.ViewName.ExecutionAction, false, false, true));
-            }
-            else {
-                this.ExecuteAction(em.GetDataSet(), nIdAction, elementType, elementId);
+            if (action) {
+                if (action.HasForm) {
+                    Aspectize.ExecuteCommand(aas.Services.Browser.UIService.SetCurrent(aas.Path.MainData.Action, nIdAction));
+                    Aspectize.ExecuteCommand(aas.Services.Browser.BootStrapClientService.ShowModal(aas.ViewName.ExecutionAction, false, false, true));
+                }
+                else {
+                    this.ExecuteAction(em.GetDataSet(), nIdAction, elementType, elementId);
+                }
             }
         }
     },
