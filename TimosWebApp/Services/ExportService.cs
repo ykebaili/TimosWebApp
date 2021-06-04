@@ -10,11 +10,13 @@ using timos.data.Aspectize;
 using sc2i.multitiers.client;
 using System.IO;
 using Newtonsoft.Json;
+using System.Threading;
 
 namespace TimosWebApp.Services
 {
     public interface IExportService
     {
+        void UpdateAllExports();
         DataSet GetListeExportsForCurrentUser();
         bool GetDataSetExport(string keyExport);
         DataSet GetExportForDisplay(string keyExport, string strLibelle, string strDescription);
@@ -25,6 +27,62 @@ namespace TimosWebApp.Services
     public class ExportService : IExportService //, IInitializable, ISingleton
     {
 
+
+        //-------------------------------------------------------------------------------------------------------------------------------
+        public void UpdateAllExports()
+        {
+            try
+            {
+                ITimosServiceForAspectize serviceClientAspectize = (ITimosServiceForAspectize)C2iFactory.GetNewObject(typeof(ITimosServiceForAspectize));
+                CResultAErreur result = serviceClientAspectize.GetExportsForUser(0, "");
+
+                if (result && result.Data != null)
+                {
+                    DataSet ds = result.Data as DataSet;
+
+                    if (ds != null && ds.Tables.Contains(CExportWeb.c_nomTable))
+                    {
+                        DataTable dt = ds.Tables[CExportWeb.c_nomTable];
+                        foreach (DataRow row in dt.Rows)
+                        {
+                            string keyExport = (string)row[CExportWeb.c_champId];
+
+                            try
+                            {
+                                result = serviceClientAspectize.GetDataSetExport(0, keyExport);
+                                if (!result)
+                                    Context.Log(InfoType.Warning, result.MessageErreur);
+
+                                if (result && result.Data != null)
+                                {
+                                    DataSet dsExport = result.Data as DataSet;
+                                    if (dsExport != null && dsExport.Tables.Count > 0)
+                                    {
+                                        DataTable dtExport = dsExport.Tables[0];
+                                        var fs = ExecutingContext.GetService<IFileService>("TimosFileService");
+
+                                        string relativePath = keyExport + ".json";
+                                        string json = JsonConvert.SerializeObject(dsExport, Formatting.None);
+                                        MemoryStream stream = new MemoryStream(Encoding.ASCII.GetBytes(json));
+                                        fs.Write(relativePath, stream);
+                                    }
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                Context.Log(InfoType.Warning, "Erreur GetDataSetExport(" + keyExport + ")" + Environment.NewLine + ex.Message);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Context.Log(InfoType.Warning, ex.Message);
+            }
+
+        }
+            
         //-------------------------------------------------------------------------------------------------------------------------------
         public DataSet GetListeExportsForCurrentUser()
         {
@@ -129,14 +187,12 @@ namespace TimosWebApp.Services
                         DataSet ds = result.Data as DataSet;
                         if (ds != null && ds.Tables.Count > 0)
                         {
-                            DataTable dt = ds.Tables[0];
                             var fs = ExecutingContext.GetService<IFileService>("TimosFileService");
 
                             string relativePath = keyExport + ".json";
                             string json = JsonConvert.SerializeObject(ds, Formatting.None);
                             MemoryStream stream = new MemoryStream(Encoding.ASCII.GetBytes(json));
                             fs.Write(relativePath, stream);
-
                         }
                     }
                 }

@@ -11,7 +11,7 @@ vGroupeChamps.TitreGroupe.BindData(vGroupeChamps.ParentData.Titre);
 vGroupeChamps.TitreCaracterisiques.BindData(vGroupeChamps.ParentData.TitreCaracteristiques);
 vGroupeChamps.IdGroupe.BindData(vGroupeChamps.ParentData.TimosId);
 vGroupeChamps.IsActiveIn.BindData(aas.Expression(IIF(vGroupeChamps.ParentData.Expand, 'active in', '')));
-vGroupeChamps.DisplayBtnEditer.BindData(aas.Expression(IIF(vGroupeChamps.ParentData.RelationTodoGroupeChamps.Todos.EtatTodo == 2 && vGroupeChamps.ParentData.Editable, '', 'hidden')));
+vGroupeChamps.DisplayBtnEditer.BindData(aas.Expression(IIF(vGroupeChamps.ParentData.RelationTodoGroupeChamps.Todos.EtatTodo == 2 && vGroupeChamps.ParentData.Editable && vGroupeChamps.ParentData.RelationGroupeChampsChampsTimos.ChampTimos.TimosId, '', 'hidden')));
 vGroupeChamps.DisplayBtnAddCarac.BindData(aas.Expression(IIF(vGroupeChamps.ParentData.CanAddCaracteristiques && vGroupeChamps.ParentData.Editable && vGroupeChamps.ParentData.RelationTodoGroupeChamps.Todos.EtatTodo == 2, '', 'hidden')));
 vGroupeChamps.BoutonEditionTodo.click.BindCommand(aas.Services.Browser.BootStrapClientService.ShowModal(aas.ViewName.EditionTodo, false, false, true));
 vGroupeChamps.BoutonAjouterCarac.click.BindCommand(aas.Services.Browser.ClientTodosService.AddCaracteristic(aas.Data.MainData.Todos.TimosId, vGroupeChamps.ParentData.TimosId));

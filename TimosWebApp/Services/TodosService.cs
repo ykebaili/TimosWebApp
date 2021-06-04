@@ -813,7 +813,6 @@ namespace TimosWebApp.Services
             // Gestion des valeurs possibles de champs
             if (ds.Tables.Contains(CChampValeursPossibles.c_nomTable))
             {
-                int nIlfautPrendreaumoins2valeursPossibles = 2;
                 DataTable tableValeursPossibles = ds.Tables[CChampValeursPossibles.c_nomTable];
                 foreach (DataRow rowValPossbile in tableValeursPossibles.Rows)
                 {
@@ -976,6 +975,18 @@ namespace TimosWebApp.Services
                     }
                 }
             }
+
+            /*/ Pas besoin du bouton Editer sur un groupe qui n'a aucun champ à saisir
+            List<GroupeChamps> listeGroupes = em.GetAllInstances<GroupeChamps>();
+            foreach (GroupeChamps groupe in listeGroupes)
+            {
+                if(groupe.GetAssociatedInstances<ChampTimos, RelationGroupeChampsChampsTimos>().Count == 0)
+                {
+                    groupe.Editable = false;
+                }
+            }*/
+
+
         }
 
         //--------------------------------------------------------------------------------------------------

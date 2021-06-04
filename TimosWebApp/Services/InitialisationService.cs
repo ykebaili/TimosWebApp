@@ -11,6 +11,7 @@ using System.Runtime.Remoting;
 using System.Runtime.Remoting.Channels;
 using System.Runtime.Remoting.Channels.Tcp;
 using System.Runtime.Remoting.Lifetime;
+using Aspectize.Scheduling;
 
 namespace TimosWebApp.Services
 {
@@ -22,7 +23,6 @@ namespace TimosWebApp.Services
     [Service(Name = "InitialisationService", ConfigurationRequired = true)]
     public class InitialisationService : IInitialisationService, ISingleton //, IInitializable, 
     {
-
         [Parameter(Optional = false)]
         public string TimosServerURL = "";
 
@@ -35,6 +35,9 @@ namespace TimosWebApp.Services
         [Parameter(Optional = false)]
         public string RadiusSharedKey = "";
 
+        [Parameter(Optional = true)]
+        public int ExportUpdatePeriod = 24; // En heures
+
         public void InitTimos()
         {
             CResultAErreur result = CResultAErreur.True;
@@ -45,7 +48,9 @@ namespace TimosWebApp.Services
 
             string strRadiuServerUrl = RadiusServerURL;
             uint nRadiusPort = (uint)RadiusServerPort;
-            string strSharedKey = RadiusSharedKey;            
+            string strSharedKey = RadiusSharedKey;
+
+            int nUpdatePeriod = ExportUpdatePeriod;
 
             try
             {
@@ -64,18 +69,21 @@ namespace TimosWebApp.Services
 
                 /*TcpChannel channel = new TcpChannel();
                 ChannelServices.RegisterChannel(channel, false);*/
-                               
 
                 if (!result)
                     result.EmpileErreur("Erreur lors de l'initialisation");
 
+                // Schedulers 
+                // ATTENTION : Dans le cas de plusieurs serveurs (load balancing par exemple) il faut locker le traitement dans la commande appelée 
+                ScheduleCommand.RunEvery(nUpdatePeriod, PeriodUnit.Hour, "TimosWebApp/ExportService.TraiteListeExports", new Dictionary<string, object>(), new DateTime(2021, 06, 04, 22, 00, 00) , null);
+                /*/ DEBUG ONLY
+                ScheduleCommand.RunEvery(10, PeriodUnit.Minute, "TimosWebApp/ExportService.UpdateAllExports", new Dictionary<string, object>(), null, null);
+                //*/
             }
             catch (Exception e)
             {
                 result.EmpileErreur(e.Message);
             }
-            
         }
     }
-
 }
