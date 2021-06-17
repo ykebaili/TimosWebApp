@@ -641,22 +641,40 @@ namespace TimosWebApp.Services
                                 action.IDT3 = (string)row[CActionWeb.c_champIdVarText3];
                                 action.IDT4 = (string)row[CActionWeb.c_champIdVarText4];
                                 action.IDT5 = (string)row[CActionWeb.c_champIdVarText5];
+                                action.IDT6 = (string)row[CActionWeb.c_champIdVarText6];
+                                action.IDT7 = (string)row[CActionWeb.c_champIdVarText7];
+                                action.IDT8 = (string)row[CActionWeb.c_champIdVarText8];
+                                action.IDT9 = (string)row[CActionWeb.c_champIdVarText9];
+
                                 action.LBLT1 = (string)row[CActionWeb.c_champLabelVarText1];
                                 action.LBLT2 = (string)row[CActionWeb.c_champLabelVarText2];
                                 action.LBLT3 = (string)row[CActionWeb.c_champLabelVarText3];
                                 action.LBLT4 = (string)row[CActionWeb.c_champLabelVarText4];
                                 action.LBLT5 = (string)row[CActionWeb.c_champLabelVarText5];
+                                action.LBLT6 = (string)row[CActionWeb.c_champLabelVarText6];
+                                action.LBLT7 = (string)row[CActionWeb.c_champLabelVarText7];
+                                action.LBLT8 = (string)row[CActionWeb.c_champLabelVarText8];
+                                action.LBLT9 = (string)row[CActionWeb.c_champLabelVarText9];
 
                                 string strValeursVarText1 = (string)row[CActionWeb.c_champValeursVarText1];
                                 string strValeursVarText2 = (string)row[CActionWeb.c_champValeursVarText2];
                                 string strValeursVarText3 = (string)row[CActionWeb.c_champValeursVarText3];
                                 string strValeursVarText4 = (string)row[CActionWeb.c_champValeursVarText4];
                                 string strValeursVarText5 = (string)row[CActionWeb.c_champValeursVarText5];
+                                string strValeursVarText6 = (string)row[CActionWeb.c_champValeursVarText6];
+                                string strValeursVarText7 = (string)row[CActionWeb.c_champValeursVarText7];
+                                string strValeursVarText8 = (string)row[CActionWeb.c_champValeursVarText8];
+                                string strValeursVarText9 = (string)row[CActionWeb.c_champValeursVarText9];
+
                                 FillValeursVariableForAction(em, action, strValeursVarText1, "T1");
                                 FillValeursVariableForAction(em, action, strValeursVarText2, "T2");
                                 FillValeursVariableForAction(em, action, strValeursVarText3, "T3");
                                 FillValeursVariableForAction(em, action, strValeursVarText4, "T4");
                                 FillValeursVariableForAction(em, action, strValeursVarText5, "T5");
+                                FillValeursVariableForAction(em, action, strValeursVarText6, "T6");
+                                FillValeursVariableForAction(em, action, strValeursVarText7, "T7");
+                                FillValeursVariableForAction(em, action, strValeursVarText8, "T8");
+                                FillValeursVariableForAction(em, action, strValeursVarText9, "T9");
 
                                 // Variables Int
                                 action.IDN1 = (string)row[CActionWeb.c_champIdVarInt1];

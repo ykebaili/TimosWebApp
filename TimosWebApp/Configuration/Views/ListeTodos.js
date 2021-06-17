@@ -87,12 +87,20 @@ vExecutionAction.LabelVarText2.BindData(vExecutionAction.ParentData.LBLT2);
 vExecutionAction.LabelVarText3.BindData(vExecutionAction.ParentData.LBLT3);
 vExecutionAction.LabelVarText4.BindData(vExecutionAction.ParentData.LBLT4);
 vExecutionAction.LabelVarText5.BindData(vExecutionAction.ParentData.LBLT5);
+vExecutionAction.LabelVarText6.BindData(vExecutionAction.ParentData.LBLT6);
+vExecutionAction.LabelVarText7.BindData(vExecutionAction.ParentData.LBLT7);
+vExecutionAction.LabelVarText8.BindData(vExecutionAction.ParentData.LBLT8);
+vExecutionAction.LabelVarText9.BindData(vExecutionAction.ParentData.LBLT9);
 
 vExecutionAction.VarText1.value.BindData(vExecutionAction.ParentData.VALT1);
 vExecutionAction.VarText2.value.BindData(vExecutionAction.ParentData.VALT2);
 vExecutionAction.VarText3.value.BindData(vExecutionAction.ParentData.VALT3);
 vExecutionAction.VarText4.value.BindData(vExecutionAction.ParentData.VALT4);
 vExecutionAction.VarText5.value.BindData(vExecutionAction.ParentData.VALT5);
+vExecutionAction.VarText6.value.BindData(vExecutionAction.ParentData.VALT6);
+vExecutionAction.VarText7.value.BindData(vExecutionAction.ParentData.VALT7);
+vExecutionAction.VarText8.value.BindData(vExecutionAction.ParentData.VALT8);
+vExecutionAction.VarText9.value.BindData(vExecutionAction.ParentData.VALT9);
 
 vExecutionAction.SelectVarText1.BindList(vExecutionAction.ParentData.RelationActionValeursVariable.ValeursVariable, "Value", "Display", "Value", aas.Expression('IdVariable === "T1"'));
 vExecutionAction.SelectVarText1.SelectedValue.BindData(vExecutionAction.ParentData.VALT1);
@@ -104,6 +112,14 @@ vExecutionAction.SelectVarText4.BindList(vExecutionAction.ParentData.RelationAct
 vExecutionAction.SelectVarText4.SelectedValue.BindData(vExecutionAction.ParentData.VALT4);
 vExecutionAction.SelectVarText5.BindList(vExecutionAction.ParentData.RelationActionValeursVariable.ValeursVariable, "Value", "Display", "Value", aas.Expression('IdVariable === "T5"'));
 vExecutionAction.SelectVarText5.SelectedValue.BindData(vExecutionAction.ParentData.VALT5);
+vExecutionAction.SelectVarText6.BindList(vExecutionAction.ParentData.RelationActionValeursVariable.ValeursVariable, "Value", "Display", "Value", aas.Expression('IdVariable === "T6"'));
+vExecutionAction.SelectVarText6.SelectedValue.BindData(vExecutionAction.ParentData.VALT6);
+vExecutionAction.SelectVarText7.BindList(vExecutionAction.ParentData.RelationActionValeursVariable.ValeursVariable, "Value", "Display", "Value", aas.Expression('IdVariable === "T7"'));
+vExecutionAction.SelectVarText7.SelectedValue.BindData(vExecutionAction.ParentData.VALT7);
+vExecutionAction.SelectVarText8.BindList(vExecutionAction.ParentData.RelationActionValeursVariable.ValeursVariable, "Value", "Display", "Value", aas.Expression('IdVariable === "T8"'));
+vExecutionAction.SelectVarText8.SelectedValue.BindData(vExecutionAction.ParentData.VALT8);
+vExecutionAction.SelectVarText9.BindList(vExecutionAction.ParentData.RelationActionValeursVariable.ValeursVariable, "Value", "Display", "Value", aas.Expression('IdVariable === "T9"'));
+vExecutionAction.SelectVarText9.SelectedValue.BindData(vExecutionAction.ParentData.VALT9);
 
 vExecutionAction.DisplayVarText1.BindData(aas.Expression(IIF(vExecutionAction.SelectVarText1.CurrentValue, 'hidden', '')));
 vExecutionAction.DisplaySelectVarText1.BindData(aas.Expression(IIF(vExecutionAction.SelectVarText1.CurrentValue, '', 'hidden')));
@@ -115,6 +131,14 @@ vExecutionAction.DisplayVarText4.BindData(aas.Expression(IIF(vExecutionAction.Se
 vExecutionAction.DisplaySelectVarText4.BindData(aas.Expression(IIF(vExecutionAction.SelectVarText4.CurrentValue, '', 'hidden')));
 vExecutionAction.DisplayVarText5.BindData(aas.Expression(IIF(vExecutionAction.SelectVarText5.CurrentValue, 'hidden', '')));
 vExecutionAction.DisplaySelectVarText5.BindData(aas.Expression(IIF(vExecutionAction.SelectVarText5.CurrentValue, '', 'hidden')));
+vExecutionAction.DisplayVarText6.BindData(aas.Expression(IIF(vExecutionAction.SelectVarText6.CurrentValue, 'hidden', '')));
+vExecutionAction.DisplaySelectVarText6.BindData(aas.Expression(IIF(vExecutionAction.SelectVarText6.CurrentValue, '', 'hidden')));
+vExecutionAction.DisplayVarText7.BindData(aas.Expression(IIF(vExecutionAction.SelectVarText7.CurrentValue, 'hidden', '')));
+vExecutionAction.DisplaySelectVarText7.BindData(aas.Expression(IIF(vExecutionAction.SelectVarText7.CurrentValue, '', 'hidden')));
+vExecutionAction.DisplayVarText8.BindData(aas.Expression(IIF(vExecutionAction.SelectVarText8.CurrentValue, 'hidden', '')));
+vExecutionAction.DisplaySelectVarText8.BindData(aas.Expression(IIF(vExecutionAction.SelectVarText8.CurrentValue, '', 'hidden')));
+vExecutionAction.DisplayVarText9.BindData(aas.Expression(IIF(vExecutionAction.SelectVarText9.CurrentValue, 'hidden', '')));
+vExecutionAction.DisplaySelectVarText9.BindData(aas.Expression(IIF(vExecutionAction.SelectVarText9.CurrentValue, '', 'hidden')));
 
 
 vExecutionAction.LabelVarInt1.BindData(vExecutionAction.ParentData.LBLN1);

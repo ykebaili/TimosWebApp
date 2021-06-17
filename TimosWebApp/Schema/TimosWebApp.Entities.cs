@@ -991,6 +991,18 @@ namespace TimosWebApp
 			public const string LBLB1 = "LBLB1";
 			public const string IsGlobale = "IsGlobale";
 			public const string HasForm = "HasForm";
+			public const string IDT6 = "IDT6";
+			public const string LBLT6 = "LBLT6";
+			public const string VALT6 = "VALT6";
+			public const string IDT7 = "IDT7";
+			public const string LBLT7 = "LBLT7";
+			public const string VALT7 = "VALT7";
+			public const string IDT8 = "IDT8";
+			public const string LBLT8 = "LBLT8";
+			public const string VALT8 = "VALT8";
+			public const string IDT9 = "IDT9";
+			public const string LBLT9 = "LBLT9";
+			public const string VALT9 = "VALT9";
 		}
 
 		void IDataWrapper.InitData(DataRow data, string namePrefix)
@@ -1325,6 +1337,90 @@ namespace TimosWebApp
 		{
 			get { return getValue<bool>("HasForm"); }
 			set { setValue<bool>("HasForm", value); }
+		}
+
+		[Data]
+		public string IDT6
+		{
+			get { return getValue<string>("IDT6"); }
+			set { setValue<string>("IDT6", value); }
+		}
+
+		[Data]
+		public string LBLT6
+		{
+			get { return getValue<string>("LBLT6"); }
+			set { setValue<string>("LBLT6", value); }
+		}
+
+		[Data]
+		public string VALT6
+		{
+			get { return getValue<string>("VALT6"); }
+			set { setValue<string>("VALT6", value); }
+		}
+
+		[Data]
+		public string IDT7
+		{
+			get { return getValue<string>("IDT7"); }
+			set { setValue<string>("IDT7", value); }
+		}
+
+		[Data]
+		public string LBLT7
+		{
+			get { return getValue<string>("LBLT7"); }
+			set { setValue<string>("LBLT7", value); }
+		}
+
+		[Data]
+		public string VALT7
+		{
+			get { return getValue<string>("VALT7"); }
+			set { setValue<string>("VALT7", value); }
+		}
+
+		[Data]
+		public string IDT8
+		{
+			get { return getValue<string>("IDT8"); }
+			set { setValue<string>("IDT8", value); }
+		}
+
+		[Data]
+		public string LBLT8
+		{
+			get { return getValue<string>("LBLT8"); }
+			set { setValue<string>("LBLT8", value); }
+		}
+
+		[Data]
+		public string VALT8
+		{
+			get { return getValue<string>("VALT8"); }
+			set { setValue<string>("VALT8", value); }
+		}
+
+		[Data]
+		public string IDT9
+		{
+			get { return getValue<string>("IDT9"); }
+			set { setValue<string>("IDT9", value); }
+		}
+
+		[Data]
+		public string LBLT9
+		{
+			get { return getValue<string>("LBLT9"); }
+			set { setValue<string>("LBLT9", value); }
+		}
+
+		[Data]
+		public string VALT9
+		{
+			get { return getValue<string>("VALT9"); }
+			set { setValue<string>("VALT9", value); }
 		}
 
 	}

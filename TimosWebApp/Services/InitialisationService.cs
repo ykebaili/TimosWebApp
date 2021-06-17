@@ -73,7 +73,7 @@ namespace TimosWebApp.Services
                 if (!result)
                     result.EmpileErreur("Erreur lors de l'initialisation");
 
-                // Schedulers 
+                // Configuration des Schedulers 
                 // ATTENTION : Dans le cas de plusieurs serveurs (load balancing par exemple) il faut locker le traitement dans la commande appelée 
                 ScheduleCommand.RunEvery(nUpdatePeriod, PeriodUnit.Hour, "TimosWebApp/ExportService.TraiteListeExports", new Dictionary<string, object>(), new DateTime(2021, 06, 04, 22, 00, 00) , null);
                 /*/ DEBUG ONLY
