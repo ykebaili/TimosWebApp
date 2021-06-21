@@ -207,6 +207,7 @@
         <entityProperty name="COL8" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
         <entityProperty name="COL9" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
         <entityProperty name="COL10" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
+        <entityProperty name="UpdatePeriod" type="Int32" identity="false" isEnumType="false" isCompoType="false" isExternType="false" isEnumInBaseType="false" />
       </properties>
     </entity>
     <entity Id="6095bbda-cc99-46d8-ac15-484c53fbdcd4" name="ValeursVariable" guid="e8272c28-7f3a-40d5-a2b6-caf239c095c6" guidIdentifier="false" hasCustomValidators="false" hasTriggers="false">

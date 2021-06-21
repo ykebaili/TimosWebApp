@@ -75,9 +75,9 @@ namespace TimosWebApp.Services
 
                 // Configuration des Schedulers 
                 // ATTENTION : Dans le cas de plusieurs serveurs (load balancing par exemple) il faut locker le traitement dans la commande appelée 
-                ScheduleCommand.RunEvery(nUpdatePeriod, PeriodUnit.Hour, "TimosWebApp/ExportService.TraiteListeExports", new Dictionary<string, object>(), new DateTime(2021, 06, 04, 22, 00, 00) , null);
+                ScheduleCommand.RunEvery(1, PeriodUnit.Hour, "TimosWebApp/ExportService.TraiteListeExports", new Dictionary<string, object>(), new DateTime(2021, 06, 01, 01, 00, 00) , null);
                 /*/ DEBUG ONLY
-                ScheduleCommand.RunEvery(10, PeriodUnit.Minute, "TimosWebApp/ExportService.UpdateAllExports", new Dictionary<string, object>(), null, null);
+                ScheduleCommand.RunEvery(1, PeriodUnit.Minute, "TimosWebApp/ExportService.UpdateAllExports", new Dictionary<string, object>(), null, null);
                 //*/
             }
             catch (Exception e)

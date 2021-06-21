@@ -1444,6 +1444,7 @@ namespace TimosWebApp
 			public const string COL8 = "COL8";
 			public const string COL9 = "COL9";
 			public const string COL10 = "COL10";
+			public const string UpdatePeriod = "UpdatePeriod";
 		}
 
 		void IDataWrapper.InitData(DataRow data, string namePrefix)
@@ -1547,6 +1548,13 @@ namespace TimosWebApp
 		{
 			get { return getValue<string>("COL10"); }
 			set { setValue<string>("COL10", value); }
+		}
+
+		[Data]
+		public int UpdatePeriod
+		{
+			get { return getValue<int>("UpdatePeriod"); }
+			set { setValue<int>("UpdatePeriod", value); }
 		}
 
 	}

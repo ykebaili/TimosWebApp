@@ -46,12 +46,27 @@ namespace TimosWebApp.Services
                         foreach (DataRow row in dt.Rows)
                         {
                             string keyExport = (string)row[CExportWeb.c_champId];
+                            string strLibelleExport = (string)row[CExportWeb.c_champLibelle];
+                            int nUpdatePeriod = (int)row[CExportWeb.c_champPeriode];
 
                             try
                             {
+                                // On vérifie la période de rafraichissement (en heures)
+                                var fs = ExecutingContext.GetService<IFileService>("TimosFileService");
+                                string relativePath = keyExport + ".json";
+                                string fullPath = fs.GetFileUrl(relativePath);
+                                fullPath = fullPath.Substring(16);
+                                if (File.Exists(fullPath))
+                                {
+                                    DateTime lastDataDate = File.GetLastWriteTime(fullPath);
+                                    TimeSpan span = DateTime.Now - lastDataDate;
+                                    if (span.TotalHours < nUpdatePeriod)
+                                        continue;
+                                }
+
                                 result = serviceClientAspectize.GetDataSetExport(0, keyExport);
                                 if (!result)
-                                    Context.Log(InfoType.Warning, result.MessageErreur);
+                                    Context.Log(InfoType.Warning, "Erreur GetDataSetExport(" + keyExport + ")" + Environment.NewLine + "Export label : " + strLibelleExport + Environment.NewLine + result.MessageErreur);
 
                                 if (result && result.Data != null)
                                 {
@@ -59,9 +74,6 @@ namespace TimosWebApp.Services
                                     if (dsExport != null && dsExport.Tables.Count > 0)
                                     {
                                         DataTable dtExport = dsExport.Tables[0];
-                                        var fs = ExecutingContext.GetService<IFileService>("TimosFileService");
-
-                                        string relativePath = keyExport + ".json";
                                         string json = JsonConvert.SerializeObject(dsExport, Formatting.None);
                                         MemoryStream stream = new MemoryStream(Encoding.ASCII.GetBytes(json));
                                         fs.Write(relativePath, stream);
@@ -70,7 +82,7 @@ namespace TimosWebApp.Services
                             }
                             catch (Exception ex)
                             {
-                                Context.Log(InfoType.Warning, "Erreur GetDataSetExport(" + keyExport + ")" + Environment.NewLine + ex.Message);
+                                Context.Log(InfoType.Warning, "Erreur GetDataSetExport(" + keyExport + ")" + Environment.NewLine + "Export label : " + strLibelleExport + Environment.NewLine + ex.Message);
                             }
                         }
                     }
@@ -123,6 +135,7 @@ namespace TimosWebApp.Services
                                 export.Id = (string)row[CExportWeb.c_champId];
                                 export.Libelle = (string)row[CExportWeb.c_champLibelle];
                                 export.Description = (string)row[CExportWeb.c_champDescription];
+                                export.UpdatePeriod = (int)row[CExportWeb.c_champPeriode];
                                
                                 var fs = ExecutingContext.GetService<IFileService>("TimosFileService");
                                 string relativePath = export.Id + ".json";
