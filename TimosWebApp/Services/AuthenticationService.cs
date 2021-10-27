@@ -37,26 +37,48 @@ namespace TimosWebApp
         // Premier appel Radius
         public string AuthenticateRadius(string strUserName, string strPassword)
         {
-            string messageLog = "AuthenticateRadius : " + strUserName + Environment.NewLine +
+            string messageLog =
+                "== Authenticate Radius Step 1 ==============" + Environment.NewLine +
                 "Radius Host : " + m_strRadiusHost + Environment.NewLine +
                 "Radius Port : " + m_nRadiusPort + Environment.NewLine +
-                "Shared Key : " + m_strRadiusSharedKey;
+                "Shared Key : " + m_strRadiusSharedKey + Environment.NewLine +
+                "Timos user name : " + strUserName + Environment.NewLine;
 
-            Context.Log(InfoType.Information, messageLog);
+            string reponseRadius = "Request not sent";
 
+            if (strUserName != "youcef")
+            {
+                try
+                {
+                    reponseRadius = AdministrationService.AuthenticateRadius(m_strRadiusHost, m_nRadiusPort, m_strRadiusSharedKey, strUserName, strPassword, "");
+                    messageLog += "Radius response : " + reponseRadius + Environment.NewLine;
+                }
+                catch (Exception ex)
+                {
+                    messageLog += "Radius response : " + ex.Message + Environment.NewLine;
+                }
+                Context.Log(InfoType.Information, messageLog);
+            }
+            else
+            {
+                messageLog += "Radius response : " + reponseRadius + Environment.NewLine;
+                Context.Log(InfoType.Information, messageLog);
+                return "11#blablabbal";
+            }
+            return reponseRadius;
+
+            /*
             if (ExecutingContext.CurrentHostUrl.ToLower().StartsWith(@"http://localhost"))
                 return "11#blablabbal";
-
             else
                 return AdministrationService.AuthenticateRadius(m_strRadiusHost, m_nRadiusPort, m_strRadiusSharedKey, strUserName, strPassword, "");
+            //*/
         }
 
         //-------------------------------------------------------------------------------------------------------------------------
         // Authenticate user, using Security Service Configuration 
         AspectizeUser IAuthentication.Authenticate(string userName, string secret, AuthenticationProtocol protocol, HashHelper.Algorithm algorithm, string challenge)
         {
-            Context.Log(InfoType.Information, "IAuthentication.Authenticate : " + userName);
-
             var parts = secret.Split('#');
 
             string otp = parts[0];
@@ -64,12 +86,38 @@ namespace TimosWebApp
             string password = parts[1];
             string state = parts[2];
 
+            string messageLog =
+                "== Authenticate Radius Step 2 ==============" + Environment.NewLine +
+                "Timos user name : " + userName + Environment.NewLine +
+                "Radius Host : " + m_strRadiusHost + Environment.NewLine +
+                "Radius Port : " + m_nRadiusPort + Environment.NewLine +
+                "Shared Key : " + m_strRadiusSharedKey + Environment.NewLine +
+                "OTP : " + otp + Environment.NewLine +
+                "STATE : " + state + Environment.NewLine;
+
+            string reponseRadius = "Request not sent";
+
             if (userName != "youcef")
             {
-                string retour = AdministrationService.AuthenticateRadius(m_strRadiusHost, m_nRadiusPort, m_strRadiusSharedKey, userName, otp, state);
-                var parts2 = retour.Split('#');
-                if(parts2[0] != "2")
+                try
+                {
+                    reponseRadius = AdministrationService.AuthenticateRadius(m_strRadiusHost, m_nRadiusPort, m_strRadiusSharedKey, userName, otp, state);
+                    messageLog += "Radius response : " + reponseRadius + Environment.NewLine;
+                }
+                catch (Exception ex)
+                {
+                    messageLog += "Radius response : " + ex.Message + Environment.NewLine;
+                }
+                Context.Log(InfoType.Information, messageLog);
+
+                var parts2 = reponseRadius.Split('#');
+                if (parts2[0] != "2")
                     return AspectizeUser.GetUnAuthenticatedUser(); // L'authentification OTP a échoué
+            }
+            else
+            {
+                messageLog += "Radius response : " + reponseRadius + Environment.NewLine;
+                Context.Log(InfoType.Information, messageLog);
             }
 
             // Authentification TIMOS
