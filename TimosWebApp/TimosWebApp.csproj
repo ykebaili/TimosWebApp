@@ -123,6 +123,10 @@
     <Content Include="Icons\timos-48.png" />
     <Content Include="Icons\timos-50.png" />
     <Content Include="Icons\timos-72.png" />
+    <Content Include="Images\logo-ooredoo.png" />
+    <Content Include="Images\logo-ooredoox.png" />
+    <Content Include="Images\logo-timos-web-1.png" />
+    <Content Include="Images\Logo-timos-white.png" />
     <Content Include="main.js" />
     <Content Include="manifest.json" />
   </ItemGroup>
