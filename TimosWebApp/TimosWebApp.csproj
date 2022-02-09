@@ -119,10 +119,17 @@
     <Content Include="Controls\Inscription.htm" />
     <Content Include="Controls\Home.htm" />
     <Content Include="Controls\ListeTodos.htm" />
+    <Content Include="Icons\favicon.png" />
+    <Content Include="Icons\timos-120.png" />
+    <Content Include="Icons\timos-128.png" />
+    <Content Include="Icons\timos-144.png" />
     <Content Include="Icons\timos-24.png" />
+    <Content Include="Icons\timos-32.png" />
     <Content Include="Icons\timos-48.png" />
     <Content Include="Icons\timos-50.png" />
     <Content Include="Icons\timos-72.png" />
+    <Content Include="Icons\timos-88.png" />
+    <Content Include="Icons\timos-96.png" />
     <Content Include="Images\logo-ooredoo.png" />
     <Content Include="Images\logo-ooredoox.png" />
     <Content Include="Images\logo-timos-web-1.png" />

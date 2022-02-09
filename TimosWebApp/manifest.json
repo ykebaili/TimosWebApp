@@ -28,22 +28,22 @@
       "type": "image/png"
     },
     {
-      "src": "https://via.placeholder.com/88x88",
+      "src": "icons/timos-88.png",
       "sizes": "88x88",
       "type": "image/png"
     },
     {
-      "src": "https://via.placeholder.com/96x96",
+      "src": "icons/timos-96.png",
       "sizes": "96x96",
       "type": "image/png"
     },
     {
-      "src": "https://via.placeholder.com/120x120",
+      "src": "icons/timos-120.png",
       "sizes": "120x120",
       "type": "image/png"
     },
     {
-      "src": "https://via.placeholder.com/144x144",
+      "src": "icons/timos-144.png",
       "sizes": "144x144",
       "type": "image/png"
     },
